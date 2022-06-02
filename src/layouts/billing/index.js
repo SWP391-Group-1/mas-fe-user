@@ -1,14 +1,14 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 
-// Soft UI Dashboard React components
+//  components
 import MasterCard from "examples/Cards/MasterCard";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
-// Soft UI Dashboard React examples
+//  examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";

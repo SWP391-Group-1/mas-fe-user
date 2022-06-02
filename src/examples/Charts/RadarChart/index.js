@@ -9,17 +9,17 @@ import { Radar } from "react-chartjs-2";
 // @mui material components
 import Card from "@mui/material/Card";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
 // RadarChart configurations
 import configs from "examples/Charts/RadarChart/configs";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import colors from "assets/theme/base/colors";
 
-// Soft UI Dashboard React helper functions
+//  helper functions
 import rgba from "assets/theme/functions/rgba";
 
 function RadarChart({ title, description, chart }) {

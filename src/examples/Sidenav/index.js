@@ -12,18 +12,18 @@ import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
-// Soft UI Dashboard React examples
+//  examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
-// Soft UI Dashboard React context
+//  context
 import { useSoftUIController, setMiniSidenav } from "context";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
@@ -127,7 +127,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SuiTypography>
         </SuiBox>
         <SuiBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SuiBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
           <SuiBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}

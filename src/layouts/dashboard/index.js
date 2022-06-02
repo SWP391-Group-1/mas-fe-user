@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Grid";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 
-// Soft UI Dashboard React examples
+//  examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
@@ -19,37 +19,23 @@ function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's money" }}
-                count="$53,000"
-                percentage={{ color: "success", text: "+55%" }}
-                icon={{ color: "info", component: "paid" }}
+                title={{ text: "Total register" }}
+                count="20"
+                icon={{ color: "info", component: "assessment" }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's users" }}
+                title={{ text: "Total users" }}
                 count="2,300"
-                percentage={{ color: "success", text: "+3%" }}
-                icon={{ color: "info", component: "public" }}
+                icon={{ color: "info", component: "account_box" }}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "new clients" }}
-                count="+3,462"
-                percentage={{ color: "error", text: "-2%" }}
-                icon={{ color: "info", component: "emoji_events" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
-              <MiniStatisticsCard
-                title={{ text: "sales" }}
-                count="$103,430"
-                percentage={{ color: "success", text: "+5%" }}
-                icon={{
-                  color: "info",
-                  component: "shopping_cart",
-                }}
+                title={{ text: "Upcoming booking" }}
+                count="10"
+                icon={{ color: "info", component: "event_available" }}
               />
             </Grid>
           </Grid>

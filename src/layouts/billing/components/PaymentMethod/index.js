@@ -4,12 +4,12 @@ import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 import SuiButton from "components/SuiButton";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import borders from "assets/theme/base/borders";
 
 // Images

@@ -9,17 +9,17 @@ import { Line } from "react-chartjs-2";
 // @mui material components
 import Card from "@mui/material/Card";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
-// Soft UI Dashboard React helper functions
+//  helper functions
 import gradientChartLine from "assets/theme/functions/gradientChartLine";
 
 // GradientLineChart configurations
 import configs from "examples/Charts/LineCharts/GradientLineChart/configs";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import colors from "assets/theme/base/colors";
 
 function GradientLineChart({ title, description, height, chart }) {

@@ -3,13 +3,13 @@ import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import Icon from "@mui/material/Icon";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiAvatar from "components/SuiAvatar";
 import SuiTypography from "components/SuiTypography";
 import SuiButton from "components/SuiButton";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import typography from "assets/theme/base/typography";
 
 // VR dashboards components

@@ -4,13 +4,11 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
 
-// Soft UI Dashboard React icons
+//  icons
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
@@ -27,27 +25,27 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
+    name: "Mentor",
+    key: "mentor",
+    route: "/mentor",
     icon: <Office size="12px" />,
     component: <Tables />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
+    name: "Booking",
+    key: "booking",
+    route: "/booking",
     icon: <CreditCard size="12px" />,
     component: <Billing />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
+    name: "Register",
+    key: "register",
+    route: "/",
     icon: <Cube size="12px" />,
     component: <VirtualReality />,
     noCollapse: true,
@@ -69,15 +67,6 @@ const routes = [
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
     component: <SignIn />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    icon: <SpaceShip size="12px" />,
-    component: <SignUp />,
     noCollapse: true,
   },
 ];

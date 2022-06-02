@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
 import Icon from "@mui/material/Icon";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 

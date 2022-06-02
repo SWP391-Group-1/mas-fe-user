@@ -9,14 +9,14 @@ import { Line } from "react-chartjs-2";
 // @mui material components
 import Card from "@mui/material/Card";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
 // DefaultLineChart configurations
 import configs from "examples/Charts/LineCharts/DefaultLineChart/configs";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import colors from "assets/theme/base/colors";
 
 function DefaultLineChart({ title, description, height, chart }) {

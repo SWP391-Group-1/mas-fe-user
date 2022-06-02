@@ -12,7 +12,7 @@ You can read more about the [documentation here](https://www.creative-tim.com/le
 
 **Example Pages**
 
-If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes. Soft UI Dashboard React has everything you need to quickly set up an amazing project.
+If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes.  has everything you need to quickly set up an amazing project.
 
 View [example pages here](https://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard).
 
@@ -54,7 +54,7 @@ Let us know your thoughts below. And good luck with development!
 | React |
 | ----- |
 
-| [![Soft UI Dashboard React](https://s3.amazonaws.com/creativetim_bucket/products/500/thumb/soft-ui-dashboard-material-ui.jpg?1632195046)](http://demos.creative-tim.com/soft-ui-dashboard-pro-react/#/dashboard?ref=readme-sudr)
+| [![](https://s3.amazonaws.com/creativetim_bucket/products/500/thumb/soft-ui-dashboard-material-ui.jpg?1632195046)](http://demos.creative-tim.com/soft-ui-dashboard-pro-react/#/dashboard?ref=readme-sudr)
 
 ## Demo
 

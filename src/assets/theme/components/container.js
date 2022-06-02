@@ -1,6 +1,6 @@
 import breakpoints from "assets/theme/base/breakpoints";
 
-// Soft UI Dashboard React helper functions
+//  helper functions
 import pxToRem from "assets/theme/functions/pxToRem";
 
 const {

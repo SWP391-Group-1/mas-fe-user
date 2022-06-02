@@ -9,7 +9,7 @@ import SuiInputWithIconRoot from "components/SuiInput/SuiInputWithIconRoot";
 import SuiInputIconBoxRoot from "components/SuiInput/SuiInputIconBoxRoot";
 import SuiInputIconRoot from "components/SuiInput/SuiInputIconRoot";
 
-// Soft UI Dashboard React contexts
+//  contexts
 import { useSoftUIController } from "context";
 
 const SuiInput = forwardRef(({ size, icon, error, success, disabled, ...rest }, ref) => {

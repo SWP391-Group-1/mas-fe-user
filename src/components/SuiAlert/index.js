@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 // @mui material components
 import Fade from "@mui/material/Fade";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 
 // Custom styles for the SuiAlert

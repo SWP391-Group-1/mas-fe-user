@@ -1,4 +1,4 @@
-// Soft UI Dashboard React components
+//  components
 import SuiButton from "components/SuiButton";
 import SuiBox from "components/SuiBox";
 

@@ -6,7 +6,7 @@ import { useState } from "react";
 // @mui material components
 import Switch from "@mui/material/Switch";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 import SuiInput from "components/SuiInput";

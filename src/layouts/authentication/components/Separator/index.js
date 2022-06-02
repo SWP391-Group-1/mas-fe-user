@@ -1,7 +1,7 @@
 // @mui material components
 import Divider from "@mui/material/Divider";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 

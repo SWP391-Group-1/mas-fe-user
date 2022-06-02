@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 // @mui material components
 import Icon from "@mui/material/Icon";
 
-// Soft UI Dashboard React base styles
+//  base styles
 import typography from "assets/theme/base/typography";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 import SuiProgress from "components/SuiProgress";

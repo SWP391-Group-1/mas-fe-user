@@ -1,7 +1,7 @@
 // @mui material components
 import { styled } from "@mui/material/styles";
 
-// Soft UI Dashboard React components
+//  components
 import SuiButton from "components/SuiButton";
 
 export default styled(SuiButton)(({ theme, ownerState }) => {
