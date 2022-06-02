@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // @mui material components
 import Switch from "@mui/material/Switch";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 import SuiInput from "components/SuiInput";
@@ -62,20 +62,10 @@ function SignIn() {
             sign in
           </SuiButton>
         </SuiBox>
-        <SuiBox mt={3} textAlign="center">
-          <SuiTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SuiTypography
-              component={Link}
-              to="/authentication/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SuiTypography>
-          </SuiTypography>
+        <SuiBox mt={2} mb={1}>
+          <SuiButton color="error" fullWidth>
+            sign in with Google
+          </SuiButton>
         </SuiBox>
       </SuiBox>
     </CoverLayout>

@@ -1,13 +1,6 @@
-# [Soft UI Dashboard React](http://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard?ref=readme-sudr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/soft-ui-dashboard-react&text=Check%20Soft%20UI%20Dashboard%20react%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#softdesign%20#react%20https://www.creative-tim.com/product/soft-ui-dashboard-react)
+# [FPT MAS](http://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard?ref=readme-sudr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/soft-ui-dashboard-react&text=Check%20Soft%20UI%20Dashboard%20react%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#softdesign%20#react%20https://www.creative-tim.com/product/soft-ui-dashboard-react)
 
 ![version](https://img.shields.io/badge/version-3.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/soft-ui-dashboard-react.svg)](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/soft-ui-dashboard-react.svg)](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues?q=is%3Aissue+is%3Aclosed)
-
-![Image](https://s3.amazonaws.com/creativetim_bucket/products/500/original/soft-ui-dashboard-material-ui.jpg)
-
-Start your Development with an Innovative Admin Template for MUI and React. If you like the look & feel of the hottest design trend right now, Soft UI, you will fall in love with this dashboard! It features a huge number of components built to fit together and look amazing.
-
-**Fully Coded Elements**
-Soft UI Dashboard React is built with over 70 frontend individual elements, like buttons, inputs, navbars, nav tabs, cards, or alerts, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using MUI styled api and sx prop. You will save a lot of time going from prototyping to full-functional code because all elements are implemented. This Premium MUI Dashboard is coming with prebuilt design blocks, so the development process is seamless, switching from our pages to the real website is very easy to be done.
 
 View [all components here](https://www.creative-tim.com/learning-lab/react/alerts/soft-ui-dashboard/).
 
@@ -19,7 +12,7 @@ You can read more about the [documentation here](https://www.creative-tim.com/le
 
 **Example Pages**
 
-If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes. Soft UI Dashboard React has everything you need to quickly set up an amazing project.
+If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes.  has everything you need to quickly set up an amazing project.
 
 View [example pages here](https://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard).
 
@@ -61,7 +54,7 @@ Let us know your thoughts below. And good luck with development!
 | React |
 | ----- |
 
-| [![Soft UI Dashboard React](https://s3.amazonaws.com/creativetim_bucket/products/500/thumb/soft-ui-dashboard-material-ui.jpg?1632195046)](http://demos.creative-tim.com/soft-ui-dashboard-pro-react/#/dashboard?ref=readme-sudr)
+| [![](https://s3.amazonaws.com/creativetim_bucket/products/500/thumb/soft-ui-dashboard-material-ui.jpg?1632195046)](http://demos.creative-tim.com/soft-ui-dashboard-pro-react/#/dashboard?ref=readme-sudr)
 
 ## Demo
 
@@ -160,16 +153,3 @@ soft-ui-dashboard-react
 At present, we officially aim to support the last two versions of the following browsers:
 
 <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">
-
-## Resources
-
-- [Live Preview](https://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard?ref=readme-sudr)
-- [Buy Page](https://www.creative-tim.com/product/soft-ui-dashboard-react?ref=readme-sudr)
-- Documentation is [here](https://www.creative-tim.com/learning-lab/react/overview/soft-ui-dashboard/?ref=readme-sudr)
-- [License Agreement](https://www.creative-tim.com/license?ref=readme-sudr)
-- [Support](https://www.creative-tim.com/contact-us?ref=readme-sudr)
-<<<<<<< HEAD
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues)
-=======
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues)
->>>>>>> 2b983be234551cf74e04ecc74b9ec6464e87107b

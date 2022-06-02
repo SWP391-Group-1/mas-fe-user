@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v3.1.0
+*  - v3.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -21,19 +21,19 @@ import { useLocation } from "react-router-dom";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-// Soft UI Dashboard React components
+//  components
 import SuiBox from "components/SuiBox";
 
-// Soft UI Dashboard React examples
+//  examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import Sidenav from "examples/Sidenav";
 
-// Soft UI Dashboard React context
+//  context
 import { useSoftUIController, setMiniSidenav, setLayout, setTransparentSidenav } from "context";
 
-// Soft UI Dashboard React routes
+//  routes
 import routes from "routes";
 
 // Custom styles for the BaseLayout

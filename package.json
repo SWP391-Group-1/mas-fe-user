@@ -1,9 +1,9 @@
 {
-  "name": "soft-ui-dashboard-react",
+  "name": "FPT MAS",
   "version": "3.1.0",
-  "author": "Creative Tim",
+  "author": "FPT MAS",
   "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
-  "description": "ReactJS version of Soft UI Dashboard by Creative Tim",
+  "description": "ReactJS version of FPT MAS",
   "homepage": "https://demos.creative-tim.com/soft-ui-dashboard-react/#/",
   "bugs": {
     "url": "https://github.com/creativetimofficial/soft-ui-dashboard-react/issues"
@@ -37,6 +37,7 @@
     "react-dom": "17.0.2",
     "react-flatpickr": "3.10.7",
     "react-github-btn": "1.2.1",
+    "react-hook-form": "^7.31.3",
     "react-router-dom": "6.2.1",
     "react-scripts": "5.0.0",
     "stylis": "4.0.13",
