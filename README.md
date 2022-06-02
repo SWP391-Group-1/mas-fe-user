@@ -160,12 +160,3 @@ soft-ui-dashboard-react
 At present, we officially aim to support the last two versions of the following browsers:
 
 <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">
-
-## Resources
-
-- [Live Preview](https://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard?ref=readme-sudr)
-- [Buy Page](https://www.creative-tim.com/product/soft-ui-dashboard-react?ref=readme-sudr)
-- Documentation is [here](https://www.creative-tim.com/learning-lab/react/overview/soft-ui-dashboard/?ref=readme-sudr)
-- [License Agreement](https://www.creative-tim.com/license?ref=readme-sudr)
-- [Support](https://www.creative-tim.com/contact-us?ref=readme-sudr)
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues)
