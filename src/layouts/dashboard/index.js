@@ -2,15 +2,20 @@ import Grid from "@mui/material/Grid";
 
 //  components
 import SuiBox from "components/SuiBox";
+import SuiTypography from "components/SuiTypography";
 
 //  examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+import Table from "examples/Tables/Table";
 
-import Projects from "layouts/dashboard/components/Projects";
+import { Card } from "@mui/material";
+
+import authorsTableData from "layouts/tables/data/authorsTableData";
 
 function Dashboard() {
+  const { columns, rows } = authorsTableData;
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -40,11 +45,23 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SuiBox>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
-            <Projects />
-          </Grid>
-        </Grid>
+        <Card>
+          <SuiBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+            <SuiTypography variant="h6">Authors table</SuiTypography>
+          </SuiBox>
+          <SuiBox
+            sx={{
+              "& .MuiTableRow-root:not(:last-child)": {
+                "& td": {
+                  borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                    `${borderWidth[1]} solid ${borderColor}`,
+                },
+              },
+            }}
+          >
+            <Table columns={columns} rows={rows} />
+          </SuiBox>
+        </Card>
       </SuiBox>
     </DashboardLayout>
   );
