@@ -13,6 +13,8 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
     "prettier/prettier": [
       "error",
       {
