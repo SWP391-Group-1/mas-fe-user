@@ -168,4 +168,8 @@ At present, we officially aim to support the last two versions of the following 
 - Documentation is [here](https://www.creative-tim.com/learning-lab/react/overview/soft-ui-dashboard/?ref=readme-sudr)
 - [License Agreement](https://www.creative-tim.com/license?ref=readme-sudr)
 - [Support](https://www.creative-tim.com/contact-us?ref=readme-sudr)
+<<<<<<< HEAD
 - Issues: [Github Issues Page](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues)
+=======
+- Issues: [Github Issues Page](https://github.com/creativetimofficial/soft-ui-dashboard-react/issues)
+>>>>>>> 2b983be234551cf74e04ecc74b9ec6464e87107b
