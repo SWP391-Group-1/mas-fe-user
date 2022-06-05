@@ -32,6 +32,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/logo-ct.png";
+import { majorApis } from "./apis/majorApis";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -70,7 +71,14 @@ export default function App() {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
+
+  const fetchData = () => {
+    majorApis.getAllMajor().then((res) => {
+      console.log(res.data);
+    });
+  };
   useEffect(() => {
+    fetchData();
     document.body.setAttribute("dir", direction);
   }, [direction]);
 
