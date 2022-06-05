@@ -1,9 +1,9 @@
-import React, { Component, useState, useEffect } from 'react'
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid'
+import React, { useState, useEffect } from 'react'
+import { DataGrid } from '@mui/x-data-grid'
 import { majorApi } from 'apis/majorApis'
 import { Button } from '@mui/material'
 
-const renderDetailsButton = (params) => {
+const renderEditButton = (params) => {
     return (
         <strong>
             <Button
@@ -18,22 +18,42 @@ const renderDetailsButton = (params) => {
         </strong>
     )
 }
-
+const renderDeleteButton = (params) => {
+    return (
+        <strong>
+            <Button
+                variant="contained"
+                color="error"
+                size="small"
+                style={{ marginLeft: 16 }}
+                onClick={() => {}}
+            >
+                Delete
+            </Button>
+        </strong>
+    )
+}
 const columns = [
-    { field: 'id', headerName: 'No', width: 200 },
+    { field: 'id', headerName: 'No', width: 350 },
     { field: 'title', headerName: 'Major Code', width: 200 },
-    { field: 'description', headerName: 'Name', width: 200 },
-    { field: 'status', headerName: 'Status', width: 200 },
+    { field: 'description', headerName: 'Name', width: 300 },
     {
-        field: 'action',
-        headerName: 'Action',
+        field: 'edit',
+        headerName: 'Edit',
         width: 200,
-        renderCell: renderDetailsButton,
+        renderCell: renderEditButton,
+        disableClickEventBubbling: true,
+    },
+    {
+        field: 'delete',
+        headerName: 'Delete',
+        width: 200,
+        renderCell: renderDeleteButton,
         disableClickEventBubbling: true,
     },
 ]
 
-const MASDataGrid = () => {
+const MajorDataGrid = () => {
     const [majors, setMajors] = useState([])
 
     const fetchData = () => {
@@ -48,7 +68,7 @@ const MASDataGrid = () => {
     }, [])
 
     return (
-        <div style={{ height: 450, width: '80%' }}>
+        <div style={{ height: 450, width: '100%' }}>
             <DataGrid
                 rowHeight={80}
                 rows={majors}
@@ -59,4 +79,4 @@ const MASDataGrid = () => {
     )
 }
 
-export default MASDataGrid
+export default MajorDataGrid

@@ -13,6 +13,8 @@ import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Cube from "examples/Icons/Cube";
+import Subject from "layouts/subject";
+import Account from "layouts/account";
 
 const routes = [
     {
@@ -28,9 +30,9 @@ const routes = [
         type: 'collapse',
         name: 'Account',
         key: 'acount',
-        route: '/tables',
+        route: '/account',
         icon: <Office size="12px" />,
-        component: <Tables />,
+        component: <Account />,
         noCollapse: true,
     },
     {
@@ -46,9 +48,9 @@ const routes = [
         type: 'collapse',
         name: 'Subject',
         key: 'subject',
-        route: '/tables',
+        route: '/subject',
         icon: <Cube size="12px" />,
-        component: <Tables />,
+        component: <Subject />,
         noCollapse: true,
     },
     {

@@ -5,9 +5,9 @@ import SuiBox from 'components/SuiBox'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import Footer from 'examples/Footer'
-import MajorDataGrid from 'examples/MASDataGrid/major'
+import SubjectDataGrid from 'examples/MASDataGrid/subject'
 
-function Major() {
+function Subject() {
     return (
         <DashboardLayout>
             <DashboardNavbar />
@@ -25,7 +25,7 @@ function Major() {
                             },
                         }}
                     >
-                        <MajorDataGrid />
+                        <SubjectDataGrid />
                     </SuiBox>
                 </SuiBox>
             </SuiBox>
@@ -34,4 +34,4 @@ function Major() {
     )
 }
 
-export default Major
+export default Subject
