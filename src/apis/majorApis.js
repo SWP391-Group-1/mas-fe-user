@@ -1,23 +1,32 @@
-import { defaultInstance } from ".";
+import { defaultInstance, loadToken } from '../apis/axiosClient'
 
-// const createMajor = (data) => {
-//   return defaultInstance.post("/majors", data);
-// };
+const createMajor = (data) => {
+    loadToken()
+    return defaultInstance.post('/majors', data)
+}
 
-// const updateMajor = (id, data) => {
-//   return defaultInstance.put(`/majors/${id}`, data);
-// };
+const updateMajor = (id, data) => {
+    loadToken()
+    return defaultInstance.put(`/majors/${id}`, data)
+}
+const getMajorById = (id) => {
+    loadToken()
+    return defaultInstance.get(`/majors/${id}`)
+}
 
-// const getMajorById = (id) => {
-//   return defaultInstance.get(`/majors/${id}`);
-// };
-
-// const deleteMajor = (id, data) => {
-//   return defaultInstance.delete(`/majors/${id}`);
-// };
+const deleteMajor = (id) => {
+    loadToken()
+    return defaultInstance.delete(`/majors/${id}`)
+}
 
 const getAllMajor = () => {
-  return defaultInstance.get(`/majors/`);
-};
-
-export const majorApis = { getAllMajor };
+    loadToken()
+    return defaultInstance.get(`/majors/`)
+}
+export const majorApi = {
+    createMajor,
+    getMajorById,
+    updateMajor,
+    deleteMajor,
+    getAllMajor,
+}
