@@ -37,6 +37,7 @@ import {
 // Images
 import brand from 'assets/images/logo-ct.png'
 import { majorApi } from 'apis/majorApis'
+import { UserApi } from 'apis/userApis'
 
 export default function App() {
     const [controller, dispatch] = useSoftUIController()
@@ -89,6 +90,9 @@ export default function App() {
             .then((res) => {
                 console.log(res)
             })
+        UserApi.getAllUser().then((res) => {
+            console.log(res.data)
+        })
     }
 
     useEffect(() => {
