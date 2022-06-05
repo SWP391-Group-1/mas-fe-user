@@ -50,27 +50,6 @@ function SidenavCard() {
             star
           </Icon>
         </SuiBox>
-        <SuiBox lineHeight={1}>
-          <SuiTypography variant="h6" color="white">
-            Need help?
-          </SuiTypography>
-          <SuiBox mb={1.825} mt={-1}>
-            <SuiTypography variant="caption" color="white" fontWeight="medium">
-              Please check our docs
-            </SuiTypography>
-          </SuiBox>
-          <SuiButton
-            component={Link}
-            href="https://www.creative-tim.com/learning-lab/react/quick-start/soft-ui-dashboard/"
-            target="_blank"
-            rel="noreferrer"
-            size="small"
-            color="white"
-            fullWidth
-          >
-            documentation
-          </SuiButton>
-        </SuiBox>
       </CardContent>
     </Card>
   );
