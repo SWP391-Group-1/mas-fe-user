@@ -81,7 +81,6 @@ export default function App() {
     const majorObj = { title: 'TEST', description: 'TestInCode' }
 
     const fetchData = () => {
-        console.log('testetstetste')
         majorApi.getAllMajor().then((res) => {
             console.log(res.data)
         })
