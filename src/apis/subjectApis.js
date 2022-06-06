@@ -17,7 +17,7 @@ const deleteSubject = (id) => {
 }
 
 const getAllSubject = () => {
-    return defaultInstance.get(`subjects/`)
+    return defaultInstance.get(`/subjects/`)
 }
 export const subjectApi = {
     createSubject,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { majorApi } from 'apis/majorApis'
 import { Button } from '@mui/material'
+import { useParams } from 'react-router-dom'
 
 const renderEditButton = (params) => {
     return (
@@ -10,7 +11,6 @@ const renderEditButton = (params) => {
                 variant="contained"
                 color="error"
                 size="small"
-                style={{ marginLeft: 16 }}
                 onClick={() => {}}
             >
                 Edit
@@ -25,8 +25,9 @@ const renderDeleteButton = (params) => {
                 variant="contained"
                 color="error"
                 size="small"
-                style={{ marginLeft: 16 }}
-                onClick={() => {}}
+                onClick={() => {
+                    handleDelete()
+                }}
             >
                 Delete
             </Button>
@@ -34,7 +35,7 @@ const renderDeleteButton = (params) => {
     )
 }
 const columns = [
-    { field: 'id', headerName: 'No', width: 350 },
+    // { field: 'id', headerName: 'No', width: 350 },
     { field: 'title', headerName: 'Major Code', width: 200 },
     { field: 'description', headerName: 'Name', width: 300 },
     {
@@ -54,7 +55,9 @@ const columns = [
 ]
 
 const MajorDataGrid = () => {
+    const { id } = useParams()
     const [majors, setMajors] = useState([])
+    const [isChange, setIsChange] = useState(null)
 
     const fetchData = () => {
         majorApi.getAllMajor().then((res) => {
@@ -63,9 +66,19 @@ const MajorDataGrid = () => {
         })
     }
 
+    const deleteMajor = () => {
+        setIsChange()
+    }
+
+    const handleDelete = () => {
+        majorApi.deleteMajor(id).then((res) => {
+            deleteMajor()
+        })
+    }
+
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [isChange])
 
     return (
         <div style={{ height: 450, width: '100%' }}>

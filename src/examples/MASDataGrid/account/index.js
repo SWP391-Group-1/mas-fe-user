@@ -11,7 +11,6 @@ const renderEditButton = (params) => {
                 variant="contained"
                 color="error"
                 size="small"
-                style={{ marginLeft: 16 }}
                 onClick={() => {}}
             >
                 Edit
@@ -26,7 +25,6 @@ const renderDeleteButton = (params) => {
                 variant="contained"
                 color="error"
                 size="small"
-                style={{ marginLeft: 16 }}
                 onClick={() => {}}
             >
                 Delete
@@ -39,12 +37,17 @@ const columns = [
     { field: 'email', headerName: 'Email', width: 200 },
     {
         field: 'isActive',
-        headerName: 'Status',
+        headerName: 'Active',
         width: 200,
     },
     {
         field: 'rate',
         headerName: 'Rate',
+        width: 150,
+    },
+    {
+        field: 'isMentor',
+        headerName: 'Mentor Status',
         width: 200,
     },
     {
@@ -56,7 +59,7 @@ const columns = [
     },
     {
         field: 'delete',
-        headerName: 'Delete',
+        headerName: 'Ban',
         width: 200,
         renderCell: renderDeleteButton,
         disableClickEventBubbling: true,
@@ -65,6 +68,7 @@ const columns = [
 
 const AccountDataGrid = () => {
     const [accounts, setAccounts] = useState([])
+    const [isChange, setIsChange] = useState(null)
 
     const fetchData = () => {
         UserApi.getAllUser().then((res) => {
@@ -73,9 +77,13 @@ const AccountDataGrid = () => {
         })
     }
 
+    const deleteAccount = () => {
+        setIsChange()
+    }
+
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [isChange])
 
     return (
         <div style={{ height: 450, width: '100%' }}>
