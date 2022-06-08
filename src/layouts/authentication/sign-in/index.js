@@ -19,10 +19,31 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 import Login from "examples/LoginGoogleButton";
 
+import { useNavigate } from 'react-router-dom'
+
+import { authApis } from '../../../apis/authApis'
+
 function SignIn() {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
   const [rememberMe, setRememberMe] = useState(true);
+  const navigate = useNavigate();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const handleSignInButtonClick = () => {
+      authApis.loginAdmin(username, password)
+        .then(res => {
+            alert("Signed in successfully");
+            const token = res?.data?.message;
+            localStorage.setItem("access-token", token);
+            navigate("/dashboard");
+        })
+        .catch(err => {
+            console.error("Sign in failed.", err)
+        })
+    //   console.log("sign in meow", { username, password });
+  }
 
   return (
       <CoverLayout
@@ -41,7 +62,7 @@ function SignIn() {
                           Email
                       </SuiTypography>
                   </SuiBox>
-                  <SuiInput type="email" placeholder="Email" />
+                  <SuiInput type="email" placeholder="Email" onChange={e => setUsername(e?.target?.value)}/>
               </SuiBox>
               <SuiBox mb={2}>
                   <SuiBox mb={1} ml={0.5}>
@@ -53,7 +74,7 @@ function SignIn() {
                           Password
                       </SuiTypography>
                   </SuiBox>
-                  <SuiInput type="password" placeholder="Password" />
+                  <SuiInput type="password" placeholder="Password" onChange={e => setPassword(e?.target?.value)}/>
               </SuiBox>
               <SuiBox display="flex" alignItems="center">
                   <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -67,7 +88,7 @@ function SignIn() {
                   </SuiTypography>
               </SuiBox>
               <SuiBox mt={4} mb={1}>
-                  <SuiButton variant="gradient" color="info" fullWidth>
+                  <SuiButton variant="gradient" color="info" fullWidth onClick={handleSignInButtonClick}>
                       sign in
                   </SuiButton>
               </SuiBox>

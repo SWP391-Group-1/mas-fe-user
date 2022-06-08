@@ -5,9 +5,9 @@ const createMajor = (data) => {
     return defaultInstance.post('/majors', data)
 }
 
-const updateMajor = (id, data) => {
+const updateMajor = (id, major) => {
     loadToken()
-    return defaultInstance.put(`/majors/${id}`, data)
+    return defaultInstance.put(`/majors/${id}`, major)
 }
 const getMajorById = (id) => {
     loadToken()

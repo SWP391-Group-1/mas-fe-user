@@ -4,8 +4,17 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import Footer from 'examples/Footer'
 import MiniStatisticsCard from 'examples/Cards/StatisticsCards/MiniStatisticsCard'
+import { useNavigate } from 'react-router-dom'
+import { checkAuth } from 'shared/checkAuth'
 
 function Dashboard() {
+    const navigate = useNavigate();
+
+    const userInfo = checkAuth();
+    if (!userInfo) {
+        navigate("authentication/sign-in");
+    }
+
     return (
         <DashboardLayout>
             <DashboardNavbar />
