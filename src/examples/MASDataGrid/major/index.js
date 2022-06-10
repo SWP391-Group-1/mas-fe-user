@@ -19,7 +19,6 @@ const MajorDataGrid = () => {
     }
 
     const handleSubmitMajor = (major, isCreateMode) => {
-        // TODO: Are you sure meow moew
         // TODO: Validate data
         if (isCreateMode) {
             majorApi.createMajor(major)?.then((res) => {
@@ -72,6 +71,7 @@ const MajorDataGrid = () => {
             </strong>
         )
     }
+    
     const renderDeleteButton = (params) => {
         const major = params.row
 
