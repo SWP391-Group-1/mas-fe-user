@@ -13,6 +13,8 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import Cube from "examples/Icons/Cube";
 import Subject from "layouts/subject";
 import Account from "layouts/account";
+import SpaceShip from "examples/Icons/SpaceShip";
+import SignUp from "layouts/authentication/sign-up";
 
 const routes = [
     {
