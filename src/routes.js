@@ -4,17 +4,17 @@ import Tables from "layouts/tables";
 import Major from 'layouts/major'
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
 
-// Soft UI Dashboard React icons
+//  icons
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Cube from "examples/Icons/Cube";
 import Subject from "layouts/subject";
 import Account from "layouts/account";
+import SpaceShip from "examples/Icons/SpaceShip";
+import SignUp from "layouts/authentication/sign-up";
 
 const routes = [
     {

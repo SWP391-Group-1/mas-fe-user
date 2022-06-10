@@ -31,7 +31,7 @@ import {
     navbarMobileMenu,
 } from 'examples/Navbars/DashboardNavbar/styles'
 
-// Soft UI Dashboard React context
+//  context
 import {
     useSoftUIController,
     setTransparentNavbar,
