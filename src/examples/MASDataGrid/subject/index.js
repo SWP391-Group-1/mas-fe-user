@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { subjectApi } from 'apis/subjectApis'
 import EditSubjectModal from 'components/EditSubjectModal'
+import { COUNTER_STYLE } from 'stylis'
 
 const SubjectDataGrid = () => {
     const [subjects, setSubjects] = useState([])
@@ -91,8 +92,8 @@ const SubjectDataGrid = () => {
     }
 
     const columns = [
-        { field: 'title', headerName: 'Subject Code', width: 200 },
-        { field: 'description', headerName: 'Name', width: 350 },
+        { field: 'code', headerName: 'Subject Code', width: 200 },
+        { field: 'title', headerName: 'Title', width: 350 },
         {
             field: 'edit',
             headerName: 'Edit',
@@ -110,7 +111,6 @@ const SubjectDataGrid = () => {
     ]
 
     const handleCancelUpdateSubject = (subject) => {
-        // TODO: Are you sure meow moew
         setIsOpenEditModal(false)
     }
 

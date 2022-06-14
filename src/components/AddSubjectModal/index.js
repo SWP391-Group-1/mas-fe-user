@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { usePatch } from '../../hooks/usePatch.js'
 
-export default function EditSubjectModal({
+export default function AddSubjectModal({
     subject,
     isOpen,
     onSubmit,

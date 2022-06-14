@@ -7,21 +7,16 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { usePatch } from '../../hooks/usePatch.js'
 
-export default function EditSubjectModal({
-    subject,
-    isOpen,
-    onSubmit,
-    onCancel,
-}) {
-    const [newSubject, setNewSubject, patchSubject] = usePatch()
-    const isCreateMode = React.useMemo(() => !subject, [subject])
+export default function AddMajorModal({ major, isOpen, onSubmit, onCancel }) {
+    const [newMajor, setNewMajor, patchMajor] = usePatch()
+    const isCreateMode = React.useMemo(() => !major, [major])
 
     React.useEffect(() => {
-        if (isOpen) setNewSubject(subject)
-    }, [subject, isOpen])
+        if (isOpen) setNewMajor(major)
+    }, [major, isOpen])
 
     const handleUpdateClick = () => {
-        onSubmit?.(newSubject, isCreateMode)
+        onSubmit?.(newMajor, isCreateMode)
     }
 
     const handleCancelClick = () => {
@@ -31,9 +26,9 @@ export default function EditSubjectModal({
     return (
         <Dialog open={isOpen}>
             {isCreateMode ? (
-                <DialogTitle>Add New Subject</DialogTitle>
+                <DialogTitle>Add New Major</DialogTitle>
             ) : (
-                <DialogTitle>Edit Subject</DialogTitle>
+                <DialogTitle>Edit Major</DialogTitle>
             )}
             <DialogContent>
                 {isCreateMode && (
@@ -45,9 +40,9 @@ export default function EditSubjectModal({
                         type="text"
                         fullWidth
                         variant="standard"
-                        value={newSubject?.code}
+                        value={newMajor?.code}
                         onChange={(e) =>
-                            patchSubject({ code: e?.target?.value ?? '' })
+                            patchMajor({ code: e?.target?.value ?? '' })
                         }
                     />
                 )}
@@ -59,9 +54,9 @@ export default function EditSubjectModal({
                     type="text"
                     fullWidth
                     variant="standard"
-                    value={newSubject?.title}
+                    value={newMajor?.title}
                     onChange={(e) =>
-                        patchSubject({ title: e?.target?.value ?? '' })
+                        patchMajor({ title: e?.target?.value ?? '' })
                     }
                 />
                 <TextField
@@ -72,9 +67,9 @@ export default function EditSubjectModal({
                     type="text"
                     fullWidth
                     variant="standard"
-                    value={newSubject?.description}
+                    value={newMajor?.description}
                     onChange={(e) =>
-                        patchSubject({ description: e?.target?.value ?? '' })
+                        patchMajor({ description: e?.target?.value ?? '' })
                     }
                 />
             </DialogContent>
