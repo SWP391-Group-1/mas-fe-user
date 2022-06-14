@@ -112,7 +112,16 @@ const MajorDataGrid = () => {
     ]
 
     const GridToolbar = () => {
-        return <Button onClick={handleCreateMajorClick}>Add</Button>
+        return (
+            <Button
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={handleCreateMajorClick}
+            >
+                Add
+            </Button>
+        )
     }
 
     return (

@@ -43,7 +43,7 @@ const SubjectDataGrid = () => {
     const fetchData = () => {
         subjectApi.getAllSubject().then((res) => {
             setSubjects(res.data.content)
-            console.log('subjects: ', subjects)
+            console.log(res.data.content)
         })
     }
 
@@ -87,12 +87,22 @@ const SubjectDataGrid = () => {
     }
 
     const GridToolbar = () => {
-        return <Button onClick={handleCreateSubjectClick}>Add</Button>
+        return (
+            <Button
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={handleCreateSubjectClick}
+            >
+                Add
+            </Button>
+        )
     }
 
     const columns = [
-        { field: 'title', headerName: 'Subject Code', width: 200 },
-        { field: 'description', headerName: 'Name', width: 350 },
+        { field: 'code', headerName: 'Subject Code', width: 200 },
+        { field: 'title', headerName: 'Name', width: 200 },
+        { field: 'description', headerName: 'Description', width: 350 },
         {
             field: 'edit',
             headerName: 'Edit',
@@ -127,7 +137,7 @@ const SubjectDataGrid = () => {
                 }}
             />
             <EditSubjectModal
-                major={editingSubject}
+                subject={editingSubject}
                 isOpen={isOpenEditModal}
                 onSubmit={handleSubmitSubject}
                 onCancel={handleCancelUpdateSubject}

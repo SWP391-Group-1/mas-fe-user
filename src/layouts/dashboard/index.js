@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom'
 import { checkAuth } from 'shared/checkAuth'
 
 function Dashboard() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const userInfo = checkAuth();
+    const userInfo = checkAuth()
     if (!userInfo) {
-        navigate("authentication/sign-in");
+        navigate('authentication/sign-in')
     }
 
     return (
