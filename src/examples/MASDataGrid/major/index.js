@@ -25,8 +25,7 @@ const MajorDataGrid = () => {
                 fetchData()
                 alert('The major has been created!') // TODO
             })
-        }
-        else {
+        } else {
             majorApi.updateMajor(major.id, major)?.then((res) => {
                 fetchData()
                 alert('The major has been updated!') // TODO
@@ -71,7 +70,7 @@ const MajorDataGrid = () => {
             </strong>
         )
     }
-    
+
     const renderDeleteButton = (params) => {
         const major = params.row
 
@@ -92,9 +91,8 @@ const MajorDataGrid = () => {
     }
 
     const columns = [
-        // { field: 'id', headerName: 'No', width: 350 },
-        { field: 'title', headerName: 'Major Code', width: 200 },
-        { field: 'description', headerName: 'Description', width: 300 },
+        { field: 'code', headerName: 'Code', width: 350 },
+        { field: 'title', headerName: 'Major Title', width: 200 },
         {
             field: 'edit',
             headerName: 'Edit',
