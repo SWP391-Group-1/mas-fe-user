@@ -1,11 +1,18 @@
 import { Button } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
+import Autocomplete from '@mui/material/Autocomplete'
 import { usePatch } from '../../hooks/usePatch.js'
+import SuiInput from 'components/SuiInput/index.js'
+import SuiBox from 'components/SuiBox/index.js'
+import SuiTypography from 'components/SuiTypography/index.js'
+import { Box } from '@mui/system'
+import { majorApi } from 'apis/majorApis.js'
+import { subjectApi } from 'apis/subjectApis.js'
 
 export default function EditSubjectModal({
     subject,
@@ -15,12 +22,18 @@ export default function EditSubjectModal({
 }) {
     const [newSubject, setNewSubject, patchSubject] = usePatch()
     const isCreateMode = React.useMemo(() => !subject, [subject])
+    const [majors, setMajors] = useState([])
+    const [major, setMajor] = useState(null)
 
     React.useEffect(() => {
-        if (isOpen) setNewSubject(subject)
+        if (isOpen) {
+            setNewSubject(subject)
+            fetchData()
+        }
     }, [subject, isOpen])
 
     const handleUpdateClick = () => {
+        console.log(newSubject)
         onSubmit?.(newSubject, isCreateMode)
     }
 
@@ -28,64 +41,140 @@ export default function EditSubjectModal({
         onCancel?.()
     }
 
+    const fetchData = () => {
+        majorApi.getAllMajor().then((res) => {
+            setMajors(res.data.content)
+        })
+
+        subjectApi.getSubjectById(subject.id).then((res) => {
+            setMajor(res.data.content.major)
+            patchSubject({
+                majorId: res.data.content.major.id ?? '',
+            })
+        })
+    }
+
     return (
-        <Dialog open={isOpen}>
-            {isCreateMode ? (
-                <DialogTitle>Add New Subject</DialogTitle>
-            ) : (
-                <DialogTitle>Edit Subject</DialogTitle>
-            )}
-            <DialogContent>
-                {isCreateMode && (
-                    <TextField
+        <Dialog open={isOpen} maxWidth="xl">
+            <Box width="600px">
+                {isCreateMode ? (
+                    <DialogTitle>Add New Subject</DialogTitle>
+                ) : (
+                    <DialogTitle>Edit Subject</DialogTitle>
+                )}
+                <DialogContent>
+                    {isCreateMode && (
+                        <>
+                            <SuiBox>
+                                <SuiTypography
+                                    component="label"
+                                    variant="caption"
+                                    fontWeight="bold"
+                                    isRequired
+                                >
+                                    Code
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiInput
+                                autoFocus
+                                id="codeTextField"
+                                type="text"
+                                inputProps={{ maxLength: 100 }}
+                                value={newSubject?.code}
+                                onChange={(e) =>
+                                    patchSubject({
+                                        code: e?.target?.value ?? '',
+                                    })
+                                }
+                            />
+                        </>
+                    )}
+                    <SuiBox>
+                        <SuiTypography
+                            component="label"
+                            variant="caption"
+                            fontWeight="bold"
+                            isRequired
+                        >
+                            Title
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiInput
                         autoFocus
-                        margin="dense"
-                        id="codeTextField"
-                        label="code"
+                        id="titleTextField"
                         type="text"
-                        fullWidth
-                        variant="standard"
-                        value={newSubject?.code}
+                        value={newSubject?.title}
+                        inputProps={{ maxLength: 100 }}
                         onChange={(e) =>
-                            patchSubject({ code: e?.target?.value ?? '' })
+                            patchSubject({ title: e?.target?.value ?? '' })
                         }
                     />
-                )}
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="titleTextField"
-                    label="title"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={newSubject?.title}
-                    onChange={(e) =>
-                        patchSubject({ title: e?.target?.value ?? '' })
-                    }
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="descriptionTextField"
-                    label="description"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={newSubject?.description}
-                    onChange={(e) =>
-                        patchSubject({ description: e?.target?.value ?? '' })
-                    }
-                />
-            </DialogContent>
-            <DialogActions>
-                {isCreateMode ? (
-                    <Button onClick={handleUpdateClick}>Create</Button>
-                ) : (
-                    <Button onClick={handleUpdateClick}>Update</Button>
-                )}
-                <Button onClick={handleCancelClick}>Cancel</Button>
-            </DialogActions>
+                    <SuiBox>
+                        <SuiTypography
+                            component="label"
+                            variant="caption"
+                            fontWeight="bold"
+                            isRequired
+                        >
+                            Description
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiInput
+                        autoFocus
+                        id="descriptionTextField"
+                        type="text"
+                        value={newSubject?.description}
+                        inputProps={{ maxLength: 100 }}
+                        onChange={(e) =>
+                            patchSubject({
+                                description: e?.target?.value ?? '',
+                            })
+                        }
+                    />
+                    <SuiBox>
+                        <SuiTypography
+                            component="label"
+                            variant="caption"
+                            fontWeight="bold"
+                            isRequired
+                        >
+                            Major Code
+                        </SuiTypography>
+                    </SuiBox>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        isOptionEqualToValue={(option, value) =>
+                            option.id == value.id
+                        }
+                        options={majors}
+                        sx={{ width: 550 }}
+                        renderInput={(params) => <TextField {...params} />}
+                        //onChange={(e, value) => setMajor(value)}
+                        onChange={(e, value) => {
+                            setMajor(value)
+                            patchSubject({
+                                majorId: value.id ?? '',
+                            })
+                        }}
+                        value={major}
+                        getOptionLabel={(option) => option.code}
+                        renderOption={(props, option) => (
+                            <Box component="li" {...props} key={option.id}>
+                                {option.code} {option.title}
+                            </Box>
+                        )}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    {isCreateMode ? (
+                        <Button onClick={handleUpdateClick}>Create</Button>
+                    ) : (
+                        <Button onClick={handleUpdateClick}>Update</Button>
+                    )}
+                    <Button onClick={handleCancelClick}>Cancel</Button>
+                </DialogActions>
+            </Box>
         </Dialog>
     )
 }

@@ -6,6 +6,10 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { usePatch } from '../../hooks/usePatch.js'
+import SuiInput from 'components/SuiInput/index.js'
+import SuiBox from 'components/SuiBox/index.js'
+import SuiTypography from 'components/SuiTypography/index.js'
+import { Box } from '@mui/system'
 
 export default function EditMajorModal({ major, isOpen, onSubmit, onCancel }) {
     const [newMajor, setNewMajor, patchMajor] = usePatch()
@@ -24,63 +28,91 @@ export default function EditMajorModal({ major, isOpen, onSubmit, onCancel }) {
     }
 
     return (
-        <Dialog open={isOpen}>
-            {isCreateMode ? (
-                <DialogTitle>Add New Major</DialogTitle>
-            ) : (
-                <DialogTitle>Edit Major</DialogTitle>
-            )}
-            <DialogContent>
-                {isCreateMode && (
-                    <TextField
+        <Dialog open={isOpen} maxWidth="xl">
+            <Box width="600px">
+                {isCreateMode ? (
+                    <DialogTitle>Add New Major</DialogTitle>
+                ) : (
+                    <DialogTitle>Edit Major</DialogTitle>
+                )}
+
+                <DialogContent>
+                    {isCreateMode && (
+                        <>
+                            <SuiBox>
+                                <SuiTypography
+                                    component="label"
+                                    variant="caption"
+                                    fontWeight="bold"
+                                    isRequired
+                                >
+                                    Code
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiInput
+                                autoFocus
+                                id="codeTextField"
+                                type="text"
+                                value={newMajor?.code}
+                                inputProps={{ maxLength: 5 }}
+                                onChange={(e) =>
+                                    patchMajor({ code: e?.target?.value ?? '' })
+                                }
+                            />
+                        </>
+                    )}
+                    <SuiBox>
+                        <SuiTypography
+                            component="label"
+                            variant="caption"
+                            fontWeight="bold"
+                            isRequired
+                        >
+                            Title
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiInput
                         autoFocus
-                        margin="dense"
-                        id="codeTextField"
-                        label="code"
+                        id="titleTextField"
+                        label="Title"
                         type="text"
-                        fullWidth
-                        variant="standard"
-                        value={newMajor?.code}
+                        value={newMajor?.title}
+                        inputProps={{ maxLength: 100 }}
                         onChange={(e) =>
-                            patchMajor({ code: e?.target?.value ?? '' })
+                            patchMajor({ title: e?.target?.value ?? '' })
                         }
                     />
-                )}
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="titleTextField"
-                    label="title"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={newMajor?.title}
-                    onChange={(e) =>
-                        patchMajor({ title: e?.target?.value ?? '' })
-                    }
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="descriptionTextField"
-                    label="description"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={newMajor?.description}
-                    onChange={(e) =>
-                        patchMajor({ description: e?.target?.value ?? '' })
-                    }
-                />
-            </DialogContent>
-            <DialogActions>
-                {isCreateMode ? (
-                    <Button onClick={handleUpdateClick}>Create</Button>
-                ) : (
-                    <Button onClick={handleUpdateClick}>Update</Button>
-                )}
-                <Button onClick={handleCancelClick}>Cancel</Button>
-            </DialogActions>
+
+                    <SuiBox>
+                        <SuiTypography
+                            component="label"
+                            variant="caption"
+                            fontWeight="bold"
+                            isRequired
+                        >
+                            Description
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiInput
+                        autoFocus
+                        id="descriptionTextField"
+                        type="text"
+                        value={newMajor?.description}
+                        inputProps={{ maxLength: 100 }}
+                        onChange={(e) =>
+                            patchMajor({ description: e?.target?.value ?? '' })
+                        }
+                    />
+                </DialogContent>
+                <DialogActions>
+                    {isCreateMode ? (
+                        <Button onClick={handleUpdateClick}>Create</Button>
+                    ) : (
+                        <Button onClick={handleUpdateClick}>Update</Button>
+                    )}
+                    <Button onClick={handleCancelClick}>Cancel</Button>
+                </DialogActions>
+            </Box>
         </Dialog>
     )
 }

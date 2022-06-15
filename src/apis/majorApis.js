@@ -21,7 +21,7 @@ const deleteMajor = (id) => {
 
 const getAllMajor = () => {
     loadToken()
-    return defaultInstance.get(`/majors/`)
+    return defaultInstance.get(`/majors?IsActive=true`)
 }
 export const majorApi = {
     createMajor,

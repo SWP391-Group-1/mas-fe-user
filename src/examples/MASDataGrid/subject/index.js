@@ -19,6 +19,7 @@ const SubjectDataGrid = () => {
                 alert('The subject has been created!') // TODO
             })
         } else {
+            console.log(subject)
             subjectApi.updateSubject(subject.id, subject)?.then((res) => {
                 fetchData()
                 alert('The subject has been updated!') // TODO
@@ -102,7 +103,7 @@ const SubjectDataGrid = () => {
 
     const columns = [
         { field: 'code', headerName: 'Subject Code', width: 200 },
-        { field: 'title', headerName: 'Name', width: 200 },
+        { field: 'title', headerName: 'Title', width: 200 },
         { field: 'description', headerName: 'Description', width: 350 },
         {
             field: 'edit',

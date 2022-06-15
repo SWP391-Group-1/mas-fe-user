@@ -46,9 +46,15 @@ const MajorDataGrid = () => {
     }
 
     const handleDelete = (id) => {
-        majorApi.deleteMajor(id).then((res) => {
-            fetchData()
-        })
+        console.log(id)
+        majorApi
+            .deleteMajor(id)
+            .then((res) => {
+                fetchData()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     useEffect(() => {
