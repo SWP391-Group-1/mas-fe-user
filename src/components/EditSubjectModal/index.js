@@ -46,12 +46,15 @@ export default function EditSubjectModal({
             setMajors(res.data.content)
         })
 
-        subjectApi.getSubjectById(subject.id).then((res) => {
-            setMajor(res.data.content.major)
-            patchSubject({
-                majorId: res.data.content.major.id ?? '',
+        console.log(subject)
+        if (subject != null) {
+            subjectApi.getSubjectById(subject.id).then((res) => {
+                setMajor(res.data.content.major)
+                patchSubject({
+                    majorId: res.data.content.major.id ?? '',
+                })
             })
-        })
+        }
     }
 
     return (
@@ -100,7 +103,6 @@ export default function EditSubjectModal({
                         </SuiTypography>
                     </SuiBox>
                     <SuiInput
-                        autoFocus
                         id="titleTextField"
                         type="text"
                         value={newSubject?.title}
@@ -120,7 +122,6 @@ export default function EditSubjectModal({
                         </SuiTypography>
                     </SuiBox>
                     <SuiInput
-                        autoFocus
                         id="descriptionTextField"
                         type="text"
                         value={newSubject?.description}
@@ -150,7 +151,6 @@ export default function EditSubjectModal({
                         options={majors}
                         sx={{ width: 550 }}
                         renderInput={(params) => <TextField {...params} />}
-                        //onChange={(e, value) => setMajor(value)}
                         onChange={(e, value) => {
                             setMajor(value)
                             patchSubject({

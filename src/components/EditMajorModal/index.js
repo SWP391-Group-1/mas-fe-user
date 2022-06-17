@@ -72,7 +72,6 @@ export default function EditMajorModal({ major, isOpen, onSubmit, onCancel }) {
                         </SuiTypography>
                     </SuiBox>
                     <SuiInput
-                        autoFocus
                         id="titleTextField"
                         label="Title"
                         type="text"
@@ -94,7 +93,6 @@ export default function EditMajorModal({ major, isOpen, onSubmit, onCancel }) {
                         </SuiTypography>
                     </SuiBox>
                     <SuiInput
-                        autoFocus
                         id="descriptionTextField"
                         type="text"
                         value={newMajor?.description}
