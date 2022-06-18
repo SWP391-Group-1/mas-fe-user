@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { majorApi } from 'apis/majorApis'
-import { Button } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import EditMajorModal from 'components/EditMajorModal'
+import SuiInput from 'components/SuiInput/index.js'
+import SuiBox from 'components/SuiBox/index.js'
+import SearchIcon from '@mui/icons-material/Search'
 
 const MajorDataGrid = () => {
     const [majors, setMajors] = useState([])
+    const [search, setSearch] = useState([])
     const [editingMajor, setEditingMajor] = useState(null)
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
 
@@ -39,11 +43,15 @@ const MajorDataGrid = () => {
         setIsOpenEditModal(false)
     }
 
-    const fetchData = () => {
-        majorApi.getAllMajor().then((res) => {
+    const fetchData = (data) => {
+        if (data == null) {
+            data = ''
+        }
+        majorApi.getAllMajor(data).then((res) => {
             setMajors(res.data.content)
         })
     }
+
 
     const handleDelete = (id) => {
         console.log(id)
@@ -97,8 +105,8 @@ const MajorDataGrid = () => {
     }
 
     const columns = [
-        { field: 'code', headerName: 'Code', width: 350 },
-        { field: 'title', headerName: 'Major Title', width: 200 },
+        { field: 'code', headerName: 'Code', width: 200 },
+        { field: 'title', headerName: 'Major Title', width: 400 },
         {
             field: 'edit',
             headerName: 'Edit',
@@ -117,36 +125,63 @@ const MajorDataGrid = () => {
 
     const GridToolbar = () => {
         return (
-            <Button
-                variant="contained"
-                color="error"
-                size="small"
-                onClick={handleCreateMajorClick}
-            >
-                Add
-            </Button>
+            <>
+                <SuiBox sx={{ float: 'right' }} mr={1} mt={1}>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={handleCreateMajorClick}
+                    >
+                        Add
+                    </Button>
+                </SuiBox>
+            </>
         )
     }
 
     return (
-        <div style={{ height: 450, width: '100%' }}>
-            <DataGrid
-                rowHeight={80}
-                rows={majors}
-                columns={columns}
-                pageSize={10}
-                disableSelectionOnClick
-                components={{
-                    Toolbar: GridToolbar,
-                }}
-            />
-            <EditMajorModal
-                major={editingMajor}
-                isOpen={isOpenEditModal}
-                onSubmit={handleSubmitMajor}
-                onCancel={handleCancelUpdateMajor}
-            />
-        </div>
+        <>
+            <SuiBox mb={2} sx={{ display: 'flex', width: '30%' }}>
+                <SuiInput
+                    id="searchTextField"
+                    type="text"
+                    value={search}
+                    inputProps={{ maxLength: 100 }}
+                    placeholder="Search here..."
+                    sx={{ width: '150px' }}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+
+                <IconButton
+                    color="dark"
+                    component="span"
+                    onClick={() => fetchData(search, 1)}
+                >
+                    <SearchIcon />
+                </IconButton>
+            </SuiBox>
+
+            <div style={{ height: 750, width: '100%' }}>
+                <DataGrid
+                    rowHeight={60}
+                    rows={majors}
+                    columns={columns}
+                    pageSize={10}
+                    disableSelectionOnClick
+                    rowsPerPageOptions={[10]}
+                    components={{
+                        Toolbar: GridToolbar,
+                    }}
+                />
+                <EditMajorModal
+                    major={editingMajor}
+                    isOpen={isOpenEditModal}
+                    onSubmit={handleSubmitMajor}
+                    onCancel={handleCancelUpdateMajor}
+                />
+            </div>
+        </>
     )
 }
 

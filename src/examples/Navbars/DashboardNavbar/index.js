@@ -152,7 +152,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </SuiBox>
                 {isMini ? null : (
                     <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
-                        <SuiBox pr={1}>
+                        {/* <SuiBox pr={1}>
                             <SuiInput
                                 placeholder="Type here..."
                                 icon={{
@@ -160,7 +160,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     direction: 'left',
                                 }}
                             />
-                        </SuiBox>
+                        </SuiBox> */}
                         <SuiBox color={light ? 'white' : 'inherit'}>
                             <IconButton
                                 size="small"

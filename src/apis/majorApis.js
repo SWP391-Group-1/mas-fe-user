@@ -19,10 +19,16 @@ const deleteMajor = (id) => {
     return defaultInstance.delete(`/majors/${id}`)
 }
 
-const getAllMajor = () => {
+const getAllMajor = (searchString) => {
     loadToken()
-    return defaultInstance.get(`/majors?IsActive=true`)
+    if(searchString == null) {
+        searchString = ""
+    }
+    return defaultInstance.get(
+        `/majors?SearchString=${searchString}&IsActive=true&PageSize=100`
+    )
 }
+
 export const majorApi = {
     createMajor,
     getMajorById,

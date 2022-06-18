@@ -16,8 +16,16 @@ const deleteSubject = (id) => {
     return defaultInstance.delete(`/subjects/${id}`)
 }
 
-const getAllSubject = () => {
-    return defaultInstance.get(`/subjects?IsActive=true`)
+const getAllSubject = (searchString, majorId) => {
+    if(searchString == null) {
+        searchString = ''
+    }
+    if(majorId == null) {
+        majorId =''
+    }
+    return defaultInstance.get(
+        `/subjects?SearchString=${searchString}&MajorId=${majorId}&IsActive=true&PageSize=10000`
+    )
 }
 export const subjectApi = {
     createSubject,
