@@ -183,7 +183,7 @@ export default function App() {
                     <Sidenav
                         color={sidenavColor}
                         brand={brand}
-                        brandName="Soft UI Dashboard"
+                        brandName="FPT MAS"
                         routes={routes}
                         onMouseEnter={handleOnMouseEnter}
                         onMouseLeave={handleOnMouseLeave}
@@ -197,7 +197,7 @@ export default function App() {
                 {getRoutes(routes)}
                 <Route
                     path="*"
-                    element={<Navigate to="/authentication/sign-in" />}
+                    element={<Navigate to="/authentication/user/sign-in" />}
                 />
             </Routes>
         </ThemeProvider>
