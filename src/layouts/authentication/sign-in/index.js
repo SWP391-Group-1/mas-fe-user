@@ -37,7 +37,7 @@ function SignIn() {
 
     const handleSignInButtonClick = () => {
         authApis
-            .loginAdmin(username, password)
+            .loginUser(username, password)
             .then((res) => {
                 const token = res?.data?.message
                 localStorage.setItem('access-token', token)
@@ -55,7 +55,7 @@ function SignIn() {
     return (
         <CoverLayout
             title="FPT MAS"
-            description="Enter your email and password to sign in"
+            description="Mentor Appointment System"
             image={curved9}
         >
             <SuiBox component="form" role="form">
@@ -155,25 +155,6 @@ function SignIn() {
                 </SuiBox>
                 <SuiBox mt={4} mb={1}>
                     <Login />
-                </SuiBox>
-                <SuiBox mt={3} textAlign="center">
-                    <SuiTypography
-                        variant="button"
-                        color="text"
-                        fontWeight="regular"
-                    >
-                        Don&apos;t have an account?{' '}
-                        <SuiTypography
-                            component={Link}
-                            to="/authentication/sign-up"
-                            variant="button"
-                            color="info"
-                            fontWeight="medium"
-                            textGradient
-                        >
-                            Sign up
-                        </SuiTypography>
-                    </SuiTypography>
                 </SuiBox>
             </SuiBox>
         </CoverLayout>

@@ -2,7 +2,6 @@ import Dashboard from 'layouts/dashboard'
 import React from 'react'
 import {
     BrowserRouter as Router,
-    Link,
     Route,
     Switch,
     Redirect,

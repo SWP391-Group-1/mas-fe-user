@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 
 // react-router components
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { authApis } from 'apis/authApis'
 
 // prop-types is a library for typechecking of props.
 import PropTypes from 'prop-types'
@@ -15,8 +16,6 @@ import Icon from '@mui/material/Icon'
 
 // Soft UI Dashboard React components
 import SuiBox from 'components/SuiBox'
-import SuiTypography from 'components/SuiTypography'
-import SuiInput from 'components/SuiInput'
 
 // Soft UI Dashboard React examples
 import Breadcrumbs from 'examples/Breadcrumbs'
@@ -50,6 +49,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
         controller
     const [openMenu, setOpenMenu] = useState(false)
     const route = useLocation().pathname.split('/').slice(1)
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         // Setting the navbar type
@@ -66,17 +67,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 (fixedNavbar && window.scrollY === 0) || !fixedNavbar
             )
         }
-
-        /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
         window.addEventListener('scroll', handleTransparentNavbar)
 
-        // Call the handleTransparentNavbar function to set the state with the initial value.
         handleTransparentNavbar()
 
-        // Remove event listener on cleanup
         return () =>
             window.removeEventListener('scroll', handleTransparentNavbar)
     }, [dispatch, fixedNavbar])
@@ -86,6 +80,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
         setOpenConfigurator(dispatch, !openConfigurator)
     const handleOpenMenu = (event) => setOpenMenu(event.currentTarget)
     const handleCloseMenu = () => setOpenMenu(false)
+    const logout = () => {
+        navigate('/authentication/user/sign-in')
+        authApis.logout()
+    }
 
     // Render the notifications menu
     const renderMenu = () => (
@@ -152,15 +150,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </SuiBox>
                 {isMini ? null : (
                     <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
-                        {/* <SuiBox pr={1}>
-                            <SuiInput
-                                placeholder="Type here..."
-                                icon={{
-                                    component: 'search',
-                                    direction: 'left',
-                                }}
-                            />
-                        </SuiBox> */}
                         <SuiBox color={light ? 'white' : 'inherit'}>
                             <IconButton
                                 size="small"
@@ -199,6 +188,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     }
                                 >
                                     notifications
+                                </Icon>
+                            </IconButton>
+                            <IconButton
+                                size="small"
+                                color="inherit"
+                                onClick={logout}
+                            >
+                                <Icon
+                                    className={
+                                        light ? 'text-white' : 'text-dark'
+                                    }
+                                >
+                                    logout
                                 </Icon>
                             </IconButton>
                             {renderMenu()}
