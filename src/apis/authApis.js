@@ -9,6 +9,7 @@ const loginGoogle = (providerName, idToken) => {
 
 const logout = () => {
     localStorage.removeItem('access-token')
+    localStorage.removeItem('access-token-google')
 }
 
 export const authApis = {

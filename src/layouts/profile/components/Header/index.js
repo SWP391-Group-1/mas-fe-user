@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react'
 // @mui material components
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import AppBar from '@mui/material/AppBar'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
 
 // Soft UI Dashboard React components
 import SuiBox from 'components/SuiBox'
@@ -15,21 +12,19 @@ import SuiAvatar from 'components/SuiAvatar'
 // Soft UI Dashboard React examples
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 
-// Soft UI Dashboard React icons
-import Cube from 'examples/Icons/Cube'
-import Document from 'examples/Icons/Document'
-import Settings from 'examples/Icons/Settings'
-
 // Soft UI Dashboard React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
+import { UserAuth } from 'context/AuthContext'
 
 // Images
 import burceMars from 'assets/images/bruce-mars.jpg'
 import curved0 from 'assets/images/curved-images/curved0.jpg'
+import { Avatar } from '@mui/material'
 
 function Header() {
     const [tabsOrientation, setTabsOrientation] = useState('horizontal')
     const [tabValue, setTabValue] = useState(0)
+    const { user } = UserAuth()
 
     useEffect(() => {
         // A function that sets the orientation state of the tabs.
@@ -94,26 +89,49 @@ function Header() {
             >
                 <Grid container spacing={3} alignItems="center">
                     <Grid item>
-                        <SuiAvatar
-                            src={burceMars}
-                            alt="profile-image"
-                            variant="rounded"
-                            size="xl"
-                            shadow="sm"
-                        />
+                        {user !== null ? (
+                            <Avatar
+                                src={user.photoURL}
+                                sx={{ width: 80, height: 80 }}
+                            />
+                        ) : (
+                            <SuiAvatar
+                                src={burceMars}
+                                alt="profile-image"
+                                variant="rounded"
+                                size="xl"
+                                shadow="sm"
+                            />
+                        )}
                     </Grid>
                     <Grid item>
                         <SuiBox height="100%" mt={0.5} lineHeight={1}>
-                            <SuiTypography variant="h5" fontWeight="medium">
-                                Alex Thompson
-                            </SuiTypography>
-                            <SuiTypography
-                                variant="button"
-                                color="text"
-                                fontWeight="medium"
-                            >
-                                CEO / Co-Founder
-                            </SuiTypography>
+                            {user !== null ? (
+                                <>
+                                    <SuiTypography
+                                        variant="h5"
+                                        fontWeight="medium"
+                                    >
+                                        {user.displayName}
+                                    </SuiTypography>
+                                </>
+                            ) : (
+                                <>
+                                    <SuiTypography
+                                        variant="h5"
+                                        fontWeight="medium"
+                                    >
+                                        Alex Thompson
+                                    </SuiTypography>
+                                    <SuiTypography
+                                        variant="button"
+                                        color="text"
+                                        fontWeight="medium"
+                                    >
+                                        CEO / Co-Founder
+                                    </SuiTypography>
+                                </>
+                            )}
                         </SuiBox>
                     </Grid>
                 </Grid>

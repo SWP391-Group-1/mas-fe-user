@@ -10,6 +10,7 @@ import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 import SuiButton from 'components/SuiButton'
+import { useNavigate } from 'react-router-dom'
 
 // Authentication layout components
 import CoverLayout from 'layouts/authentication/components/CoverLayout'
@@ -31,6 +32,8 @@ function SignIn() {
     const handleSetRememberMe = () => setRememberMe(!rememberMe)
 
     const { googleSignIn, user } = UserAuth()
+
+    const navigate = useNavigate()
 
     const handleGoogleSignIn = async () => {
         try {
@@ -63,6 +66,7 @@ function SignIn() {
             .then((res) => {
                 const token = res?.data?.message
                 localStorage.setItem('access-token', token)
+                navigate('/dashboard')
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
