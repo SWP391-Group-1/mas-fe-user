@@ -39,6 +39,7 @@ import {
 import brand from 'assets/images/logo-ct.png'
 import { majorApi } from 'apis/majorApis'
 import { UserApi } from 'apis/userApis'
+import { AuthContextProvider } from 'context/AuthContext'
 
 export default function App() {
     const [controller, dispatch] = useSoftUIController()
@@ -169,10 +170,15 @@ export default function App() {
                     </>
                 )}
                 {layout === 'vr' && <Configurator />}
-                <Routes>
-                    {getRoutes(routes)}
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
-                </Routes>
+                <AuthContextProvider>
+                    <Routes>
+                        {getRoutes(routes)}
+                        <Route
+                            path="*"
+                            element={<Navigate to="/dashboard" />}
+                        />
+                    </Routes>
+                </AuthContextProvider>
             </ThemeProvider>
         </CacheProvider>
     ) : (
@@ -182,7 +188,6 @@ export default function App() {
                 <>
                     <Sidenav
                         color={sidenavColor}
-                        brand={brand}
                         brandName="FPT MAS"
                         routes={routes}
                         onMouseEnter={handleOnMouseEnter}
@@ -193,13 +198,15 @@ export default function App() {
                 </>
             )}
             {layout === 'vr' && <Configurator />}
-            <Routes>
-                {getRoutes(routes)}
-                <Route
-                    path="*"
-                    element={<Navigate to="/authentication/user/sign-in" />}
-                />
-            </Routes>
+            <AuthContextProvider>
+                <Routes>
+                    {getRoutes(routes)}
+                    <Route
+                        path="*"
+                        element={<Navigate to="/authentication/user/sign-in" />}
+                    />
+                </Routes>
+            </AuthContextProvider>
         </ThemeProvider>
     )
 }

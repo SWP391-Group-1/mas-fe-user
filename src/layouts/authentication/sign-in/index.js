@@ -1,7 +1,6 @@
-import { useState } from 'react'
-
-// react-router-dom components
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { GoogleButton } from 'react-google-button'
+import { UserAuth } from 'context/AuthContext'
 
 // @mui material components
 import Switch from '@mui/material/Switch'
@@ -17,9 +16,7 @@ import CoverLayout from 'layouts/authentication/components/CoverLayout'
 
 // Images
 import curved9 from 'assets/images/curved-images/curved-6.jpg'
-import Login from 'examples/LoginGoogleButton'
 
-import { useNavigate } from 'react-router-dom'
 
 import { authApis } from '../../../apis/authApis'
 
@@ -28,20 +25,25 @@ function SignIn() {
     const [errorMessage, setErrorMessage] = useState(null)
     const [errorEmail, setErrorEmail] = useState(null)
     const [errorPassword, setErrorPassword] = useState(null)
-
     const [password, setPassword] = useState(null)
     const [rememberMe, setRememberMe] = useState(true)
-    const navigate = useNavigate()
 
     const handleSetRememberMe = () => setRememberMe(!rememberMe)
 
-    const handleSignInButtonClick = () => {
+    const { googleSignIn, user } = UserAuth()
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await googleSignIn()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const successLogin = () => {
         authApis
-            .loginUser(username, password)
+            .loginGoogle(user.providerId, user.accessToken)
             .then((res) => {
-                const token = res?.data?.message
-                localStorage.setItem('access-token', token)
-                navigate('/dashboard')
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
@@ -49,8 +51,24 @@ function SignIn() {
                 setErrorPassword(err.response.data.errors['Password'][0])
                 console.error('Sign in failed.', err.response.data.errors[0])
             })
-        //   console.log("sign in meow", { username, password });
     }
+
+    const handleSignInButtonClick = () => {
+        authApis
+            .loginUser(username, password)
+            .then((res) => {
+                const token = res?.data?.message
+                localStorage.setItem('access-token', token)
+            })
+            .catch((err) => {
+                setErrorMessage(err.response.data.errors[0])
+                setErrorEmail(err.response.data.errors['Email'][0])
+                setErrorPassword(err.response.data.errors['Password'][0])
+                console.error('Sign in failed.', err.response.data.errors[0])
+            })
+    }
+
+    useEffect(() => {}, [])
 
     return (
         <CoverLayout
@@ -153,9 +171,8 @@ function SignIn() {
                         sign in
                     </SuiButton>
                 </SuiBox>
-                <SuiBox mt={4} mb={1}>
-                    <Login />
-                </SuiBox>
+
+                <GoogleButton onClick={handleGoogleSignIn} />
             </SuiBox>
         </CoverLayout>
     )
