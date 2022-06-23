@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom'
 function Dashboard() {
     const navigate = useNavigate()
 
-    if (localStorage.getItem('access-token') == null) {
+    if (localStorage.getItem('access-token-google') == null) {
         navigate('authentication/sign-in')
     }
 
     return (
         <DashboardLayout>
             <DashboardNavbar />
-
+            
             <Footer />
         </DashboardLayout>
     )

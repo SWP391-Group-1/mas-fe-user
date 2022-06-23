@@ -35,6 +35,7 @@ function SignIn() {
     const handleGoogleSignIn = async () => {
         try {
             await googleSignIn()
+            successLogin()
         } catch (err) {
             console.log(err)
         }
@@ -42,14 +43,17 @@ function SignIn() {
 
     const successLogin = () => {
         authApis
-            .loginGoogle(user.providerId, user.accessToken)
+            .loginGoogle(user.providerId, localStorage.getItem('access-token-google'))
             .then((res) => {
+               if (res.success) {
+                 localStorage.setItem('access-token', res.message)
+               }
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
                 setErrorEmail(err.response.data.errors['Email'][0])
                 setErrorPassword(err.response.data.errors['Password'][0])
-                console.error('Sign in failed.', err.response.data.errors[0])
+                // console.error('Sign in failed.', err.response.data.errors[0])
             })
     }
 

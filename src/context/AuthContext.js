@@ -26,10 +26,10 @@ export const AuthContextProvider = ({ children }) => {
         const provider = new GoogleAuthProvider()
         signInWithPopup(auth, provider).then((response) => {
             setIsAuthenticated(true)
-            localStorage.setItem('access-token', response.user.accessToken)
+            console.log(user.accessToken)
+            localStorage.setItem('access-token-google', user.accessToken)
             navigate('/dashboard')
         })
-        
     }
 
     const logOut = () => {
@@ -45,7 +45,9 @@ export const AuthContextProvider = ({ children }) => {
         }
     })
     return (
-        <AuthContext.Provider value={{ googleSignIn, logOut, user, isAuthenticated }}>
+        <AuthContext.Provider
+            value={{ googleSignIn, logOut, user, isAuthenticated }}
+        >
             {children}
         </AuthContext.Provider>
     )
