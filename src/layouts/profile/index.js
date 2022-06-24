@@ -15,8 +15,11 @@ import ProfileInfoCard from 'examples/Cards/InfoCards/ProfileInfoCard'
 
 // Overview page components
 import Header from 'layouts/profile/components/Header'
+import { UserAuth } from 'context/AuthContext'
 
 function Overview() {
+    const { user } = UserAuth()
+
     return (
         <DashboardLayout>
             <Header />
@@ -27,10 +30,10 @@ function Overview() {
                             title="profile information"
                             description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
                             info={{
-                                fullName: 'Alec M. Thompson',
+                                fullName:
+                                    user !== null ? user.displayName : 'Change default name',
                                 mobile: '(44) 123 1234 123',
-                                email: 'alecthompson@mail.com',
-                                location: 'USA',
+                                email: user !== null ? user.email : 'Change default email',
                             }}
                             social={[
                                 {
