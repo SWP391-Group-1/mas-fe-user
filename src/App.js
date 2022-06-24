@@ -39,7 +39,11 @@ import {
 import brand from 'assets/images/logo-ct.png'
 import { majorApi } from 'apis/majorApis'
 import { UserApi } from 'apis/userApis'
+import { extraRoutes } from 'routes'
 
+var currentRoutes = [...routes]
+var extraRoute = [...extraRoutes]
+var mergeRoutes = currentRoutes.concat(extraRoute)
 export default function App() {
     const [controller, dispatch] = useSoftUIController()
     const { miniSidenav, direction, layout, openConfigurator, sidenavColor } =
@@ -47,6 +51,7 @@ export default function App() {
     const [onMouseEnter, setOnMouseEnter] = useState(false)
     const [rtlCache, setRtlCache] = useState(null)
     const { pathname } = useLocation()
+
 
     // Cache for the rtl
     useMemo(() => {
@@ -79,25 +84,10 @@ export default function App() {
         setOpenConfigurator(dispatch, !openConfigurator)
 
     // Setting the dir attribute for the body element
-    const majorObj = { title: 'TEST', description: 'TestInCode' }
 
-    const fetchData = () => {
-        majorApi.getAllMajor().then((res) => {
-            console.log(res.data)
-        })
-        majorApi
-            .updateMajor('71e3a3cd-83c3-418a-bccc-7216059dfc4b', majorObj)
-            .then((res) => {
-                console.log(res)
-            })
-        UserApi.getAllUser().then((res) => {
-            console.log(res.data)
-        })
-    }
 
     useEffect(() => {
         document.body.setAttribute('dir', direction)
-        fetchData()
     }, [direction])
 
     // Setting page scroll to 0 when changing the route
@@ -170,7 +160,7 @@ export default function App() {
                 )}
                 {layout === 'vr' && <Configurator />}
                 <Routes>
-                    {getRoutes(routes)}
+                    {getRoutes(mergeRoutes)}
                     <Route path="*" element={<Navigate to="/dashboard" />} />
                 </Routes>
             </ThemeProvider>
@@ -194,7 +184,7 @@ export default function App() {
             )}
             {layout === 'vr' && <Configurator />}
             <Routes>
-                {getRoutes(routes)}
+                {getRoutes(mergeRoutes)}
                 <Route
                     path="*"
                     element={<Navigate to="/authentication/user/sign-in" />}

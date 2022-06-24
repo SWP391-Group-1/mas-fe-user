@@ -12,8 +12,12 @@ import Document from "examples/Icons/Document";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Cube from "examples/Icons/Cube";
 import Subject from "layouts/subject";
-import Account from "layouts/account";
+import Account from "layouts/account"; 
 import SpaceShip from "examples/Icons/SpaceShip"
+import MentorDetail from "layouts/mentorDetail";
+import SlotDetailModal from "components/SlotDetailModal";
+import CreateAppointmentModal from "components/CreateAppointmentModal";
+import AppointmentDataGrid from "examples/MASDataGrid/appointment";
 
 const routes = [
     {
@@ -27,40 +31,33 @@ const routes = [
     },
     {
         type: 'collapse',
-        name: 'Account',
-        key: 'acount',
-        route: '/account',
+        name: 'Mentor',
+        key: 'mentor',
+        route: '/mentor',
         icon: <Office size="12px" />,
         component: <Account />,
         noCollapse: true,
     },
+    
     {
         type: 'collapse',
-        name: 'Major',
-        key: 'major',
-        route: '/major',
+        name: 'Appointment',
+        key: 'appointment',
+        route: '/appointment',
         icon: <SpaceShip size="12px" />,
-        component: <Major />,
+        component: <AppointmentDataGrid />,
         noCollapse: true,
     },
-    {
-        type: 'collapse',
-        name: 'Subject',
-        key: 'subject',
-        route: '/subject',
-        icon: <Cube size="12px" />,
-        component: <Subject />,
-        noCollapse: true,
-    },
-    {
-        type: 'collapse',
-        name: 'Register',
-        key: 'register',
-        route: '/tables',
-        icon: <Cube size="12px" />,
-        component: <Tables />,
-        noCollapse: true,
-    },
+    // {
+    //     type: 'collapse',
+    //     name: 'Subject',
+    //     key: 'subject',
+    //     route: '/subject',
+    //     icon: <Cube size="12px" />,
+    //     component: <Subject />,
+    //     noCollapse: true,
+    // },
+    
     { type: 'title', title: 'Account Pages', key: 'account-pages' },
     {
         type: 'collapse',
@@ -73,13 +70,49 @@ const routes = [
     },
     {
         type: 'collapse',
+        name: 'Register',
+        key: 'register',
+        route: '/tables',
+        icon: <Cube size="12px" />,
+        component: <Tables />,
+        noCollapse: true,
+    },
+    
+]
+
+const extraRoutes = [
+    {
+        type: 'collapse',
+        name: 'MentorDetail',
+        key: 'details',
+        route: '/mentor/details',
+        component: <MentorDetail />,  
+    },
+
+    {
+        type: 'collapse',
+        name: 'Slot Detail',
+        key: 'slotdetails',
+        route: '/mentor/details/slotdetails',
+        component: <SlotDetailModal />,  
+    },
+
+    {
+        type: 'collapse',
+        name: 'Create Appointment',
+        key: 'createappointment',
+        route: '/mentor/details/slotdetails/createappointment',
+        component: <CreateAppointmentModal />,  
+    },
+
+    {
+        type: 'collapse',
         name: 'Sign In',
         key: 'sign-in',
         route: '/authentication/user/sign-in',
-        icon: <Document size="12px" />,
         component: <SignIn />,
-        noCollapse: true,
     }
 ]
-
 export default routes;
+
+export {extraRoutes}

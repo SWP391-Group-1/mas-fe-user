@@ -8,7 +8,12 @@ const logout = () => {
     localStorage.removeItem('access-token')
 }
 
+const getOwnProfile =() => {
+    return defaultInstance.get(`/users/personal`)
+}
+
 export const authApis = {
     loginUser,
-    logout
+    logout,
+    getOwnProfile
 }

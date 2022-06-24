@@ -8,7 +8,7 @@ import Footer from 'examples/Footer'
 import AccountDataGrid from 'examples/MASDataGrid/account'
 
 function Account() {
-    return (
+    return ( 
         <DashboardLayout>
             <DashboardNavbar />
             <SuiBox py={3}>
