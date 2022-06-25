@@ -8,7 +8,8 @@ const createAppointment = (data) => {
 
 const loadSendAppointment = () => {
     loadToken()
-    return defaultInstance.post(`/users/own/appointments?IsNew=true`)
+    return defaultInstance.get('/users/own/appointments')
+    
 }
 
 export const appointmentApi = {
