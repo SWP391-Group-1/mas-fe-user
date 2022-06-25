@@ -20,6 +20,7 @@ import CreateAppointmentModal from "components/CreateAppointmentModal";
 import AppointmentDataGrid from "examples/MASDataGrid/appointment";
 
 const routes = [
+    { type: 'title', title: 'Dashboard Pages', key: 'dashboard-pages' },
     {
         type: 'collapse',
         name: 'Dashboard',
@@ -57,6 +58,16 @@ const routes = [
     //     component: <Subject />,
     //     noCollapse: true,
     // },
+
+    {
+        type: 'collapse',
+        name: 'Regist',
+        key: 'regist',
+        route: '/regist',
+        icon: <SpaceShip size="12px" />,
+        component: <AppointmentDataGrid />,
+        noCollapse: true,
+    },
     
     { type: 'title', title: 'Account Pages', key: 'account-pages' },
     {
