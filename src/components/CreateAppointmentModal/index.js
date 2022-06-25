@@ -69,9 +69,9 @@ export default function CreateAppointmentModal() {
     }
 
     const handleSendAppointment = () => {
-        // console.log(slotId)
-        // console.log(subject.id)
-        // console.log(problem)
+        console.log(slotId)
+        console.log(subject.id)
+        console.log(problem)
         if (
             slotId == null ||
             slotId == '' ||
@@ -81,7 +81,6 @@ export default function CreateAppointmentModal() {
             problem == null ||
             problem == 'F'
         ) {
-            console.log('abc')
             handleClickVariant('Subject and problem are required!', 'error')
         }
         appointmentApi
@@ -102,7 +101,8 @@ export default function CreateAppointmentModal() {
                 navigate('/appointment')
             })
             .catch((err) => {
-                handleClickVariant(err.data.error.message, 'error')
+                console.log(err.response.data.error.message)
+                handleClickVariant(err.response.data.error.message, 'error')
             })
     }
 

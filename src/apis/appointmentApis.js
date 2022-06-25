@@ -6,6 +6,12 @@ const createAppointment = (data) => {
 
 }
 
+const loadSendAppointment = () => {
+    loadToken()
+    return defaultInstance.post(`/users/own/appointments?IsNew=true`)
+}
+
 export const appointmentApi = {
-    createAppointment
+    createAppointment,
+    loadSendAppointment
 }

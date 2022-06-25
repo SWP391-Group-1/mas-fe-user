@@ -41,6 +41,7 @@ import {
 // Images
 import team2 from 'assets/images/team-2.jpg'
 import logoSpotify from 'assets/images/small-logos/logo-spotify.svg'
+import SuiTypography from 'components/SuiTypography'
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [navbarType, setNavbarType] = useState()
@@ -50,7 +51,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const [openMenu, setOpenMenu] = useState(false)
     const route = useLocation().pathname.split('/').slice(1)
     const navigate = useNavigate()
-
 
     useEffect(() => {
         // Setting the navbar type
@@ -165,6 +165,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     {miniSidenav ? 'menu_open' : 'menu'}
                                 </Icon>
                             </IconButton>
+                            <SuiTypography variant="button" mr={5}>Name</SuiTypography>
                             <IconButton
                                 size="small"
                                 color="inherit"
