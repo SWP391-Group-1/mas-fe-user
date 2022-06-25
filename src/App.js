@@ -160,7 +160,7 @@ export default function App() {
                 {layout === 'vr' && <Configurator />}
                 <AuthContextProvider>
                     <Routes>
-                        {getRoutes(routes)}
+                        {getRoutes(mergeRoutes)}
                         <Route
                             path="*"
                             element={<Navigate to="/dashboard" />}
@@ -188,7 +188,7 @@ export default function App() {
             {layout === 'vr' && <Configurator />}
             <AuthContextProvider>
                 <Routes>
-                    {getRoutes(routes)}
+                    {getRoutes(mergeRoutes)}
                     <Route
                         path="*"
                         element={<Navigate to="/authentication/user/sign-in" />}

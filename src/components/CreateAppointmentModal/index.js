@@ -15,7 +15,6 @@ import { appointmentApi } from 'apis/appointmentApis'
 import { useSnackbar } from 'notistack'
 import { useNavigate } from 'react-router-dom'
 
-
 export default function CreateAppointmentModal() {
     const location = useLocation()
     const slotId = location.state?.slotID || null
@@ -25,7 +24,7 @@ export default function CreateAppointmentModal() {
     const [subject, setSubject] = useState({
         subject: { code: 'Select subject' },
     })
-    const [problem, setProblem] = useState("")
+    const [problem, setProblem] = useState('')
     let navigate = useNavigate()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -70,24 +69,41 @@ export default function CreateAppointmentModal() {
     }
 
     const handleSendAppointment = () => {
-        console.log(slotId)
-        console.log(subject)
-        console.log(problem)
-        // appointmentApi.createAppointment({
-        //     slotId: slotId,
-        //     appointmentSubjects: [
-        //         {
-        //             subjectId: subject.id,
-        //             briefProblem: problem,
-        //         },
-        //     ],
-        // }).then((res) => {
-        //     handleClickVariant(
-        //         'Create appointment successfully!!!!',
-        //         'success'
-        //     )
-        //     navigate('/appointment')
-        // })
+        // console.log(slotId)
+        // console.log(subject.id)
+        // console.log(problem)
+        if (
+            slotId == null ||
+            slotId == '' ||
+            subject.id == null ||
+            subject.id == '' ||
+            subject.code == 'Select Subject' ||
+            problem == null ||
+            problem == 'F'
+        ) {
+            console.log('abc')
+            handleClickVariant('Subject and problem are required!', 'error')
+        }
+        appointmentApi
+            .createAppointment({
+                slotId: slotId,
+                appointmentSubjects: [
+                    {
+                        subjectId: subject.id,
+                        briefProblem: problem,
+                    },
+                ],
+            })
+            .then((res) => {
+                handleClickVariant(
+                    'Create appointment successfully!!!!',
+                    'success'
+                )
+                navigate('/appointment')
+            })
+            .catch((err) => {
+                handleClickVariant(err.data.error.message, 'error')
+            })
     }
 
     return (
@@ -260,7 +276,9 @@ export default function CreateAppointmentModal() {
                             type="text"
                             rows={5}
                             multiline
-                            onChange={(e) => {setProblem(e.target.value)}}
+                            onChange={(e) => {
+                                setProblem(e.target.value)
+                            }}
                             name="problem"
                         />
                     </SuiBox>
