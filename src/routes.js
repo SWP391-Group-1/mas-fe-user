@@ -77,6 +77,14 @@ const routes = [
         component: <Tables />,
         noCollapse: true,
     },
+
+    // {
+    //     type: 'collapse',
+    //     name: 'Sign In',
+    //     key: 'sign-in',
+    //     route: '/authentication/user/sign-in',
+    //     component: <SignIn />,
+    // }
     
 ]
 
