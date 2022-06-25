@@ -42,8 +42,11 @@ import {
 import team2 from 'assets/images/team-2.jpg'
 import logoSpotify from 'assets/images/small-logos/logo-spotify.svg'
 import SuiTypography from 'components/SuiTypography'
+import SuiAvatar from 'components/SuiAvatar'
 
 function DashboardNavbar({ absolute, light, isMini }) {
+    const [userInfo, setUserInfo] = useState({})
+
     const [navbarType, setNavbarType] = useState()
     const [controller, dispatch] = useSoftUIController()
     const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } =
@@ -53,6 +56,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const navigate = useNavigate()
 
     useEffect(() => {
+        setUserInfo(JSON.parse(localStorage.getItem('userInfo')))
         // Setting the navbar type
         if (fixedNavbar) {
             setNavbarType('sticky')
@@ -165,7 +169,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                     {miniSidenav ? 'menu_open' : 'menu'}
                                 </Icon>
                             </IconButton>
-                            <SuiTypography variant="button" mr={5}>Name</SuiTypography>
+                            <SuiTypography variant="button" mr={5}>
+                                {userInfo.name}
+                            </SuiTypography>
                             <IconButton
                                 size="small"
                                 color="inherit"

@@ -46,6 +46,7 @@ var currentRoutes = [...routes]
 var extraRoute = [...extraRoutes]
 var mergeRoutes = currentRoutes.concat(extraRoute)
 export default function App() {
+    const [userInfo, setUserInfo] = useState({})
     const [controller, dispatch] = useSoftUIController()
     const { miniSidenav, direction, layout, openConfigurator, sidenavColor } =
         controller
@@ -93,6 +94,8 @@ export default function App() {
     useEffect(() => {
         document.documentElement.scrollTop = 0
         document.scrollingElement.scrollTop = 0
+        setUserInfo(JSON.parse(localStorage.getItem('userInfo')))
+
     }, [pathname])
 
     const getRoutes = (allRoutes) =>
@@ -102,6 +105,11 @@ export default function App() {
             }
 
             if (route.route) {
+                if(userInfo.isMentor){
+                    if(route.route.key ==="regist"){
+                        return null
+                    }
+                }
                 return (
                     <Route
                         exact
