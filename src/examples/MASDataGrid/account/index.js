@@ -39,20 +39,6 @@ const MentorDataGrid = () => {
             </strong>
         )
     }
-    const renderDeleteButton = (params) => {
-        return (
-            <strong>
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => {}}
-                >
-                    Delete
-                </Button>
-            </strong>
-        )
-    }
 
     const columns = [
         { field: 'name', headerName: 'Name', width: 250 },
