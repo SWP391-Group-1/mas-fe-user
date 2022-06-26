@@ -23,62 +23,64 @@ export default function AppointmentDataGrid() {
     }, [])
 
     const columns = [
-        // { field: 'name', headerName: 'Mentor Name', width: 250 },
+        {
+            field: 'name',
+            headerName: 'Mentor Name',
+            width: 250,
+            valueGetter: (params) => {
+                return params.row.mentor.name
+            },
+        },
         {
             field: 'startTime',
             headerName: 'Start Time',
-            width: 350,
+            width: 300,
             valueGetter: (params) => {
-              console.log(params)
-              return null
-                //return moment(params.row.startTime).format('LLLL')
+                console.log(params.row.startTime)
+                return moment(params.row.slot.startTime).format('LLLL')
             },
         },
-        // {
-        //     field: 'finishTime',
-        //     headerName: 'End Time',
-        //     width: 350,
-        //     valueGetter: (params) => {
-        //         return moment(params.row.finishTime).format('LLLL')
-        //     },
-        // },
-        // {
-        //     field: 'createdDate',
-        //     headerName: 'Create Date',
-        //     width: 350,
-        //     valueGetter: (params) => {
-        //         return moment(params.row.createdDate).format('LLLL')
-        //     },
-        // },
-        // {
-        //     field: 'isApprove',
-        //     headerName: 'Approval Status',
-        //     width: 150,
-        //     valueGetter: (params) => {
-        //         if (params.row.isApprove == null) {
-        //             return 'Not approved yet'
-        //         } else {
-        //             if (params.row.isApprove == true) {
-        //                 return 'Approved'
-        //             } else if (params.row.isApprove == true) {
-        //                 return 'Denied'
-        //             }
-        //         }
-        //     },
-        // },
-        //null = chua duyet, true duyet, false ko duyet
-        // {
-        //     field: 'rate',
-        //     headerName: 'Rate',
-        //     width: 200,
-        //     valueGetter: (params) =>
-        //         params.row.rate + '(' + params.row.numOfRate + ')',
-        // },
-        // {
-        //     field: 'numOfAppointment',
-        //     headerName: 'Appointments',
-        //     width: 200,
-        // },
+        {
+            field: 'finishTime',
+            headerName: 'End Time',
+            width: 300,
+            valueGetter: (params) => {
+                console.log(params.row.finishTime)
+                return moment(params.row.slot.finishTime).format('LLLL')
+            },
+        },
+        {
+            field: 'createdDate',
+            headerName: 'Create Date',
+            width: 300,
+            valueGetter: (params) => {
+                console.log(params.row.createdDate)
+                return moment(params.row.createDate).format('LLLL')
+            },
+        },
+        {
+            field: 'isApprove',
+            headerName: 'Approval Status',
+            width: 200,
+            valueGetter: (params) => {
+                if (params.row.isApprove == null) {
+                    return 'Not approved yet'
+                } else {
+                    if (params.row.isApprove == true) {
+                        return 'Approved'
+                    } else if (params.row.isApprove == true) {
+                        return 'Denied'
+                    }
+                }
+            },
+        },
+        {
+            field: 'rate',
+            headerName: 'Rate',
+            width: 100,
+            valueGetter: (params) =>
+                params.row.mentor.rate + '(' + params.row.mentor.numOfRate + ')',
+        },
     ]
 
     return (
