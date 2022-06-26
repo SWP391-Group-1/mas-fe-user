@@ -63,7 +63,6 @@ const SubjectDataGrid = () => {
     const getMajorCombobox = () => {
         majorApi.getAllMajor('').then((res) => {
             setMajors(res.data.content)
-            console.log('imsohuy majors: ' + res.data.content)
         })
     }
 
