@@ -79,8 +79,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             let returnValue
 
             if (type === 'collapse') {
-                if (userInfo.isMentor) {
-                    if (key === 'regist') {
+                if (!userInfo.isMentor) {
+                    if (key === 'request') {
                         return null
                     }
                 }
