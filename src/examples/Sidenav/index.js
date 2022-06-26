@@ -43,6 +43,7 @@ import sidenavLogoLabel from 'examples/Sidenav/styles/sidenav'
 import { useSoftUIController, setMiniSidenav } from 'context'
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+    const [userInfo, setUserInfo] = useState(null)
     const [controller, dispatch] = useSoftUIController()
     const { miniSidenav, transparentSidenav } = controller
     const location = useLocation()
@@ -52,6 +53,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     const closeSidenav = () => setMiniSidenav(dispatch, true)
 
     useEffect(() => {
+        setUserInfo(JSON.parse(localStorage.getItem('userInfo')))
+
         // A function that sets the mini state of the sidenav.
         function handleMiniSidenav() {
             setMiniSidenav(dispatch, window.innerWidth < 1200)
@@ -75,6 +78,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             let returnValue
 
             if (type === 'collapse') {
+                if (userInfo != null) {
+                    if (!userInfo.isMentor) {
+                        if (key === 'request') {
+                            return null
+                        }
+                    }
+                }
                 returnValue = href ? (
                     <Link
                         href={href}
@@ -104,6 +114,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                     </NavLink>
                 )
             } else if (type === 'title') {
+                if (userInfo != null) {
+                    if (!userInfo.isMentor) {
+                        if (key === 'mentor-pages') {
+                            return null
+                        }
+                    }
+                }
                 returnValue = (
                     <SuiTypography
                         key={key}
