@@ -51,7 +51,7 @@ const routes = [
     },
 
     
-    { type: 'title', title: 'Mentor Pages', key: 'account-pages' },
+    { type: 'title', title: 'Mentor Pages', key: 'mentor-pages' },
     {
         type: 'collapse',
         name: 'Request',
