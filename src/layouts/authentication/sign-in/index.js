@@ -18,7 +18,6 @@ import CoverLayout from 'layouts/authentication/components/CoverLayout'
 // Images
 import curved9 from 'assets/images/curved-images/curved-6.jpg'
 
-
 import { authApis } from '../../../apis/authApis'
 
 function SignIn() {
@@ -38,19 +37,18 @@ function SignIn() {
     const handleGoogleSignIn = async () => {
         try {
             await googleSignIn()
-            successLogin()
+            // console.log(user)
+            successLoginGoogle()
         } catch (err) {
             console.log(err)
         }
     }
 
-    const successLogin = () => {
+    const successLoginGoogle = () => {
         authApis
-            .loginGoogle(user.providerId, localStorage.getItem('access-token-google'))
+            .loginGoogle(user.providerId, user.accessToken)
             .then((res) => {
-               if (res.success) {
-                 localStorage.setItem('access-token', res.message)
-               }
+                localStorage.setItem('access-token', res.data.message)
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
