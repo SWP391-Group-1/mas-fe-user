@@ -10,13 +10,7 @@ const getUserInformation = (id) => {
     return defaultInstance.get(`/users/${id}`)
 }
 
-const getMentorSubjects = (id) => {
-    loadToken()
-    return defaultInstance.get(`/mentor-subjects/${id}`)
-}
-
 export const AccountApi = {
     createAdminAccount,
     getUserInformation,
-    getMentorSubjects,
 }

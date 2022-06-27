@@ -12,8 +12,12 @@ const logout = () => {
     localStorage.removeItem('access-token-google')
 }
 
+const getOwnProfile =() => {
+    return defaultInstance.get(`/users/personal`)
+}
+
 export const authApis = {
     loginUser,
-    loginGoogle,
-    logout
+    logout,
+    getOwnProfile
 }

@@ -5,12 +5,15 @@ import App from "App";
 
 //  Context Provider
 import { SoftUIControllerProvider } from "context";
+import { SnackbarProvider } from 'notistack'
 
 ReactDOM.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <App />
-    </SoftUIControllerProvider>
+            <SnackbarProvider maxSnack={2}>
+                <App />
+            </SnackbarProvider>
+        </SoftUIControllerProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
