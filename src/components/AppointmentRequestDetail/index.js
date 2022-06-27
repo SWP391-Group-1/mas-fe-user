@@ -12,24 +12,24 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-export default function AppointmentDetail() {
+export default function AppointmentRequestDetail() {
     const location = useLocation()
     const appointmentID = location.state?.appointmentId || null
-    const [appointmentDetails, setAppointmentDetails] = useState([])
+    const [appointmentRequestDetails, setAppointmentRequestDetails] = useState([])
 
     useEffect(() => {
         fetchData()
     }, [])
 
     const fetchData = () => {
-        appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
-            setAppointmentDetails(res.data.content)
+        appointmentApi.loadReceivedAppointmentDetails(appointmentID).then((res) => {
+            setAppointmentRequestDetails(res.data.content)
             console.log(res.data.content)
         })
     }
 
     const renderStatus = () => {
-        if (appointmentDetails?.isApprove == null) {
+        if (appointmentRequestDetails?.isApprove == null) {
             return (
                 <SuiTypography
                     component="label"
@@ -41,7 +41,7 @@ export default function AppointmentDetail() {
                 </SuiTypography>
             )
         } else {
-            if (appointmentDetails?.isApprove == true) {
+            if (appointmentRequestDetails?.isApprove == true) {
                 return (
                     <SuiTypography
                         component="label"
@@ -102,7 +102,7 @@ export default function AppointmentDetail() {
                         <SuiInput
                             disable="true"
                             type="text"
-                            value={appointmentDetails?.mentor?.name}
+                            value={appointmentRequestDetails?.creator.name}
                             inputProps={{ maxLength: 100 }}
                         />
                     </SuiBox>
@@ -122,18 +122,11 @@ export default function AppointmentDetail() {
                             <MentorInfoCard
                                 title="profile information"
                                 description={
-                                    appointmentDetails?.mentor?.introduce
+                                    appointmentRequestDetails?.creator.introduce
                                 }
                                 // description="aaaaa"
                                 info={{
-                                    Email: appointmentDetails?.mentor?.email,
-                                    meetUrl:
-                                        appointmentDetails?.mentor?.meetUrl ===
-                                            null ||
-                                        appointmentDetails?.mentor?.meetUrl ===
-                                            ''
-                                            ? 'N/A'
-                                            : appointmentDetails?.mentor?.meetUrl,
+                                    Email: appointmentRequestDetails?.creator.email,                                  
                                 }}
                             />
                         </SuiBox>
@@ -154,7 +147,7 @@ export default function AppointmentDetail() {
                             disable="true"
                             id="codeTextField"
                             type="text"
-                            value={moment(appointmentDetails?.slot?.startTime).format('LLLL')}
+                            value={moment(appointmentRequestDetails?.slot.startTime).format('LLLL')}
                             inputProps={{ maxLength: 20 }}
                         />
                     </SuiBox>
@@ -174,7 +167,7 @@ export default function AppointmentDetail() {
                             disable="true"
                             id="codeTextField"
                             type="text"
-                            value={moment(appointmentDetails?.slot?.finishTime).format(
+                            value={moment(appointmentRequestDetails?.slot.finishTime).format(
                                 'LLLL'
                             )}
                             inputProps={{ maxLength: 20 }}

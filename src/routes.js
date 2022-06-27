@@ -18,6 +18,8 @@ import MentorDetail from "layouts/mentorDetail";
 import SlotDetailModal from "components/SlotDetailModal";
 import CreateAppointmentModal from "components/CreateAppointmentModal";
 import AppointmentDataGrid from "examples/MASDataGrid/appointment";
+import AppointmentDetail from "components/AppointmentDetail";
+import AppointmentRequestDataGrid from "examples/MASDataGrid/appointmentRequest";
 
 const routes = [
     { type: 'title', title: 'Dashboard  Pages', key: 'dashboard-pages' },
@@ -58,7 +60,7 @@ const routes = [
         key: 'request',
         route: '/request',
         icon: <SpaceShip size="12px" />,
-        component: <AppointmentDataGrid />,
+        component: <AppointmentRequestDataGrid />,
         noCollapse: true,
     },
     
@@ -115,6 +117,14 @@ const extraRoutes = [
         key: 'createappointment',
         route: '/mentor/details/slotdetails/createappointment',
         component: <CreateAppointmentModal />,  
+    },
+
+    {
+        type: 'collapse',
+        name: 'Appointment Detail',
+        key: 'appointmentdetails',
+        route: '/appointment/appointmentdetails',
+        component: <AppointmentDetail />,  
     },
 
     {
