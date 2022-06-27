@@ -20,6 +20,7 @@ import CreateAppointmentModal from "components/CreateAppointmentModal";
 import AppointmentDataGrid from "examples/MASDataGrid/appointment";
 import AppointmentDetail from "components/AppointmentDetail";
 import AppointmentRequestDataGrid from "examples/MASDataGrid/appointmentRequest";
+import AppointmentRequestDetail from "components/AppointmentRequestDetail";
 
 const routes = [
     { type: 'title', title: 'Dashboard  Pages', key: 'dashboard-pages' },
@@ -125,6 +126,14 @@ const extraRoutes = [
         key: 'appointmentdetails',
         route: '/appointment/appointmentdetails',
         component: <AppointmentDetail />,  
+    },
+
+    {
+        type: 'collapse',
+        name: 'Appointment Request Detail',
+        key: 'appointmentrequestdetails',
+        route: '/request/appointmentrequestdetails',
+        component: <AppointmentRequestDetail />,  
     },
 
     {

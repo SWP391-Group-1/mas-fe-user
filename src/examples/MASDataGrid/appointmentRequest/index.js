@@ -23,11 +23,11 @@ export default function AppointmentRequestDataGrid() {
                     variant="contained"
                     color="error"
                     size="small"
-                    // onClick={() => {
-                    //     navigate('/appointment/appointmentdetails', {
-                    //         state: { appointmentId: params.row.id },
-                    //     })
-                    // }}
+                    onClick={() => {
+                        navigate('/request/appointmentrequestdetails', {
+                            state: { appointmentId: params.row.id },
+                        })
+                    }}
                 >
                     View Detail
                 </Button>
