@@ -102,7 +102,7 @@ export default function AppointmentRequestDetail() {
                         <SuiInput
                             disable="true"
                             type="text"
-                            value={appointmentRequestDetails?.creator.name}
+                            value={appointmentRequestDetails?.creator?.name}
                             inputProps={{ maxLength: 100 }}
                         />
                     </SuiBox>
@@ -122,11 +122,11 @@ export default function AppointmentRequestDetail() {
                             <MentorInfoCard
                                 title="profile information"
                                 description={
-                                    appointmentRequestDetails?.creator.introduce
+                                    appointmentRequestDetails?.creator?.introduce
                                 }
                                 // description="aaaaa"
                                 info={{
-                                    Email: appointmentRequestDetails?.creator.email,                                  
+                                    Email: appointmentRequestDetails?.creator?.email,                                  
                                 }}
                             />
                         </SuiBox>
@@ -147,7 +147,7 @@ export default function AppointmentRequestDetail() {
                             disable="true"
                             id="codeTextField"
                             type="text"
-                            value={moment(appointmentRequestDetails?.slot.startTime).format('LLLL')}
+                            value={moment(appointmentRequestDetails?.slot?.startTime).format('LLLL')}
                             inputProps={{ maxLength: 20 }}
                         />
                     </SuiBox>
@@ -167,18 +167,27 @@ export default function AppointmentRequestDetail() {
                             disable="true"
                             id="codeTextField"
                             type="text"
-                            value={moment(appointmentRequestDetails?.slot.finishTime).format(
+                            value={moment(appointmentRequestDetails?.slot?.finishTime).format(
                                 'LLLL'
                             )}
                             inputProps={{ maxLength: 20 }}
                         />
                     </SuiBox>
-                    {/* <SuiBox
+                    <SuiBox
                         sx={{ width: '40%' }}
                         mb={2}
                         display="flex"
                         justifyContent="flex-end"
                     >
+                        <SuiButton mr={2}
+                            color="success"
+                            //     onClick={()=> {
+                            //     navigate('/mentor/details/slotdetails/createappointment', {state: {slotID: slotDetail?.id}})
+                            // }
+                            // }
+                        >
+                            Accept
+                        </SuiButton>
                         <SuiButton
                             color="dark"
                             //     onClick={()=> {
@@ -186,9 +195,9 @@ export default function AppointmentRequestDetail() {
                             // }
                             // }
                         >
-                            Create appointment
+                            Deny
                         </SuiButton>
-                    </SuiBox> */}
+                    </SuiBox>
                 </Card>
             </SuiBox>
         </DashboardLayout>

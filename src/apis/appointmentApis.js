@@ -21,10 +21,11 @@ const loadSendAppointmentDetails = (appointmentId) => {
     return defaultInstance.get(`/users/own/appointments/${appointmentId}`)
 }
 
-const loadReceivedAppointmentDetails = () => {
+const loadReceivedAppointmentDetails = (appointmentId) => {
     loadToken()
-    return defaultInstance.get('/users/mentor/appointments/${appointmentId}')
+    return defaultInstance.get(`/users/mentor/appointments/${appointmentId}`)
 }
+
 
 
 export const appointmentApi = {
