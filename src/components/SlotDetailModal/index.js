@@ -62,7 +62,7 @@ export default function SlotDetailModal() {
 
                     <SuiBox sx={{ width: '40%' }} mb={2}>
                         <SuiInput
-                            disable
+                            disabled
                             type="text"
                             value={slotDetail?.mentor.name}
                             inputProps={{ maxLength: 100 }}
@@ -117,7 +117,7 @@ export default function SlotDetailModal() {
                     </SuiBox>
                     <SuiBox sx={{ width: '40%' }} mb={2}>
                         <SuiInput
-                            disable
+                            disabled
                             id="codeTextField"
                             type="text"
                             value={moment(slotDetail?.startTime).format('LLLL')}
@@ -137,7 +137,7 @@ export default function SlotDetailModal() {
                     </SuiBox>
                     <SuiBox sx={{ width: '40%' }} mb={2}>
                         <SuiInput
-                            disable
+                            disabled
                             id="codeTextField"
                             type="text"
                             value={moment(slotDetail?.finishTime).format(
