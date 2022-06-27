@@ -62,7 +62,7 @@ function Overview() {
     }
 
     const fetchData = (data) => {
-        UserApi.getPersonalProfile(data).then((res) => {
+        UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
         })
         SlotApi.getAllSlots(

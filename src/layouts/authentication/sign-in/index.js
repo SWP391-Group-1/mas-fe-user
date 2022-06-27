@@ -19,6 +19,7 @@ import CoverLayout from 'layouts/authentication/components/CoverLayout'
 import curved9 from 'assets/images/curved-images/curved-6.jpg'
 
 import { authApis } from '../../../apis/authApis'
+import { UserApi } from 'apis/userApis'
 
 function SignIn() {
     const [username, setUsername] = useState(null)
@@ -46,9 +47,14 @@ function SignIn() {
 
     const successLoginGoogle = () => {
         authApis
-            .loginGoogle(user.providerId, user.accessToken)
+            .loginGoogle(
+                user.providerId,
+                localStorage.getItem('access-token-google')
+            )
             .then((res) => {
-                localStorage.setItem('access-token', res.data.message)
+                if (res.success) {
+                    localStorage.setItem('access-token', res.message)
+                }
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
@@ -64,7 +70,20 @@ function SignIn() {
             .then((res) => {
                 const token = res?.data?.message
                 localStorage.setItem('access-token', token)
-                navigate('/dashboard')
+                UserApi.getPersonalInformation()
+                    .then((res) => {
+                        localStorage.setItem(
+                            'userInfo',
+                            JSON.stringify(res.data.content)
+                        )
+                        navigate('/dashboard')
+                    })
+                    .cath((err) => {
+                        console.error(
+                            'Sign in failed.',
+                            err.response.data.errors[0]
+                        )
+                    })
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])

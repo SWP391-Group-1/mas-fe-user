@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // react-router-dom components
 import { useLocation, NavLink } from 'react-router-dom'
@@ -44,6 +44,8 @@ import { useSoftUIController, setMiniSidenav } from 'context'
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
     const [controller, dispatch] = useSoftUIController()
+    const [userInfo, setUserInfo] = useState({})
+
     const { miniSidenav, transparentSidenav } = controller
     const location = useLocation()
     const { pathname } = location
@@ -52,6 +54,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     const closeSidenav = () => setMiniSidenav(dispatch, true)
 
     useEffect(() => {
+        setUserInfo(JSON.parse(localStorage.getItem('userInfo')))
+
         // A function that sets the mini state of the sidenav.
         function handleMiniSidenav() {
             setMiniSidenav(dispatch, window.innerWidth < 1200)
@@ -75,6 +79,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             let returnValue
 
             if (type === 'collapse') {
+                if (userInfo.isMentor) {
+                    if (key === 'regist') {
+                        return null
+                    }
+                }
                 returnValue = href ? (
                     <Link
                         href={href}

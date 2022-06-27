@@ -8,6 +8,7 @@ import {
 
 import { auth } from '../firebase'
 import { useNavigate } from 'react-router-dom'
+import { UserApi } from 'apis/userApis'
 
 const AuthContext = createContext({
     isAuthenticated: false,
@@ -43,10 +44,15 @@ export const AuthContextProvider = ({ children }) => {
         return () => {
             unsub()
         }
-    })
+    },[])
     return (
         <AuthContext.Provider
-            value={{ googleSignIn, logOut, user, isAuthenticated }}
+            value={{
+                googleSignIn,
+                logOut,
+                user,
+                isAuthenticated,
+            }}
         >
             {children}
         </AuthContext.Provider>

@@ -5,12 +5,12 @@ const getAllUser = () => {
     return defaultInstance.get(`/users?IsNew=${true}`)
 }
 
-const getPersonalProfile = () => {
+const getPersonalInformation = () => {
     loadToken()
-    return defaultInstance.get(`/users/personal`)
+    return defaultInstance.get(`users/personal`)
 }
 
 export const UserApi = {
     getAllUser,
-    getPersonalProfile,
+    getPersonalInformation
 }
