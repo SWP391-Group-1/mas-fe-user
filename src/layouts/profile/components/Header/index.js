@@ -14,17 +14,15 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 
 // Soft UI Dashboard React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
-import { UserAuth } from 'context/AuthContext'
 
 // Images
 import burceMars from 'assets/images/bruce-mars.jpg'
 import curved0 from 'assets/images/curved-images/curved0.jpg'
 import { Avatar } from '@mui/material'
 
-function Header() {
+function Header({ profileName, profileAvatar, isMentor }) {
     const [tabsOrientation, setTabsOrientation] = useState('horizontal')
     const [tabValue, setTabValue] = useState(0)
-    const { user } = UserAuth()
 
     useEffect(() => {
         // A function that sets the orientation state of the tabs.
@@ -33,16 +31,11 @@ function Header() {
                 ? setTabsOrientation('vertical')
                 : setTabsOrientation('horizontal')
         }
-
-        /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
+        
         window.addEventListener('resize', handleTabsOrientation)
 
-        // Call the handleTabsOrientation function to set the state with the initial value.
         handleTabsOrientation()
 
-        // Remove event listener on cleanup
         return () => window.removeEventListener('resize', handleTabsOrientation)
     }, [tabsOrientation])
 
@@ -89,9 +82,9 @@ function Header() {
             >
                 <Grid container spacing={3} alignItems="center">
                     <Grid item>
-                        {user !== null ? (
+                        {profileAvatar !== null ? (
                             <Avatar
-                                src={user.photoURL}
+                                src={profileAvatar}
                                 sx={{ width: 80, height: 80 }}
                             />
                         ) : (
@@ -106,32 +99,16 @@ function Header() {
                     </Grid>
                     <Grid item>
                         <SuiBox height="100%" mt={0.5} lineHeight={1}>
-                            {user !== null ? (
-                                <>
-                                    <SuiTypography
-                                        variant="h5"
-                                        fontWeight="medium"
-                                    >
-                                        {user.displayName}
-                                    </SuiTypography>
-                                </>
-                            ) : (
-                                <>
-                                    <SuiTypography
-                                        variant="h5"
-                                        fontWeight="medium"
-                                    >
-                                        Alex Thompson
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="button"
-                                        color="text"
-                                        fontWeight="medium"
-                                    >
-                                        CEO / Co-Founder
-                                    </SuiTypography>
-                                </>
-                            )}
+                            <SuiTypography variant="h5" fontWeight="medium">
+                                {profileName}
+                            </SuiTypography>
+                            <SuiTypography
+                                variant="button"
+                                color="text"
+                                fontWeight="medium"
+                            >
+                                {isMentor ? 'User' : 'Mentor'}
+                            </SuiTypography>
                         </SuiBox>
                     </Grid>
                 </Grid>
