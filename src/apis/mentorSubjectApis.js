@@ -7,7 +7,11 @@ const updateMentorSubject = (id, major) => {
 }
 const getMentorSubjects = (mentorId) => {
     loadToken()
-    return defaultInstance.get(`/mentor-subjects/${mentorId}`)
+    return defaultInstance.get(`/mentor-subjects/${mentorId}?IsActive=true`)
+}
+const registerMentorSubjects = (mentorSubject) => {
+    loadToken()
+    return defaultInstance.post(`/mentor-subjects/`, mentorSubject)
 }
 
 const deleteMentorSubject = (id) => {
@@ -20,4 +24,5 @@ export const mentorSubjectApi = {
     getMentorSubjects,
     updateMentorSubject,
     deleteMentorSubject,
+    registerMentorSubjects,
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Box from '@mui/material/Box'
@@ -28,8 +29,19 @@ import { subjectApi } from 'apis/subjectApis'
 import { mentorSubjectApi } from 'apis/mentorSubjectApis'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
 import '@fullcalendar/timegrid/main.css'
-import { Button, Chip, MenuItem, Select } from '@mui/material'
+import {
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    MenuItem,
+    Select,
+} from '@mui/material'
 
 function Overview() {
     const { user } = UserAuth()
@@ -37,8 +49,19 @@ function Overview() {
     const [selectMentorSubject, setSelectMentorSubject] = useState(null)
     const [mentorSubjects, setMentorSubjects] = useState([])
     const [subjects, setSubjects] = useState([])
-    const [chipMentorSubject, setChipMentorSubject] = useState([])
+    // const [chipMentorSubject, setChipMentorSubject] = useState([])
     const [events, setEvents] = useState([])
+    const [open, setOpen] = useState(false)
+
+    const chipMentorSubjects = React.useMemo(() => {
+        return mentorSubjects?.map((mentorSubject) => ({
+            key: mentorSubject.subject.id,
+            label: mentorSubject.subject.code,
+            mentorSubject,
+        }))
+    }, [mentorSubjects])
+
+    useEffect(() => console.log(mentorSubjects, chipMentorSubjects), [chipMentorSubjects])
 
     const freeSlotTitle = 'Available slot'
     const sampleDescription =
@@ -47,12 +70,12 @@ function Overview() {
     var day = today.getDay() - 1
     var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
     var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
-    var returnMentorSubject = ''
-    
+
+
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
             setEvents((prevEvents) => [
-                ...prevEvents,
+                // ...prevEvents,
                 ...slots.map((slot) => ({
                     title: freeSlotTitle,
                     start: slot.startTime,
@@ -65,43 +88,64 @@ function Overview() {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
         })
-        SlotApi.getAllSlots(
-            userProfile?.id,
-            // TODO: uncmt this 2 line for real data
-            weekStart.toISOString(),
-            weekEnd.toISOString(),
-            true,
-            true
-        ).then((res) => {
-            setDataEvents(res.data.content)
-        })
+
         subjectApi.getAllSubject().then((res) => {
             setSubjects(res.data.content)
         })
-        mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
-            console.log(res.data.content)
-        })
     }
 
-    const handleAddMentorSubject = (selectMentorSubject) => {
-        const isExist = chipMentorSubject.some(function (chip) {
-            return chip.key === selectMentorSubject.id
-        })
-        if (!isExist) {
-            setChipMentorSubject([
-                ...chipMentorSubject,
-                {
-                    key: selectMentorSubject.id,
-                    label: selectMentorSubject.code,
-                },
-            ])
+    React.useEffect(() => {
+        if (userProfile?.id) {
+            SlotApi.getAllSlots(
+                userProfile?.id,
+                weekStart.toISOString(),
+                weekEnd.toISOString(),
+                true,
+                true
+            ).then((res) => {
+                setDataEvents(res.data.content)
+            })
+            mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
+                setMentorSubjects(res.data.content)
+            })
         }
+    }, [userProfile])
+
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+    function handleClose() {
+        setOpen(false)
     }
 
-    const handleDelete = (chipToDelete) => () => {
-        setChipMentorSubject((chips) =>
-            chips.filter((chips) => chips.key !== chipToDelete.key)
-        )
+    // const handleAddMentorSubject = (selectMentorSubject) => {
+
+    //         setChipMentorSubject((prev) => [
+    //             ...prev,
+    //             {
+    //                 key: selectMentorSubject.id,
+    //                 label: selectMentorSubject.code,
+    //             },
+    //         ])
+    //     }
+    // }
+
+    const handleAddChipMentorSubject = () => {
+        handleClose()
+        if (selectMentorSubject)
+            mentorSubjectApi
+                .registerMentorSubjects({
+                    subjectId: selectMentorSubject.id,
+                    briefInfo: selectMentorSubject.description,
+                })
+                .then((res) => {
+                    console.log('imsohuy', res.data)
+                })
+    }
+
+    const handleDelete = (chipToDelete) => {
+        console.log('delete', chipToDelete);
+        // Todo
     }
 
     const card = (
@@ -110,13 +154,13 @@ function Overview() {
                 <Typography variant="h5" component="div" sx={{ m: 1 }}>
                     Current mentor subject
                 </Typography>
-                {chipMentorSubject.map((data, index) => {
+                {chipMentorSubjects.map((data, index) => {
                     return (
                         <Chip
                             sx={{ m: 1 }}
                             key={data.key + index}
                             label={data.label}
-                            onDelete={handleDelete(data)}
+                            onDelete={() => handleDelete(data)}
                         />
                     )
                 })}
@@ -140,26 +184,61 @@ function Overview() {
                     variant="contained"
                     color="error"
                     size="small"
-                    onClick={() => {
-                        console.log('imsohuy userprofile:', userProfile)
-                        console.log('imsohuy subject', subjects)
-                        console.log('imsohuy mentorSubject', mentorSubjects)
-                        handleAddMentorSubject(selectMentorSubject)
-                    }}
+                    // onClick={() => {
+                    //     console.log('imsohuy userprofile:', userProfile)
+                    //     console.log('imsohuy subject', subjects)
+                    //     console.log('imsohuy mentorSubject', mentorSubjects)
+                    //     console.log('imsohuy chipMentor', chipMentorSubject)
+
+                    //     handleAddMentorSubject(selectMentorSubject)
+                    // }}
+                    onClick={handleClickOpen}
                 >
                     Add
                 </Button>
             </CardContent>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {'Add mentor subject'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Do you want to add this subject
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleAddChipMentorSubject} autoFocus>
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     )
+
+    const handleDateClick = (dateClickInfo) => {
+        console.log(dateClickInfo.dateStr)
+    }
+
+    const handleEventClick = (clickInfo) => {
+        console.log('imsohuy eventclick: ', clickInfo.event.title)
+    }
 
     useEffect(() => {
         fetchData()
     }, [])
 
-    useEffect(() => {
-        console.log('events: ', events)
-    }, [events])
+    // TODO: delete this
+    // useEffect(() => {
+    //     if (mentorSubjects != null) {
+    //         handleAddChipMentorSubject()
+    //     }
+    // }, [mentorSubjects])
 
     return (
         <DashboardLayout>
@@ -225,8 +304,10 @@ function Overview() {
                     <Grid item xs={10} md={3} xl={9}>
                         <FullCalendar
                             initialView="timeGridWeek"
-                            plugins={[timeGridPlugin]}
+                            plugins={[timeGridPlugin, interactionPlugin]}
                             events={events}
+                            dateClick={handleDateClick}
+                            eventClick={handleEventClick}
                         />
                     </Grid>
                     <Grid item xs={10} md={1} xl={5}>
