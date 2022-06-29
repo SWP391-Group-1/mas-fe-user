@@ -52,7 +52,6 @@ export default function App() {
     const [rtlCache, setRtlCache] = useState(null)
     const { pathname } = useLocation()
 
-
     // Cache for the rtl
     useMemo(() => {
         const cacheRtl = createCache({
@@ -207,13 +206,6 @@ export default function App() {
                     />
                 </Routes>
             </AuthContextProvider>
-            {/* <Routes>
-                {getRoutes(mergeRoutes)}
-                <Route
-                    path="*"
-                    element={<Navigate to="/authentication/user/sign-in" />}
-                />
-            </Routes> */}
         </ThemeProvider>
     )
 }
