@@ -4,7 +4,10 @@ const loginUser = (email, password) => {
     return defaultInstance.post('/accounts/login-user', { email, password })
 }
 const loginGoogle = (providerName, idToken) => {
-    return defaultInstance.post('/accounts/login-google', { providerName, idToken })
+    return defaultInstance.post('/accounts/login-google', {
+        providerName,
+        idToken,
+    })
 }
 
 const logout = () => {
@@ -19,5 +22,7 @@ const getOwnProfile =() => {
 export const authApis = {
     loginUser,
     logout,
-    getOwnProfile
+    getOwnProfile,
+    loginGoogle,
+    logout,
 }

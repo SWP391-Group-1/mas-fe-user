@@ -85,7 +85,6 @@ export default function App() {
 
     // Setting the dir attribute for the body element
 
-
     useEffect(() => {
         document.body.setAttribute('dir', direction)
     }, [direction])

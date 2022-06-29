@@ -27,7 +27,6 @@ const loadReceivedAppointmentDetails = (appointmentId) => {
 }
 
 
-
 export const appointmentApi = {
     createAppointment,
     loadSendAppointment,
