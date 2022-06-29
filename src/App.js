@@ -175,10 +175,10 @@ export default function App() {
                         />
                     </Routes>
                 </AuthContextProvider>
-                <Routes>
+                {/* <Routes>
                     {getRoutes(mergeRoutes)}
                     <Route path="*" element={<Navigate to="/dashboard" />} />
-                </Routes>
+                </Routes> */}
             </ThemeProvider>
         </CacheProvider>
     ) : (
@@ -207,13 +207,13 @@ export default function App() {
                     />
                 </Routes>
             </AuthContextProvider>
-            <Routes>
+            {/* <Routes>
                 {getRoutes(mergeRoutes)}
                 <Route
                     path="*"
                     element={<Navigate to="/authentication/user/sign-in" />}
                 />
-            </Routes>
+            </Routes> */}
         </ThemeProvider>
     )
 }
