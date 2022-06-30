@@ -6,17 +6,43 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import SuiInput from 'components/SuiInput'
-import { Button, IconButton, Menu, MenuItem } from '@mui/material'
+import { Button, Grid, IconButton, Menu, MenuItem } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import CloseIcon from '@mui/icons-material/Close'
 
 export default function AppointmentDataGrid() {
     const [sendAppointment, setSendAppointment] = useState([])
-    const [status, setStatus] = useState('All status')
-    const statuses = ['All status', 'Not approved yet', "Approved", "Denied"]
+    const [status, setStatus] = useState({
+        title: 'All status',
+        isAllStatusVal: true,
+        isApproveStatus: '',
+    })
+    const statuses = [
+        { title: 'All status', isAllStatusVal: true, isApproveStatus: '' },
+        {
+            title: 'Not approved yet',
+            isAllStatusVal: false,
+            isApproveStatus: '',
+        },
+        { title: 'Approved', isAllStatusVal: false, isApproveStatus: true },
+        { title: 'Denied', isAllStatusVal: false, isApproveStatus: false },
+    ]
+
+    const [historyStatus, setHistoryStatus] = useState({
+        title: 'All history status',
+        isPassedVal: '',
+    })
+    const historyStatuses = [
+        { title: 'All history status', isPassedVal: '' },
+        { title: 'Upcoming', isPassedVal: false },
+        { title: 'Passed', isPassedVal: true },
+    ]
+
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
+    const [anchorEl2, setAnchorEl2] = useState(null)
+    const open2 = Boolean(anchorEl2)
     let navigate = useNavigate()
     const fetchData = () => {
         appointmentApi.loadSendAppointment().then((res) => {
@@ -36,29 +62,39 @@ export default function AppointmentDataGrid() {
         })
     }
 
+    const fetchDataWithFilter = (allStatus, approveStatus, passStatus) => {
+        appointmentApi
+            .loadSendAppointmentFilter(allStatus, approveStatus, passStatus)
+            .then((res) => {
+                setSendAppointment(res.data.content)
+            })
+    }
+
     const handleClose = () => {
         setAnchorEl(null)
+    }
+    const handleClose2 = () => {
+        setAnchorEl2(null)
     }
 
     const onChoose = (item) => {
         setStatus(item)
         setAnchorEl(null)
-        if (item != null) {
-            if(item=='All status') {
-                fetchData()
-            }
+        fetchDataWithFilter(
+            item.isAllStatusVal,
+            item.isApproveStatus,
+            historyStatus.isPassedVal
+        )
+    }
 
-            if(item=='Not approved yet') {
-                fetchDataWithFilter1()
-            }
-
-            if(item=='Approved') {
-                fetchDataWithFilter2(true)
-            }
-            if(item=='Denied') {
-                fetchDataWithFilter2(false)
-            }
-        }
+    const onChoose2 = (item) => {
+        setHistoryStatus(item)
+        setAnchorEl2(null)
+        fetchDataWithFilter(
+            status.isAllStatusVal,
+            status.isApproveStatus,
+            item.isPassedVal
+        )
     }
 
     const renderViewButton = (params) => {
@@ -68,7 +104,11 @@ export default function AppointmentDataGrid() {
                     variant="contained"
                     color="error"
                     size="small"
-                    onClick={() => {navigate('/appointment/appointmentdetails', {state: {appointmentId: params.row.id}})}}
+                    onClick={() => {
+                        navigate('/appointment/appointmentdetails', {
+                            state: { appointmentId: params.row.id },
+                        })
+                    }}
                     // onClick= {()=> {console.log(params.row.id)}}
                 >
                     View Detail
@@ -76,7 +116,7 @@ export default function AppointmentDataGrid() {
             </strong>
         )
     }
-    
+
     useEffect(() => {
         fetchData()
     }, [])
@@ -138,7 +178,10 @@ export default function AppointmentDataGrid() {
             headerName: 'Rate',
             width: 100,
             valueGetter: (params) =>
-                params.row.mentor.rate + '(' + params.row.mentor.numOfRate + ')',
+                params.row.mentor.rate +
+                '(' +
+                params.row.mentor.numOfRate +
+                ')',
         },
         {
             field: 'edit',
@@ -153,65 +196,115 @@ export default function AppointmentDataGrid() {
         <>
             <DashboardLayout>
                 <DashboardNavbar />
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={2}>
+                        <SuiBox                      
+                            mb={2}
+                            sx={{
+                                width:"100%",
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <SuiTypography variant="h6" mr={2}>
+                                Status:
+                            </SuiTypography>
+                            <SuiInput
+                                
+                                disable
+                                icon={{
+                                    component: 'arrow_drop_down',
+                                    direction: 'right',
+                                }}
+                                value={status.title}
+                                onClick={(e) => setAnchorEl(e.currentTarget)}
+                            />
 
-                <SuiBox
-                mb={2}
-                sx={{
-                    display: 'flex',
-                    width: '20%',
-                }}
-            >
-                <SuiInput
-                    disable
-                    placeholder="Major"
-                    icon={{
-                        component: 'arrow_drop_down',
-                        direction: 'right',
-                    }}
-                    value={status}
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
-                />
-
-                <IconButton
-                    color="dark"
-                    component="span"
-                    onClick={() => {
-                        setStatus('All status')
-                        fetchData()
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                        style: {
-                            maxHeight: 50 * 4.5,
-                            width: '12%',
-                        },
-                    }}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                    }}
-                >
-                    {statuses?.map((item) => {
-                        return (
-                            <MenuItem
-                                value={10}
-                                key={item}
-                                onClick={() => onChoose(item)}
-
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                PaperProps={{
+                                    style: {
+                                        maxHeight: 50 * 4.5,
+                                        width: '12%',
+                                    },
+                                }}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
                             >
-                                {item}
-                            </MenuItem>
-                        )
-                    })}
-                </Menu>
-            </SuiBox>
+                                {statuses?.map((item) => {
+                                    return (
+                                        <MenuItem
+                                            value={10}
+                                            key={item.title}
+                                            onClick={() => onChoose(item)}
+                                        >
+                                            {item.title}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Menu>
+                        </SuiBox>
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <SuiBox
+                                mb={2}
+                                sx={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width:"100%"
+                                }}
+                            >
+                                <SuiTypography variant="h6" mr={2}>
+                                    History status:
+                                </SuiTypography>
+                                <SuiInput
+                                
+                                    disable
+                                    icon={{
+                                        component: 'arrow_drop_down',
+                                        direction: 'right',
+                                    }}
+                                    value={historyStatus.title}
+                                    onClick={(e) =>
+                                        setAnchorEl2(e.currentTarget)
+                                    }
+                                />
+
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl2}
+                                    open={open2}
+                                    onClose={handleClose2}
+                                    PaperProps={{
+                                        style: {
+                                            maxHeight: 50 * 4.5,
+                                            width: '12%',
+                                        },
+                                    }}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    {historyStatuses?.map((item) => {
+                                        return (
+                                            <MenuItem
+                                                value={10}
+                                                key={item.title}
+                                                onClick={() => onChoose2(item)}
+                                            >
+                                                {item.title}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Menu>
+                            </SuiBox>
+                        </Grid>
+                    
+                </Grid>
 
                 <div style={{ height: 750, width: '100%' }}>
                     <DataGrid
@@ -226,4 +319,3 @@ export default function AppointmentDataGrid() {
         </>
     )
 }
- 

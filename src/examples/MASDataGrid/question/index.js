@@ -1,4 +1,4 @@
-import { Button, Card } from '@mui/material'
+import { Button, Card, Rating } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { questionApi } from 'apis/questionApis'
 import QuestionModal from 'components/QuestionModal'
@@ -6,16 +6,22 @@ import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import React, { useEffect, useState } from 'react'
 import { SnackbarProvider, useSnackbar } from 'notistack'
+import { appointmentApi } from 'apis/appointmentApis'
 
 export default function QuestionDataGrid({ appointmentID }) {
     const [questions, setQuestions] = useState([])
     const [question, setQuestion] = useState([])
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
+    const [appointment, setAppointment] = useState(null)
 
     const fetchData = () => {
         questionApi.loadQuestionsOfAppointment(appointmentID).then((res) => {
             setQuestions(res.data.content)
+        })
+
+        appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
+            setAppointment(res.data.content)
         })
     }
 
@@ -100,16 +106,28 @@ export default function QuestionDataGrid({ appointmentID }) {
     const GridToolbar = () => {
         return (
             <>
-                <SuiBox sx={{ float: 'right' }} mr={1} mt={1}>
-                    <SuiButton
-                        variant="contained"
-                        color="dark"
-                        size="small"
-                        onClick={handleAddQuestionClick}
-                    >
-                        Add Question
-                    </SuiButton>
-                </SuiBox>
+                {!appointment?.isPassed == true && (
+                    <SuiBox sx={{ float: 'right' }} mr={1} mt={1}>
+                        <SuiButton
+                            variant="contained"
+                            color="dark"
+                            size="small"
+                            onClick={handleAddQuestionClick}
+                        >
+                            Add Question
+                        </SuiButton>
+                    </SuiBox>
+                )}
+                {/* <SuiBox sx={{ float: 'right' }} mr={1} mt={1}>
+                        <SuiButton
+                            variant="contained"
+                            color="dark"
+                            size="small"
+                            onClick={handleAddQuestionClick}
+                        >
+                            Add Question
+                        </SuiButton>
+                    </SuiBox> */}
             </>
         )
     }

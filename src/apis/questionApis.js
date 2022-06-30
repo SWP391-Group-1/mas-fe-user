@@ -7,11 +7,21 @@ const loadQuestionsOfAppointment = (appointmentId) => {
 
 const createNewQuestion = (data) => {
     loadToken()
-    console.log(data)
     return defaultInstance.post('/questions', data)
+}
+
+const getQuestionById = (id) => {
+    loadToken()
+    return defaultInstance.get(`/questions/${id}`)
+}
+const answerQuestion = (id, data) => {
+    loadToken()
+    return defaultInstance.put(`/questions/${id}`, data)
 }
 // /appointments/133da9d6-82c1-46de-a78f-355280821b30/questions?IsActive=true
 export const questionApi = {
     loadQuestionsOfAppointment,
-    createNewQuestion
+    createNewQuestion, 
+    answerQuestion,
+    getQuestionById
 }

@@ -21,6 +21,7 @@ import AppointmentDataGrid from "examples/MASDataGrid/appointment";
 import AppointmentDetail from "components/AppointmentDetail";
 import AppointmentRequestDataGrid from "examples/MASDataGrid/appointmentRequest";
 import AppointmentRequestDetail from "components/AppointmentRequestDetail";
+import MentorSlotDetail from "components/MentorSlotDetail";
 
 const routes = [
     { type: 'title', title: 'Dashboard  Pages', key: 'dashboard-pages' },
@@ -31,6 +32,15 @@ const routes = [
         route: '/dashboard',
         icon: <Shop size="12px" />,
         component: <Dashboard />,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'MentorSlot',
+        key: 'mentorslot',
+        route: '/mentorslot',
+        icon: <Shop size="12px" />,
+        component: <MentorSlotDetail />,
         noCollapse: true,
     },
     {

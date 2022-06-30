@@ -12,19 +12,23 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export default function AppointmentDetail() {
     const location = useLocation()
     const appointmentID = location.state?.appointmentId || null
     const [appointmentDetails, setAppointmentDetails] = useState([])
-
+    let navigate = useNavigate()
     useEffect(() => {
-        fetchData()
+        if(appointmentID == null) {
+            navigate('/dashboard')
+        } else {
+            fetchData()
+        }    
     }, [])
 
     const fetchData = () => {
-        console.log(appointmentID)
+        
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
