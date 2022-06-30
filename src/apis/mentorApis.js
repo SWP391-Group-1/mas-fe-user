@@ -22,7 +22,7 @@ const getMentorSubjects = (id) => {
 }
 const getMentorSlots = (id) => {
     loadToken()
-    return defaultInstance.get(`/slots?MentorId=${id}&IsAsc=true`)
+    return defaultInstance.get(`/slots?MentorId=${id}&IsAsc=true&IsActive=true&IsPassed=false`)
 }
 
 const getMentorSlotById = (id) => {

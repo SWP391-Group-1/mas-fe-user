@@ -113,17 +113,15 @@ export default function MentorDetail() {
                 <SuiBox sx={{ display: 'flex' }}>
                     <SuiBox mt={5} mb={3}>
                         <Card>
-                            {/* <Grid item pl={1}> */}
                             <SuiTypography pl={1}>Mentor Slots</SuiTypography>
-                            {/* </Grid> */}
-                            {/* <Grid item p={3}> */}
-                            <SuiBox p={3}>
-                                {mentorSlots?.map((item) => {
-                                    return <MentorSlot slot={item} />
-                                })}
+                            <SuiBox>
+                                <SuiBox p={3}>
+                                    {mentorSlots?.map((item) => {
+                                        console.log(item)
+                                        return <MentorSlot slot={item} />
+                                    })}
+                                </SuiBox>
                             </SuiBox>
-
-                            {/* </Grid> */}
                         </Card>
                     </SuiBox>
                 </SuiBox>

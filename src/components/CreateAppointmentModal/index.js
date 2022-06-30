@@ -47,6 +47,7 @@ export default function CreateAppointmentModal() {
     }, [])
 
     const fetchData = () => {
+        console.log(slotId)
         mentorApi.getMentorSlotById(slotId).then((res) => {
             setSlotDetail(res.data.content)
             getMentorSubject(res.data.content.mentor.id)

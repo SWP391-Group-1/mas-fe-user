@@ -13,7 +13,8 @@ export default function MentorSlot({ slot }) {
 
     React.useEffect(() => {
         setSlotDetail(slot)
-    }, [slot])
+        console.log(slot)
+    }, [slot]) 
 
 
     return (

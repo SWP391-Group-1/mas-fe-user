@@ -1,31 +1,69 @@
-import { Card, Paper } from '@mui/material'
+import { Card, Grid, Paper } from '@mui/material'
 import { appointmentApi } from 'apis/appointmentApis'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import MentorInfoCard from 'examples/Cards/InfoCards/MentorInfoCard'
+import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { SnackbarProvider, useSnackbar } from 'notistack'
+
 
 export default function AppointmentRequestDetail() {
     const location = useLocation()
     const appointmentID = location.state?.appointmentId || null
-    const [appointmentRequestDetails, setAppointmentRequestDetails] = useState([])
+    const [appointmentRequestDetails, setAppointmentRequestDetails] = useState(
+        []
+    )
+
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handleClickVariant = (title, varientType) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(title, {
+            variant: varientType,
+        })
+    }
 
     useEffect(() => {
         fetchData()
     }, [])
 
     const fetchData = () => {
-        appointmentApi.loadReceivedAppointmentDetails(appointmentID).then((res) => {
-            setAppointmentRequestDetails(res.data.content)
-            console.log(res.data.content)
-        })
+        appointmentApi
+            .loadReceivedAppointmentDetails(appointmentID)
+            .then((res) => {
+                setAppointmentRequestDetails(res.data.content)
+                console.log(res.data.content)
+            })
+    }
+
+    const handleAcceptOrDenyRequest = (status) => {
+        appointmentApi
+            .processAppointment(appointmentID, {
+                isApprove: status,
+                mentorDescription: 'Appointment Decision',
+            })
+            .then((res) => {
+                fetchData()
+                if(status == true) {
+                    handleClickVariant(
+                        'Accept request successfully!',
+                        'success'
+                    )
+                } else {
+                    handleClickVariant(
+                        'You have denied the request!',
+                        'info'
+                    )
+                }
+            })
     }
 
     const renderStatus = () => {
@@ -87,113 +125,160 @@ export default function AppointmentRequestDetail() {
                     }}
                 >
                     <SuiBox mb={1}>{renderStatus()}</SuiBox>
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Fullname
-                        </SuiTypography>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable="true"
-                            type="text"
-                            value={appointmentRequestDetails?.creator?.name}
-                            inputProps={{ maxLength: 100 }}
-                        />
-                    </SuiBox>
-                    <SuiBox sx={{ display: 'flex' }}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Mentor Profile
-                        </SuiTypography>
-                    </SuiBox>
-                    <Paper sx={{ width: '40%' }} elevation={3}>
-                        <SuiBox p={2}>
-                            <MentorInfoCard
-                                title="profile information"
-                                description={
-                                    appointmentRequestDetails?.creator?.introduce
-                                }
-                                // description="aaaaa"
-                                info={{
-                                    Email: appointmentRequestDetails?.creator?.email,                                  
-                                }}
-                            />
-                        </SuiBox>
-                    </Paper>
-                    <SuiBox sx={{ display: 'flex' }} mb={1} mt={2}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Start Time
-                        </SuiTypography>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable="true"
-                            id="codeTextField"
-                            type="text"
-                            value={moment(appointmentRequestDetails?.slot?.startTime).format('LLLL')}
-                            inputProps={{ maxLength: 20 }}
-                        />
-                    </SuiBox>
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            End Time
-                        </SuiTypography>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable="true"
-                            id="codeTextField"
-                            type="text"
-                            value={moment(appointmentRequestDetails?.slot?.finishTime).format(
-                                'LLLL'
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    Fullname
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiBox mb={2}>
+                                <SuiInput
+                                    disable="true"
+                                    type="text"
+                                    value={
+                                        appointmentRequestDetails?.creator?.name
+                                    }
+                                    inputProps={{ maxLength: 100 }}
+                                />
+                            </SuiBox>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    width="10%"
+                                    alignItems="center"
+                                >
+                                    Mentor Profile
+                                </SuiTypography>
+                            </SuiBox>
+                            <Paper elevation={3}>
+                                <SuiBox p={2}>
+                                    <MentorInfoCard
+                                        title="profile information"
+                                        description={
+                                            appointmentRequestDetails?.creator
+                                                ?.introduce
+                                        }
+                                        info={{
+                                            Email: appointmentRequestDetails
+                                                ?.creator?.email,
+                                        }}
+                                    />
+                                </SuiBox>
+                            </Paper>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <SuiBox>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    Chosen Subject
+                                </SuiTypography>
+                            </SuiBox>
+
+                            {appointmentRequestDetails?.appointmentSubjects?.map(
+                                (item, index) => (
+                                    <Paper elevation={3}>
+                                        <SuiBox p={2}>
+                                            <SubjectInfoCard
+                                                description={item.briefProblem}
+                                                info={{
+                                                    Code: item.subject?.code,
+                                                    Name: item.subject?.title,
+                                                }}
+                                            />
+                                        </SuiBox>
+                                    </Paper>
+                                )
                             )}
-                            inputProps={{ maxLength: 20 }}
-                        />
-                    </SuiBox>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    Start Time
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiBox mb={2}>
+                                <SuiInput
+                                    disable="true"
+                                    id="codeTextField"
+                                    type="text"
+                                    value={moment(
+                                        appointmentRequestDetails?.slot
+                                            ?.startTime
+                                    ).format('LLLL')}
+                                    inputProps={{ maxLength: 20 }}
+                                />
+                            </SuiBox>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    End Time
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiBox mb={2}>
+                                <SuiInput
+                                    disable="true"
+                                    id="codeTextField"
+                                    type="text"
+                                    value={moment(
+                                        appointmentRequestDetails?.slot
+                                            ?.finishTime
+                                    ).format('LLLL')}
+                                    inputProps={{ maxLength: 20 }}
+                                />
+                            </SuiBox>
+                        </Grid>
+                    </Grid>
+
                     <SuiBox
-                        sx={{ width: '40%' }}
-                        mb={2}
-                        display="flex"
-                        justifyContent="flex-end"
+                        sx={{ display: 'flex', justifyContent: 'flex-end' }}
                     >
-                        <SuiButton mr={2}
+                        <SuiButton
+                            sx={{ mr: '10px' }}
                             color="success"
-                            //     onClick={()=> {
-                            //     navigate('/mentor/details/slotdetails/createappointment', {state: {slotID: slotDetail?.id}})
-                            // }
-                            // }
+                            onClick={() => {
+                                handleAcceptOrDenyRequest(true)
+                            }}
                         >
                             Accept
                         </SuiButton>
                         <SuiButton
                             color="dark"
-                            //     onClick={()=> {
-                            //     navigate('/mentor/details/slotdetails/createappointment', {state: {slotID: slotDetail?.id}})
-                            // }
-                            // }
+                            onClick={() => {
+                                handleAcceptOrDenyRequest(false)
+                            }}
                         >
                             Deny
                         </SuiButton>
