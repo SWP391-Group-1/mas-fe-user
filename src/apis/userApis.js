@@ -9,8 +9,13 @@ const getPersonalInformation = () => {
     loadToken()
     return defaultInstance.get(`users/personal`)
 }
+const updatePersonalInformation = (userProfile) => {
+    loadToken()
+    return defaultInstance.put(`users/personal`, userProfile)
+}
 
 export const UserApi = {
     getAllUser,
-    getPersonalInformation
+    getPersonalInformation,
+    updatePersonalInformation,
 }

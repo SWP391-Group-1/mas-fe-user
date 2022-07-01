@@ -39,6 +39,7 @@ import {
 import brand from 'assets/images/logo-ct.png'
 import { AuthContextProvider } from 'context/AuthContext'
 import { extraRoutes } from 'routes'
+import { ModalProvider } from 'hooks/useModal'
 
 var currentRoutes = [...routes]
 var extraRoute = [...extraRoutes]
@@ -149,13 +150,48 @@ export default function App() {
     return direction === 'rtl' ? (
         <CacheProvider value={rtlCache}>
             <ThemeProvider theme={themeRTL}>
+                <ModalProvider>
+                    <CssBaseline />
+                    {layout === 'dashboard' && (
+                        <>
+                            <Sidenav
+                                color={sidenavColor}
+                                brand={brand}
+                                brandName="Soft UI Dashboard"
+                                routes={routes}
+                                onMouseEnter={handleOnMouseEnter}
+                                onMouseLeave={handleOnMouseLeave}
+                            />
+                            <Configurator />
+                            {configsButton}
+                        </>
+                    )}
+                    {layout === 'vr' && <Configurator />}
+                    <AuthContextProvider>
+                        <Routes>
+                            {getRoutes(mergeRoutes)}
+                            <Route
+                                path="*"
+                                element={<Navigate to="/dashboard" />}
+                            />
+                        </Routes>
+                    </AuthContextProvider>
+                    {/* <Routes>
+                    {getRoutes(mergeRoutes)}
+                    <Route path="*" element={<Navigate to="/dashboard" />} />
+                </Routes> */}
+                </ModalProvider>
+            </ThemeProvider>
+        </CacheProvider>
+    ) : (
+        <ThemeProvider theme={theme}>
+            <ModalProvider>
                 <CssBaseline />
                 {layout === 'dashboard' && (
                     <>
                         <Sidenav
                             color={sidenavColor}
-                            brand={brand}
-                            brandName="Soft UI Dashboard"
+                            brandName="FPT MAS"
                             routes={routes}
                             onMouseEnter={handleOnMouseEnter}
                             onMouseLeave={handleOnMouseLeave}
@@ -170,42 +206,13 @@ export default function App() {
                         {getRoutes(mergeRoutes)}
                         <Route
                             path="*"
-                            element={<Navigate to="/dashboard" />}
+                            element={
+                                <Navigate to="/authentication/user/sign-in" />
+                            }
                         />
                     </Routes>
                 </AuthContextProvider>
-                {/* <Routes>
-                    {getRoutes(mergeRoutes)}
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
-                </Routes> */}
-            </ThemeProvider>
-        </CacheProvider>
-    ) : (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {layout === 'dashboard' && (
-                <>
-                    <Sidenav
-                        color={sidenavColor}
-                        brandName="FPT MAS"
-                        routes={routes}
-                        onMouseEnter={handleOnMouseEnter}
-                        onMouseLeave={handleOnMouseLeave}
-                    />
-                    <Configurator />
-                    {configsButton}
-                </>
-            )}
-            {layout === 'vr' && <Configurator />}
-            <AuthContextProvider>
-                <Routes>
-                    {getRoutes(mergeRoutes)}
-                    <Route
-                        path="*"
-                        element={<Navigate to="/authentication/user/sign-in" />}
-                    />
-                </Routes>
-            </AuthContextProvider>
+            </ModalProvider>
         </ThemeProvider>
     )
 }

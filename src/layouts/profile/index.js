@@ -5,43 +5,29 @@ import Box from '@mui/material/Box'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
-
-// @mui icons
 import FacebookIcon from '@mui/icons-material/Facebook'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import InstagramIcon from '@mui/icons-material/Instagram'
-
-// Soft UI Dashboard React components
 import SuiBox from 'components/SuiBox'
-
-// Soft UI Dashboard React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import Footer from 'examples/Footer'
 import ProfileInfoCard from 'examples/Cards/InfoCards/ProfileInfoCard'
-
-// Overview page components
 import Header from 'layouts/profile/components/Header'
 import { UserAuth } from 'context/AuthContext'
 import { useEffect, useState } from 'react'
 import { UserApi } from 'apis/userApis'
 import { SlotApi } from 'apis/slotApis'
+// import { appointmentApi } from 'apis/appointmentApis'
 import { subjectApi } from 'apis/subjectApis'
 import { mentorSubjectApi } from 'apis/mentorSubjectApis'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import '@fullcalendar/timegrid/main.css'
-import {
-    Button,
-    Chip,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    MenuItem,
-    Select,
-} from '@mui/material'
+import { Button, Chip, MenuItem, Select } from '@mui/material'
+import { useModal } from '../../hooks/useModal.js'
+import EventDialog from './components/EventDialog/index.js'
 
 function Overview() {
     const { user } = UserAuth()
@@ -49,9 +35,12 @@ function Overview() {
     const [selectMentorSubject, setSelectMentorSubject] = useState(null)
     const [mentorSubjects, setMentorSubjects] = useState([])
     const [subjects, setSubjects] = useState([])
-    // const [chipMentorSubject, setChipMentorSubject] = useState([])
     const [events, setEvents] = useState([])
-    const [open, setOpen] = useState(false)
+    // const [appointments, setAppointments] = useState([])
+    // const [joinEvents, setJoinEvents] = useState([])
+    const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
+    const [eventToEdit, setEventToEdit] = useState(null)
+    const modal = useModal()
 
     const chipMentorSubjects = React.useMemo(() => {
         return mentorSubjects?.map((mentorSubject) => ({
@@ -61,7 +50,10 @@ function Overview() {
         }))
     }, [mentorSubjects])
 
-    useEffect(() => console.log(mentorSubjects, chipMentorSubjects), [chipMentorSubjects])
+    useEffect(
+        () => console.log(mentorSubjects, chipMentorSubjects),
+        [chipMentorSubjects]
+    )
 
     const freeSlotTitle = 'Available slot'
     const sampleDescription =
@@ -71,18 +63,30 @@ function Overview() {
     var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
     var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
 
-
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
             setEvents((prevEvents) => [
-                // ...prevEvents,
                 ...slots.map((slot) => ({
                     title: freeSlotTitle,
                     start: slot.startTime,
                     end: slot.finishTime,
+                    id: slot.id,
                 })),
             ])
     }
+
+    // const setDataAppointments = (slots) => {
+    //     if (Array.isArray(slots))
+    //         setAppointments((prevEvents) => [
+    //             ...slots.map((slot) => ({
+    //                 title: "Appointment",
+    //                 start: slot.startTime,
+    //                 end: slot.finishTime,
+    //                 id: slot.id,
+    //                 color: 'purple',
+    //             })),
+    //         ])
+    // }
 
     const fetchData = (data) => {
         UserApi.getPersonalInformation(data).then((res) => {
@@ -105,33 +109,82 @@ function Overview() {
             ).then((res) => {
                 setDataEvents(res.data.content)
             })
+            // appointmentApi.loadMentorAppointment().then((res) => {
+            //     setDataAppointments(res.data.content)
+            // })
             mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
                 setMentorSubjects(res.data.content)
             })
         }
     }, [userProfile])
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-    function handleClose() {
-        setOpen(false)
+    const handleClickAdd = () => {
+        modal.openModal({
+            title: 'Mentor subject add',
+            content: 'Do you want to add this subject for mentor',
+            buttons: [
+                {
+                    text: 'Confirm',
+                    onClick: () => {
+                        handleAddChipMentorSubject()
+                        modal.closeModal()
+                    },
+                },
+                {
+                    text: 'Close',
+                    onClick: () => {
+                        modal.closeModal()
+                    },
+                },
+            ],
+        })
     }
 
-    // const handleAddMentorSubject = (selectMentorSubject) => {
-
-    //         setChipMentorSubject((prev) => [
-    //             ...prev,
-    //             {
-    //                 key: selectMentorSubject.id,
-    //                 label: selectMentorSubject.code,
-    //             },
-    //         ])
-    //     }
-    // }
+    const handleClickOpenEvent = ({ event, el }) => {
+        modal.openModal({
+            title: event.titlte,
+            content: 'Start: ' + event.start,
+            contentSecond: 'End: ' + event.end,
+            buttons: [
+                {
+                    text: 'Remove',
+                    onClick: () => {
+                        modal.openModal({
+                            title: 'Slot remove',
+                            content: 'Do you want to remove this slot',
+                            buttons: [
+                                {
+                                    text: 'Confirm',
+                                    onClick: () => {
+                                        modal.closeModal()
+                                        SlotApi.deleteAvailableSlot(
+                                            event.id
+                                        ).then((res) => {
+                                            fetchData()
+                                        })
+                                    },
+                                },
+                                {
+                                    text: 'Close',
+                                    onClick: () => {
+                                        modal.closeModal()
+                                    },
+                                },
+                            ],
+                        })
+                    },
+                },
+                {
+                    text: 'Close',
+                    onClick: () => {
+                        modal.closeModal()
+                    },
+                },
+            ],
+        })
+    }
 
     const handleAddChipMentorSubject = () => {
-        handleClose()
         if (selectMentorSubject)
             mentorSubjectApi
                 .registerMentorSubjects({
@@ -139,13 +192,14 @@ function Overview() {
                     briefInfo: selectMentorSubject.description,
                 })
                 .then((res) => {
-                    console.log('imsohuy', res.data)
+                    fetchData()
                 })
     }
 
     const handleDelete = (chipToDelete) => {
-        console.log('delete', chipToDelete);
-        // Todo
+        mentorSubjectApi.deleteMentorSubject(chipToDelete).then((res) => {
+            fetchData()
+        })
     }
 
     const card = (
@@ -154,13 +208,15 @@ function Overview() {
                 <Typography variant="h5" component="div" sx={{ m: 1 }}>
                     Current mentor subject
                 </Typography>
-                {chipMentorSubjects.map((data, index) => {
+                {chipMentorSubjects.map((chipMentorSubject, index) => {
                     return (
                         <Chip
                             sx={{ m: 1 }}
-                            key={data.key + index}
-                            label={data.label}
-                            onDelete={() => handleDelete(data)}
+                            key={chipMentorSubject.key + index}
+                            label={chipMentorSubject.label}
+                            onDelete={() =>
+                                handleDelete(chipMentorSubject.mentorSubject.id)
+                            }
                         />
                     )
                 })}
@@ -184,61 +240,52 @@ function Overview() {
                     variant="contained"
                     color="error"
                     size="small"
-                    // onClick={() => {
-                    //     console.log('imsohuy userprofile:', userProfile)
-                    //     console.log('imsohuy subject', subjects)
-                    //     console.log('imsohuy mentorSubject', mentorSubjects)
-                    //     console.log('imsohuy chipMentor', chipMentorSubject)
-
-                    //     handleAddMentorSubject(selectMentorSubject)
-                    // }}
-                    onClick={handleClickOpen}
+                    onClick={handleClickAdd}
                 >
                     Add
                 </Button>
             </CardContent>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {'Add mentor subject'}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Do you want to add this subject
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleAddChipMentorSubject} autoFocus>
-                        Confirm
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </React.Fragment>
     )
 
-    const handleDateClick = (dateClickInfo) => {
-        console.log(dateClickInfo.dateStr)
+    function handleEditEventCancelClick() {
+        setIsEditingEventOpen(false)
     }
 
-    const handleEventClick = (clickInfo) => {
-        console.log('imsohuy eventclick: ', clickInfo.event.title)
+    function handleEditEventOkClick(event) {
+        SlotApi.addAvailableSlot(event).then((res) => {
+            fetchData()
+        })
+        setIsEditingEventOpen(false)
+    }
+
+    function handleDateClick(dateClickInfo) {
+        function handleOpenEditEvent(start, end) {
+            setIsEditingEventOpen(true)
+            setEventToEdit({
+                startTime: start,
+                finishTime: end,
+            })
+        }
+
+        handleOpenEditEvent(dateClickInfo.date, dateClickInfo.date)
+    }
+
+    function handleOnUpdate() {
+        fetchData()
     }
 
     useEffect(() => {
         fetchData()
     }, [])
 
-    // TODO: delete this
     // useEffect(() => {
-    //     if (mentorSubjects != null) {
-    //         handleAddChipMentorSubject()
-    //     }
-    // }, [mentorSubjects])
+    //     setJoinEvents([...events, ...appointments])
+    //     console.log('APointments:', appointments)
+    //     console.log('Events:', events)
+    //     console.log('JoinEvents:', joinEvents)
+    //     console.log('userProfile', userProfile)
+    // }, [appointments])
 
     return (
         <DashboardLayout>
@@ -261,6 +308,21 @@ function Overview() {
                     <Grid item xs={10} md={6} xl={3}>
                         <ProfileInfoCard
                             title="profile information"
+                            fullname={
+                                userProfile !== null
+                                    ? userProfile.name
+                                    : user.displayName
+                            }
+                            meetUrl={
+                                userProfile !== null
+                                    ? userProfile.meetUrl
+                                    : 'meet.google.com/defaut-url'
+                            }
+                            avatarUrl={
+                                userProfile !== null
+                                    ? userProfile.avatar
+                                    : 'avatar/url'
+                            }
                             description={
                                 userProfile.introduce === ''
                                     ? sampleDescription
@@ -298,26 +360,46 @@ function Overview() {
                                     color: 'instagram',
                                 },
                             ]}
+                            onUpdate={handleOnUpdate}
                             action={{ route: '', tooltip: 'Edit Profile' }}
                         />
                     </Grid>
-                    <Grid item xs={10} md={3} xl={9}>
-                        <FullCalendar
-                            initialView="timeGridWeek"
-                            plugins={[timeGridPlugin, interactionPlugin]}
-                            events={events}
-                            dateClick={handleDateClick}
-                            eventClick={handleEventClick}
-                        />
-                    </Grid>
-                    <Grid item xs={10} md={1} xl={5}>
-                        <Box sx={{ minWidth: 100 }}>
-                            <Card variant="outlined">{card}</Card>
-                        </Box>
-                    </Grid>
+                    {userProfile.isMentor && (
+                        <>
+                            <Grid item xs={10} md={3} xl={9}>
+                                <FullCalendar
+                                    initialView="timeGridWeek"
+                                    plugins={[
+                                        dayGridPlugin,
+                                        timeGridPlugin,
+                                        interactionPlugin,
+                                    ]}
+                                    events={events}
+                                    dateClick={handleDateClick}
+                                    eventClick={handleClickOpenEvent}
+                                    headerToolbar={{
+                                        left: 'prev,next today',
+                                        center: 'title',
+                                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={10} md={1} xl={5}>
+                                <Box sx={{ minWidth: 100 }}>
+                                    <Card variant="outlined">{card}</Card>
+                                </Box>
+                            </Grid>
+                        </>
+                    )}
                 </Grid>
             </SuiBox>
             <Footer />
+            <EventDialog
+                isOpen={isEditingEventOpen}
+                initialEvent={eventToEdit}
+                onOk={handleEditEventOkClick}
+                onCancel={handleEditEventCancelClick}
+            />
         </DashboardLayout>
     )
 }
