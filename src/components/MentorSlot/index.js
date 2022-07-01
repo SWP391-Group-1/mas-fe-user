@@ -2,14 +2,10 @@ import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
 import React, { useState } from 'react'
 import moment from 'moment'
-import { Card } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 export default function MentorSlot({ slot }) {
     const [slotDetail, setSlotDetail] = useState()
-    const [date, setDate] = useState()
     let navigate = useNavigate()
-    const [startTime, setStartTime] = useState()
-    const [endTime, setEndTime] = useState()
 
     React.useEffect(() => {
         setSlotDetail(slot)

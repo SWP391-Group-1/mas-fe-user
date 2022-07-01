@@ -31,6 +31,20 @@ const loadReceivedAppointment = () => {
     return defaultInstance.get('/users/mentor/appointments?IsNew=true&IsAll=false')
 }
 
+const loadUserAppointment = () => {
+    loadToken()
+    return defaultInstance.get(
+        '/users/own/appointments?IsActive=true&IsApprove=true'
+    )
+}
+
+const loadMentorAppointment = () => {
+    loadToken()
+    return defaultInstance.get(
+        '/users/mentor/appointments?IsActive=true&IsApprove=true'
+    )
+}
+
 const loadSendAppointmentDetails = (appointmentId) => {
     loadToken()
     return defaultInstance.get(`/users/own/appointments/${appointmentId}`)
@@ -67,5 +81,7 @@ export const appointmentApi = {
     processAppointment,
     loadSendAppointmentFilter,
     loadAppointmentInASlot,
-    ratingAfterAppointment
+    ratingAfterAppointment,
+    loadMentorAppointment,
+    loadUserAppointment,
 }

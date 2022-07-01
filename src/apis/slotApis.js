@@ -1,4 +1,4 @@
-import { defaultInstance } from './axiosClient'
+import { defaultInstance, loadToken } from './axiosClient'
 
 const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
     return defaultInstance.get('/slots', {
@@ -12,6 +12,19 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
     })
 }
 
+const addAvailableSlot = (slot) => {
+    loadToken()
+    console.log('api', slot)    
+    return defaultInstance.post(`/slots/`, slot)
+}
+
+const deleteAvailableSlot = (id) => {
+    loadToken()
+    return defaultInstance.delete(`/slots/${id}`)
+}
+
 export const SlotApi = {
     getAllSlots,
+    deleteAvailableSlot,
+    addAvailableSlot,
 }
