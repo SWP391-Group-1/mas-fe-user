@@ -42,11 +42,13 @@ function Dashboard() {
         if (Array.isArray(slots))
             setAppointments((prevEvents) => [
                 ...slots.map((slot) => ({
-                    title: 'Appoinment',
+                    title: slot.isApprove
+                        ? 'Appoinment : Approved'
+                        : ' Appointment : Unapproved',
                     start: slot.startTime,
                     end: slot.finishTime,
                     id: slot.id,
-                    color: 'red',
+                    color: slot.isApprove ? 'green' : 'red',
                 })),
             ])
     }
@@ -72,14 +74,6 @@ function Dashboard() {
 
     useEffect(() => {
         if (userProfile?.isMentor) {
-            appointmentApi.loadMentorAppointment().then((res) => {
-                setDataMentorSlots(res.data.content)
-            })
-            appointmentApi.loadUserAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-                console.log('Dashboard', res.data.content)
-            })
-        } else {
             SlotApi.getAllSlots(
                 userProfile?.id,
                 weekStart.toISOString(),
@@ -90,6 +84,14 @@ function Dashboard() {
                 setDataMentorSlots(res.data.content)
             })
             appointmentApi.loadMentorAppointment().then((res) => {
+                setDataAppointments(res.data.content)
+                console.log('Dashboard', res.data.content)
+            })
+        } else {
+            appointmentApi.loadMentorAppointment().then((res) => {
+                setDataMentorSlots(res.data.content)
+            })
+            appointmentApi.loadUserAppointment().then((res) => {
                 setDataAppointments(res.data.content)
                 console.log('Dashboard', res.data.content)
             })
