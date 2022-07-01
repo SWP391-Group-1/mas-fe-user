@@ -36,7 +36,6 @@ function Dashboard() {
 
     const handleDateClick = (event) => {
         console.log('dateclick', event)
-        
     }
 
     const setDataAppointments = (slots) => {
@@ -72,12 +71,27 @@ function Dashboard() {
     }
 
     useEffect(() => {
-        if (userProfile?.id) {
+        if (userProfile?.isMentor) {
             appointmentApi.loadMentorAppointment().then((res) => {
                 setDataMentorSlots(res.data.content)
             })
             appointmentApi.loadUserAppointment().then((res) => {
                 setDataAppointments(res.data.content)
+                console.log('Dashboard', res.data.content)
+            })
+        } else {
+            SlotApi.getAllSlots(
+                userProfile?.id,
+                weekStart.toISOString(),
+                weekEnd.toISOString(),
+                true,
+                true
+            ).then((res) => {
+                setDataMentorSlots(res.data.content)
+            })
+            appointmentApi.loadMentorAppointment().then((res) => {
+                setDataAppointments(res.data.content)
+                console.log('Dashboard', res.data.content)
             })
         }
     }, [userProfile])
@@ -115,7 +129,6 @@ function Dashboard() {
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay',
                     }}
-                    
                 />
             </SuiBox>
             <Footer />

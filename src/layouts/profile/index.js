@@ -17,7 +17,6 @@ import { UserAuth } from 'context/AuthContext'
 import { useEffect, useState } from 'react'
 import { UserApi } from 'apis/userApis'
 import { SlotApi } from 'apis/slotApis'
-// import { appointmentApi } from 'apis/appointmentApis'
 import { subjectApi } from 'apis/subjectApis'
 import { mentorSubjectApi } from 'apis/mentorSubjectApis'
 import FullCalendar from '@fullcalendar/react'
@@ -28,16 +27,16 @@ import '@fullcalendar/timegrid/main.css'
 import { Button, Chip, MenuItem, Select } from '@mui/material'
 import { useModal } from '../../hooks/useModal.js'
 import EventDialog from './components/EventDialog/index.js'
+import { useNavigate } from 'react-router-dom'
 
 function Overview() {
     const { user } = UserAuth()
+    const navigate = useNavigate()
     const [userProfile, setUserProfile] = useState({})
     const [selectMentorSubject, setSelectMentorSubject] = useState(null)
     const [mentorSubjects, setMentorSubjects] = useState([])
     const [subjects, setSubjects] = useState([])
     const [events, setEvents] = useState([])
-    // const [appointments, setAppointments] = useState([])
-    // const [joinEvents, setJoinEvents] = useState([])
     const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
     const [eventToEdit, setEventToEdit] = useState(null)
     const modal = useModal()
@@ -49,11 +48,6 @@ function Overview() {
             mentorSubject,
         }))
     }, [mentorSubjects])
-
-    useEffect(
-        () => console.log(mentorSubjects, chipMentorSubjects),
-        [chipMentorSubjects]
-    )
 
     const freeSlotTitle = 'Available slot'
     const sampleDescription =
@@ -74,49 +68,6 @@ function Overview() {
                 })),
             ])
     }
-
-    // const setDataAppointments = (slots) => {
-    //     if (Array.isArray(slots))
-    //         setAppointments((prevEvents) => [
-    //             ...slots.map((slot) => ({
-    //                 title: "Appointment",
-    //                 start: slot.startTime,
-    //                 end: slot.finishTime,
-    //                 id: slot.id,
-    //                 color: 'purple',
-    //             })),
-    //         ])
-    // }
-
-    const fetchData = (data) => {
-        UserApi.getPersonalInformation(data).then((res) => {
-            setUserProfile(res.data.content)
-        })
-
-        subjectApi.getAllSubject().then((res) => {
-            setSubjects(res.data.content)
-        })
-    }
-
-    React.useEffect(() => {
-        if (userProfile?.id) {
-            SlotApi.getAllSlots(
-                userProfile?.id,
-                weekStart.toISOString(),
-                weekEnd.toISOString(),
-                true,
-                true
-            ).then((res) => {
-                setDataEvents(res.data.content)
-            })
-            // appointmentApi.loadMentorAppointment().then((res) => {
-            //     setDataAppointments(res.data.content)
-            // })
-            mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
-                setMentorSubjects(res.data.content)
-            })
-        }
-    }, [userProfile])
 
     const handleClickAdd = () => {
         modal.openModal({
@@ -202,6 +153,63 @@ function Overview() {
         })
     }
 
+    const fetchData = (data) => {
+        UserApi.getPersonalInformation(data).then((res) => {
+            setUserProfile(res.data.content)
+        })
+
+        subjectApi.getAllSubject().then((res) => {
+            setSubjects(res.data.content)
+        })
+    }
+
+    function handleEditEventCancelClick() {
+        setIsEditingEventOpen(false)
+    }
+
+    function handleEditEventOkClick(event) {
+        SlotApi.addAvailableSlot(event).then((res) => {
+            fetchData()
+        })
+        setIsEditingEventOpen(false)
+    }
+
+    function handleDateClick(dateClickInfo) {
+        function handleOpenEditEvent(start, end) {
+            setIsEditingEventOpen(true)
+            setEventToEdit({
+                startTime: start,
+                finishTime: end,
+            })
+            fetchData()
+        }
+
+        handleOpenEditEvent(dateClickInfo.date, dateClickInfo.date)
+    }
+
+    function handleOnUpdate() {
+        fetchData()
+        navigate('/profile')
+    }
+
+    React.useEffect(() => {
+        if (userProfile?.id) {
+            SlotApi.getAllSlots(
+                userProfile?.id,
+                weekStart.toISOString(),
+                // weekEnd.toISOString(),
+                '2022-7-20',
+                true,
+                true
+            ).then((res) => {
+                setDataEvents(res.data.content)
+            })
+            mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
+                setMentorSubjects(res.data.content)
+            })
+        }
+    }, [userProfile])
+
     const card = (
         <React.Fragment>
             <CardContent>
@@ -248,44 +256,15 @@ function Overview() {
         </React.Fragment>
     )
 
-    function handleEditEventCancelClick() {
-        setIsEditingEventOpen(false)
-    }
+    useEffect(
+        () => console.log(mentorSubjects, chipMentorSubjects),
+        [chipMentorSubjects]
+    )
 
-    function handleEditEventOkClick(event) {
-        SlotApi.addAvailableSlot(event).then((res) => {
-            fetchData()
-        })
-        setIsEditingEventOpen(false)
-    }
-
-    function handleDateClick(dateClickInfo) {
-        function handleOpenEditEvent(start, end) {
-            setIsEditingEventOpen(true)
-            setEventToEdit({
-                startTime: start,
-                finishTime: end,
-            })
-        }
-
-        handleOpenEditEvent(dateClickInfo.date, dateClickInfo.date)
-    }
-
-    function handleOnUpdate() {
-        fetchData()
-    }
 
     useEffect(() => {
         fetchData()
     }, [])
-
-    // useEffect(() => {
-    //     setJoinEvents([...events, ...appointments])
-    //     console.log('APointments:', appointments)
-    //     console.log('Events:', events)
-    //     console.log('JoinEvents:', joinEvents)
-    //     console.log('userProfile', userProfile)
-    // }, [appointments])
 
     return (
         <DashboardLayout>

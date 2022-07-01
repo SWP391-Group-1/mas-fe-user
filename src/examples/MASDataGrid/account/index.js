@@ -32,7 +32,11 @@ const MentorDataGrid = () => {
                     variant="contained"
                     color="error"
                     size="small"
-                    onClick={() => {navigate('/mentor/details', {state: {mentorID: params.row.id}})}}
+                    onClick={() => {
+                        navigate('/mentor/details', {
+                            state: { mentorID: params.row.id },
+                        })
+                    }}
                 >
                     View Detail
                 </Button>
@@ -41,7 +45,11 @@ const MentorDataGrid = () => {
     }
 
     const columns = [
-        { field: 'name', headerName: 'Name', width: 250 },
+        {
+            field: 'name',
+            headerName: 'Name',
+            width: 250,
+        },
         { field: 'email', headerName: 'Email', width: 350 },
         {
             field: 'rate',
@@ -66,7 +74,7 @@ const MentorDataGrid = () => {
 
     return (
         <>
-        <SuiBox mb={2} sx={{ display: 'flex', width: '30%' }}>
+            <SuiBox mb={2} sx={{ display: 'flex', width: '30%' }}>
                 <SuiInput
                     id="searchTextField"
                     type="text"
@@ -85,18 +93,17 @@ const MentorDataGrid = () => {
                     <SearchIcon />
                 </IconButton>
             </SuiBox>
-        
+
             <div style={{ height: 750, width: '100%' }}>
-            <DataGrid
-                rowHeight={80}
-                rows={mentors}
-                columns={columns}
-                pageSize={10}
-                disableSelectionOnClick
-            />
-        </div>
+                <DataGrid
+                    rowHeight={80}
+                    rows={mentors}
+                    columns={columns}
+                    pageSize={10}
+                    disableSelectionOnClick
+                />
+            </div>
         </>
-       
     )
 }
 
