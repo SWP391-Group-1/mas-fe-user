@@ -11,7 +11,9 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
         },
     })
 }
-
+const getSlotDetailById = (slotId) => {
+    return defaultInstance.get(`/slots/${slotId}`)
+}
 const addAvailableSlot = (slot) => {
     loadToken()
     console.log('api', slot)    
@@ -27,4 +29,5 @@ export const SlotApi = {
     getAllSlots,
     deleteAvailableSlot,
     addAvailableSlot,
+    getSlotDetailById,
 }

@@ -1,5 +1,6 @@
 import { Avatar, Card, Divider, Grid } from '@mui/material'
 import { mentorApi } from 'apis/mentorApis'
+import { SlotApi } from 'apis/slotApis'
 import MentorSlot from 'components/MentorSlot'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiBox from 'components/SuiBox'
@@ -11,6 +12,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import moment from "moment"
 
 export default function MentorDetail() {
     const location = useLocation()
@@ -24,6 +26,9 @@ export default function MentorDetail() {
     }, [])
 
     const fetchData = () => {
+        var fromDate = moment().format("YYYY-MM-DD HH:mm:ss")
+        console.log("abc", fromDate)
+
         mentorApi.getMentorById(mentorId).then((res) => {
             setMentor(res.data.content)
         })
@@ -39,7 +44,10 @@ export default function MentorDetail() {
             }
             setMentorSubjects(subjectArray)
         })
-        mentorApi.getMentorSlots(mentorId).then((res) => {
+        // mentorApi.getMentorSlots(mentorId).then((res) => {
+        //     setMentorSlots(res.data.content)
+        // })
+        SlotApi.getAllSlots(mentorId, fromDate, "", true, true).then((res) => {
             setMentorSlots(res.data.content)
         })
     }
@@ -111,13 +119,13 @@ export default function MentorDetail() {
                 </Card>
 
                 <SuiBox sx={{ display: 'flex' }}>
-                    <SuiBox mt={5} mb={3}>
+                    <SuiBox mt={2} mb={3}>
                         <Card>
                             <SuiTypography pl={1}>Mentor Slots</SuiTypography>
                             <SuiBox>
                                 <SuiBox p={3}>
                                     {mentorSlots?.map((item) => {
-                                        console.log(item)
+                                        
                                         return <MentorSlot slot={item} />
                                     })}
                                 </SuiBox>

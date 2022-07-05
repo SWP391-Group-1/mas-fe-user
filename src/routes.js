@@ -102,7 +102,7 @@ const extraRoutes = [
     {
         type: 'collapse',
         name: 'Slot Detail',
-        key: 'slotdetails',
+        key: 'slot details',
         route: '/mentor/details/slotdetails',
         component: <SlotDetailModal />,  
     },

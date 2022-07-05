@@ -192,13 +192,14 @@ export default function AppointmentRequestDetail() {
                                     Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-
-                            {appointmentRequestDetails?.appointmentSubjects?.map(
+                            {appointmentRequestDetails?.slot.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>
                                             <SubjectInfoCard
-                                                description={item.briefProblem}
+                                                description={
+                                                    appointmentRequestDetails ?.briefProblem
+                                                }
                                                 info={{
                                                     Code: item.subject?.code,
                                                     Name: item.subject?.title,

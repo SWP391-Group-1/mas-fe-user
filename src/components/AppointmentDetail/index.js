@@ -1,5 +1,6 @@
 import { Card, Grid, Paper } from '@mui/material'
 import { appointmentApi } from 'apis/appointmentApis'
+import { SlotApi } from 'apis/slotApis'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -18,20 +19,25 @@ export default function AppointmentDetail() {
     const location = useLocation()
     const appointmentID = location.state?.appointmentId || null
     const [appointmentDetails, setAppointmentDetails] = useState([])
+    const [slotDetails, setSlotDetails] = useState(null)
     let navigate = useNavigate()
     useEffect(() => {
-        if(appointmentID == null) {
+        if (appointmentID == null) {
             navigate('/dashboard')
         } else {
             fetchData()
-        }    
+        }
     }, [])
 
     const fetchData = () => {
-        
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
+            // SlotApi.getSlotDetailById(res.data.content.slotId).then(
+            //     (responses) => {
+            //         setSlotDetails(responses.data.content)
+            //     }
+            // )
         })
     }
 
@@ -75,7 +81,6 @@ export default function AppointmentDetail() {
     }
 
     return (
-        
         <DashboardLayout>
             <DashboardNavbar />
             <SuiBox mt={7} mb={3}>
@@ -168,12 +173,14 @@ export default function AppointmentDetail() {
                                 </SuiTypography>
                             </SuiBox>
 
-                            {appointmentDetails?.appointmentSubjects?.map(
+                            {appointmentDetails?.slot.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>
                                             <SubjectInfoCard
-                                                description={item.briefProblem}
+                                                description={
+                                                    appointmentDetails?.briefProblem
+                                                }
                                                 info={{
                                                     Code: item.subject?.code,
                                                     Name: item.subject?.title,
@@ -183,6 +190,20 @@ export default function AppointmentDetail() {
                                     </Paper>
                                 )
                             )}
+
+                            {/* {slotDetail?.slotSubjects?.map((item, index) => (
+                                <Paper elevation={3}>
+                                    <SuiBox p={2}>
+                                        <SubjectInfoCard
+                                            description={item.description}
+                                            info={{
+                                                Code: item.subject?.code,
+                                                Name: item.subject?.title,
+                                            }}
+                                        />
+                                    </SuiBox>
+                                </Paper>
+                            ))} */}
                         </Grid>
                     </Grid>
                     <Grid container spacing={3}>
