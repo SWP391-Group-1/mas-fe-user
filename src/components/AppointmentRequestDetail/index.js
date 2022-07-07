@@ -12,8 +12,7 @@ import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { SnackbarProvider, useSnackbar } from 'notistack'
-
+import { useSnackbar } from 'notistack'
 
 export default function AppointmentRequestDetail() {
     const location = useLocation()
@@ -52,16 +51,13 @@ export default function AppointmentRequestDetail() {
             })
             .then((res) => {
                 fetchData()
-                if(status == true) {
+                if (status === true) {
                     handleClickVariant(
                         'Accept request successfully!',
                         'success'
                     )
                 } else {
-                    handleClickVariant(
-                        'You have denied the request!',
-                        'info'
-                    )
+                    handleClickVariant('You have denied the request!', 'info')
                 }
             }).catch((err) => {
                 console.log(err.response.data.error.message)
@@ -82,7 +78,7 @@ export default function AppointmentRequestDetail() {
                 </SuiTypography>
             )
         } else {
-            if (appointmentRequestDetails?.isApprove == true) {
+            if (appointmentRequestDetails?.isApprove === true) {
                 return (
                     <SuiTypography
                         component="label"

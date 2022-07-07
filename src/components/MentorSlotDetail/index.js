@@ -27,7 +27,6 @@ import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 
 export default function MentorSlotDetail() {
     const location = useLocation()
-    //const slotID = location.state?.slotID || null
     const [slotDetails, setSlotDetails] = useState()
     const [appointments, setAppointments] = useState([])
     let questions = []
@@ -42,7 +41,6 @@ export default function MentorSlotDetail() {
     }, [])
 
     const handleClickVariant = (title, varientType) => {
-        // variant could be success, error, warning, info, or default
         enqueueSnackbar(title, {
             variant: varientType,
         })
@@ -119,7 +117,7 @@ export default function MentorSlotDetail() {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-                if (params.answer == null || params.answer.length == 0) {
+                if (params.answer === null || params.answer.length === 0) {
                     return 'Not answer yet'
                 } else {
                     return 'Answered'

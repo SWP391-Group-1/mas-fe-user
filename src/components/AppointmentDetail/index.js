@@ -143,7 +143,6 @@ export default function AppointmentDetail() {
                                                 appointmentDetails?.mentor
                                                     ?.introduce
                                             }
-                                            // description="aaaaa"
                                             info={{
                                                 Email: appointmentDetails
                                                     ?.mentor?.email,
