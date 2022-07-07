@@ -65,7 +65,7 @@ function SubjectInfoCard({ description, info }) {
                     fontWeight="bold"
                     textTransform="capitalize"
                 >
-                    Brief Problem:
+                    Description:
                 </SuiTypography>
                 <SuiBox mb={2} lineHeight={0}>
                     <SuiInput

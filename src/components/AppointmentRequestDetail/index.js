@@ -63,6 +63,9 @@ export default function AppointmentRequestDetail() {
                         'info'
                     )
                 }
+            }).catch((err) => {
+                console.log(err.response.data.error.message)
+                handleClickVariant(err.response.data.error.message, 'error')
             })
     }
 
@@ -192,7 +195,7 @@ export default function AppointmentRequestDetail() {
                                     Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-                            {appointmentRequestDetails?.slot.slotSubjects?.map(
+                            {appointmentRequestDetails?.slot?.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>

@@ -12,7 +12,9 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import moment from "moment"
+import moment from 'moment'
+import { ratingApi } from 'apis/ratingApis'
+import RatingCommentItem from 'components/RatingCommentItem'
 
 export default function MentorDetail() {
     const location = useLocation()
@@ -20,14 +22,15 @@ export default function MentorDetail() {
     const [mentor, setMentor] = useState()
     const [mentorSubjects, setMentorSubjects] = useState('')
     const [mentorSlots, setMentorSlots] = useState([])
+    const [ratingLists, setRatingLists] = useState([])
     var subjectArray = ''
     useEffect(() => {
         fetchData()
     }, [])
 
     const fetchData = () => {
-        var fromDate = moment().format("YYYY-MM-DD HH:mm:ss")
-        console.log("abc", fromDate)
+        var fromDate = moment().format('YYYY-MM-DD HH:mm:ss')
+        console.log('abc', fromDate)
 
         mentorApi.getMentorById(mentorId).then((res) => {
             setMentor(res.data.content)
@@ -47,8 +50,11 @@ export default function MentorDetail() {
         // mentorApi.getMentorSlots(mentorId).then((res) => {
         //     setMentorSlots(res.data.content)
         // })
-        SlotApi.getAllSlots(mentorId, fromDate, "", true, true).then((res) => {
+        SlotApi.getAllSlots(mentorId, fromDate, '', true, true).then((res) => {
             setMentorSlots(res.data.content)
+        })
+        ratingApi.loadAllRatingOfAMentor(mentorId).then((res) => {
+            setRatingLists(res.data.content)
         })
     }
 
@@ -118,19 +124,42 @@ export default function MentorDetail() {
                     </Grid>
                 </Card>
 
-                <SuiBox sx={{ display: 'flex' }}>
+                <SuiBox>
                     <SuiBox mt={2} mb={3}>
-                        <Card>
-                            <SuiTypography pl={1}>Mentor Slots</SuiTypography>
-                            <SuiBox>
-                                <SuiBox p={3}>
-                                    {mentorSlots?.map((item) => {
-                                        
-                                        return <MentorSlot slot={item} />
-                                    })}
-                                </SuiBox>
-                            </SuiBox>
-                        </Card>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={6}>
+                                <Card>
+                                    <SuiTypography pl={1}>
+                                        Mentor Slots
+                                    </SuiTypography>
+                                    <SuiBox>
+                                        <SuiBox p={2}>
+                                            {mentorSlots?.map((item) => {
+                                                return (
+                                                    <MentorSlot slot={item} />
+                                                )
+                                            })}
+                                        </SuiBox>
+                                    </SuiBox>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Card>
+                                    <SuiTypography pl={1}>
+                                        Rating Comment Section
+                                    </SuiTypography>
+                                    <SuiBox>
+                                        <SuiBox p={2}>
+                                            {ratingLists?.map((item) => {
+                                                return (
+                                                    <RatingCommentItem rating={item} />
+                                                )
+                                            })}
+                                        </SuiBox>
+                                    </SuiBox>
+                                </Card>
+                            </Grid>
+                        </Grid>
                     </SuiBox>
                 </SuiBox>
             </SuiBox>

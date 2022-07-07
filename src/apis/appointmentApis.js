@@ -62,7 +62,7 @@ const processAppointment = (appointmentId, data) => {
 
 const loadAppointmentInASlot = (slotId) => {
     loadToken()
-    return defaultInstance.get(`/users/mentor/appointments?SlotId=e6ec0fc3-b74d-4df5-9551-f068f3e859cc`)
+    return defaultInstance.get(`/users/receive/appointments?SlotId=${slotId}`)
 }
 
 const ratingAfterAppointment = (id, data) => {

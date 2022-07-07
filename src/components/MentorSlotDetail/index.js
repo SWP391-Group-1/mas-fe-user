@@ -23,13 +23,15 @@ import QuestionDataGrid from 'examples/MASDataGrid/question'
 import { useSnackbar } from 'notistack'
 import { DataGrid } from '@mui/x-data-grid'
 import AnswerQuestionModal from 'components/AnswerQuestionModal'
+import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 
 export default function MentorSlotDetail() {
     const location = useLocation()
     //const slotID = location.state?.slotID || null
     const [slotDetails, setSlotDetails] = useState()
     const [appointments, setAppointments] = useState([])
-    const [questions, setQuestions] = useState([])
+    let questions = []
+    const [tempQuestions, setTempQuestions] = useState([])
     const [question, setQuestion] = useState([])
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
@@ -62,12 +64,13 @@ export default function MentorSlotDetail() {
 
     const fetchData = () => {
         mentorApi
-            .getMentorSlotById('e6ec0fc3-b74d-4df5-9551-f068f3e859cc')
+            .getMentorSlotById('c4c1da92-291c-4f89-8488-098bfe6eb155')
             .then((res) => {
                 setSlotDetails(res.data.content)
+            
             })
         appointmentApi
-            .loadAppointmentInASlot('e6ec0fc3-b74d-4df5-9551-f068f3e859cc')
+            .loadAppointmentInASlot('c4c1da92-291c-4f89-8488-098bfe6eb155')
             .then((res) => {
                 setAppointments(res.data.content)
                 loadQuestion(res.data.content)
@@ -75,14 +78,15 @@ export default function MentorSlotDetail() {
     }
 
     const loadQuestion = (appointmentList) => {
-        setQuestions([])
         var request = appointmentList.map((item) => {
             return questionApi.loadQuestionsOfAppointment(item.id)
         })
         Promise.all(request).then((res) => {
             res?.map((item) => {
                 item?.data?.content.map((i) => {
-                    questions.push(i)
+                    //console.log(i)
+                    //questions = [...questions, i]
+                    setTempQuestions(...tempQuestions, i)
                 })
             })
         })
@@ -201,10 +205,10 @@ export default function MentorSlotDetail() {
                                     </SuiTypography>
                                 </SuiBox>
 
-                                <Card sx={{ borderRadius: '7px' }}>
+                                <Card sx={{ borderRadius: '7px', height: 276 }} >
                                     <List
                                         sx={{
-                                            maxHeight: 275,
+                                            maxHeight: 276,
                                             position: 'relative',
                                             overflow: 'auto',
                                         }}
@@ -213,7 +217,7 @@ export default function MentorSlotDetail() {
                                             return (
                                                 <ListItem>
                                                     <SuiBox p={2}>
-                                                        <SuiTypography variant="button">
+                                                        <SuiTypography variant="button" fontWeight="regular" color="text">
                                                             {index + 1}.{' '}
                                                             {
                                                                 item?.creator
@@ -230,60 +234,103 @@ export default function MentorSlotDetail() {
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} >
                         <Grid item xs={12} md={6}>
-                            <SuiBox mb={1} mt={2}>
+                            <SuiBox>
                                 <SuiTypography
                                     component="label"
                                     variant="button"
                                     fontWeight="bold"
                                     alignItems="center"
                                 >
-                                    Start Time
+                                    Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    disabled="true"
-                                    id="codeTextField"
-                                    type="text"
-                                    value={moment(
-                                        slotDetails?.slot?.startTime
-                                    ).format('LLLL')}
-                                    inputProps={{ maxLength: 20 }}
-                                />
-                            </SuiBox>
+                            {slotDetails?.slotSubjects?.map((item, index) => (
+                                <Paper elevation={3}>
+                                    <SuiBox p={2}>
+                                        <SubjectInfoCard
+                                            description={item.description}
+                                            info={{
+                                                Code: item.subject?.code,
+                                                Name: item.subject?.title,
+                                            }}
+                                        />
+                                    </SuiBox>
+                                </Paper>
+                            ))}
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <SuiBox mb={1} mt={2}>
-                                <SuiTypography
-                                    component="label"
-                                    variant="button"
-                                    fontWeight="bold"
-                                    alignItems="center"
-                                >
-                                    End Time
-                                </SuiTypography>
-                            </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    disabled="true"
-                                    id="codeTextField"
-                                    type="text"
-                                    value={moment(
-                                        slotDetails?.slot?.finishTime
-                                    ).format('LLLL')}
-                                    inputProps={{ maxLength: 20 }}
-                                />
-                            </SuiBox>
+                            <Card
+                                sx={{
+                                    backdropFilter: `saturate(200%) blur(30px)`,
+                                    backgroundColor: ({
+                                        functions: { rgba },
+                                        palette: { white },
+                                    }) => rgba(white.main, 0.8),
+                                    boxShadow: ({
+                                        boxShadows: { navbarBoxShadow },
+                                    }) => navbarBoxShadow,
+                                    position: 'relative',
+                                    mt: 4,
+                                    py: 2,
+                                    px: 2,
+                                    borderRadius: 2
+                                }}
+                            >
+                                <SuiBox mb={1} mt={2}>
+                                    <SuiTypography
+                                        component="label"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        alignItems="center"
+                                    >
+                                        Start Time
+                                    </SuiTypography>
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        disabled="true"
+                                        id="codeTextField"
+                                        type="text"
+                                        value={moment(
+                                            slotDetails?.startTime
+                                        ).format('LLLL')}
+                                        inputProps={{ maxLength: 20 }}
+                                    />
+                                </SuiBox>
+                                <SuiBox mb={1} mt={2}>
+                                    <SuiTypography
+                                        component="label"
+                                        variant="button"
+                                        fontWeight="bold"
+                                        alignItems="center"
+                                    >
+                                        End Time
+                                    </SuiTypography>
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        disabled="true"
+                                        id="codeTextField"
+                                        type="text"
+                                        value={moment(
+                                            slotDetails?.finishTime
+                                        ).format('LLLL')}
+                                        inputProps={{ maxLength: 20 }}
+                                    />
+                                </SuiBox>
+
+                            </Card>
                         </Grid>
                     </Grid>
+                    {tempQuestions}
                 </Card>
             </SuiBox>
             <div style={{ height: 350, width: '100%' }}>
                 <DataGrid
                     rowHeight={50}
-                    rows={questions}
+                    rows={tempQuestions}
                     columns={columns}
                     pageSize={5}
                     disableSelectionOnClick

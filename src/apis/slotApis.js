@@ -11,6 +11,7 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
         },
     })
 }
+
 const getSlotDetailById = (slotId) => {
     return defaultInstance.get(`/slots/${slotId}`)
 }

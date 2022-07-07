@@ -173,7 +173,7 @@ export default function AppointmentDetail() {
                                 </SuiTypography>
                             </SuiBox>
 
-                            {appointmentDetails?.slot.slotSubjects?.map(
+                            {appointmentDetails?.slot?.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>
