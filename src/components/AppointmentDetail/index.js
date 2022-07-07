@@ -20,15 +20,14 @@ export default function AppointmentDetail() {
     const [appointmentDetails, setAppointmentDetails] = useState([])
     let navigate = useNavigate()
     useEffect(() => {
-        if(appointmentID == null) {
+        if (appointmentID == null) {
             navigate('/dashboard')
         } else {
             fetchData()
-        }    
+        }
     }, [])
 
     const fetchData = () => {
-        
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
@@ -75,7 +74,6 @@ export default function AppointmentDetail() {
     }
 
     return (
-        
         <DashboardLayout>
             <DashboardNavbar />
             <SuiBox mt={7} mb={3}>
@@ -138,7 +136,6 @@ export default function AppointmentDetail() {
                                                 appointmentDetails?.mentor
                                                     ?.introduce
                                             }
-                                            // description="aaaaa"
                                             info={{
                                                 Email: appointmentDetails
                                                     ?.mentor?.email,

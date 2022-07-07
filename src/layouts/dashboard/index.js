@@ -16,9 +16,8 @@ import { appointmentApi } from 'apis/appointmentApis'
 
 function Dashboard() {
     var today = new Date()
-    var day = today.getDay() - 1
-    var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
-    var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    var weekStart = new Date(today.getFullYear(), today.getMonth(), 1)
+    var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
     const navigate = useNavigate()
     const [userProfile, setUserProfile] = useState({})
@@ -32,6 +31,7 @@ function Dashboard() {
         navigate('/appointment/appointmentdetails', {
             state: { appointmentId: event.event._def.publicId },
         })
+        console.log('FIRST:', event.event._def.publicId)
     }
 
     const handleDateClick = (event) => {
@@ -85,7 +85,7 @@ function Dashboard() {
             })
             appointmentApi.loadMentorAppointment().then((res) => {
                 setDataAppointments(res.data.content)
-                console.log('Dashboard', res.data.content)
+                console.log('Dashboard mentor', res.data.content)
             })
         } else {
             appointmentApi.loadMentorAppointment().then((res) => {
@@ -93,7 +93,7 @@ function Dashboard() {
             })
             appointmentApi.loadUserAppointment().then((res) => {
                 setDataAppointments(res.data.content)
-                console.log('Dashboard', res.data.content)
+                console.log('Dashboard user', res.data.content)
             })
         }
     }, [userProfile])
@@ -104,10 +104,12 @@ function Dashboard() {
 
     useEffect(() => {
         setJoinEvents([...mentorSlots, ...appointments])
+        console.log('-------------------------------')
         console.log('appointments:', appointments)
         console.log('mentorSlots:', mentorSlots)
         console.log('JoinEvents:', joinEvents)
         console.log('userProfile', userProfile)
+        console.log('-------------------------------')
     }, [appointments])
 
     if (localStorage.getItem('access-token-google') == null) {
