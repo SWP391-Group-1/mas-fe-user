@@ -67,7 +67,6 @@ export default function MentorSlotDetail() {
             .getMentorSlotById('c4c1da92-291c-4f89-8488-098bfe6eb155')
             .then((res) => {
                 setSlotDetails(res.data.content)
-            
             })
         appointmentApi
             .loadAppointmentInASlot('c4c1da92-291c-4f89-8488-098bfe6eb155')
@@ -84,11 +83,10 @@ export default function MentorSlotDetail() {
         Promise.all(request).then((res) => {
             res?.map((item) => {
                 item?.data?.content.map((i) => {
-                    //console.log(i)
-                    //questions = [...questions, i]
-                    setTempQuestions(...tempQuestions, i)
+                    questions = [...questions, i]
                 })
-            })
+            })          
+            setTempQuestions(questions)
         })
     }
 
@@ -119,7 +117,7 @@ export default function MentorSlotDetail() {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-                if (params.answer == null || params.answer.length == 0) {
+                if (params.row?.answer == null) {
                     return 'Not answer yet'
                 } else {
                     return 'Answered'
@@ -205,7 +203,20 @@ export default function MentorSlotDetail() {
                                     </SuiTypography>
                                 </SuiBox>
 
-                                <Card sx={{ borderRadius: '7px', height: 276 }} >
+                                <Card
+                                    sx={{
+                                        borderRadius: '7px',
+                                        height: 276,
+                                        backdropFilter: `saturate(200%) blur(30px)`,
+                                        backgroundColor: ({
+                                            functions: { rgba },
+                                            palette: { white },
+                                        }) => rgba(white.main, 0.8),
+                                        boxShadow: ({
+                                            boxShadows: { navbarBoxShadow },
+                                        }) => navbarBoxShadow,
+                                    }}
+                                >
                                     <List
                                         sx={{
                                             maxHeight: 276,
@@ -217,7 +228,11 @@ export default function MentorSlotDetail() {
                                             return (
                                                 <ListItem>
                                                     <SuiBox p={2}>
-                                                        <SuiTypography variant="button" fontWeight="regular" color="text">
+                                                        <SuiTypography
+                                                            variant="button"
+                                                            fontWeight="regular"
+                                                            color="text"
+                                                        >
                                                             {index + 1}.{' '}
                                                             {
                                                                 item?.creator
@@ -234,7 +249,7 @@ export default function MentorSlotDetail() {
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={3} >
+                    <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
                             <SuiBox>
                                 <SuiTypography
@@ -247,7 +262,7 @@ export default function MentorSlotDetail() {
                                 </SuiTypography>
                             </SuiBox>
                             {slotDetails?.slotSubjects?.map((item, index) => (
-                                <Paper elevation={3}>
+                                <Paper elevation={3} >
                                     <SuiBox p={2}>
                                         <SubjectInfoCard
                                             description={item.description}
@@ -275,7 +290,7 @@ export default function MentorSlotDetail() {
                                     mt: 4,
                                     py: 2,
                                     px: 2,
-                                    borderRadius: 2
+                                    borderRadius: 2,
                                 }}
                             >
                                 <SuiBox mb={1} mt={2}>
@@ -320,11 +335,9 @@ export default function MentorSlotDetail() {
                                         inputProps={{ maxLength: 20 }}
                                     />
                                 </SuiBox>
-
                             </Card>
                         </Grid>
                     </Grid>
-                    {tempQuestions}
                 </Card>
             </SuiBox>
             <div style={{ height: 350, width: '100%' }}>

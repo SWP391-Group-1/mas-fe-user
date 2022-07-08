@@ -14,10 +14,11 @@ const getQuestionById = (id) => {
     loadToken()
     return defaultInstance.get(`/questions/${id}`)
 }
-const answerQuestion = (id, data) => {
+const answerQuestion = (questionId, data) => {
     loadToken()
-    return defaultInstance.put(`/questions/${id}`, data)
+    return defaultInstance.put(`/questions/${questionId}`, data)
 }
+
 // /appointments/133da9d6-82c1-46de-a78f-355280821b30/questions?IsActive=true
 export const questionApi = {
     loadQuestionsOfAppointment,

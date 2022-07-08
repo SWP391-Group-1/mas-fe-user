@@ -1,14 +1,4 @@
 // react-routers components
-import { Link } from 'react-router-dom'
-
-// prop-types is library for typechecking of props
-import PropTypes from 'prop-types'
-
-// @mui material components
-import Card from '@mui/material/Card'
-import Divider from '@mui/material/Divider'
-import Tooltip from '@mui/material/Tooltip'
-import Icon from '@mui/material/Icon'
 
 //  components
 import SuiBox from 'components/SuiBox'
@@ -60,11 +50,6 @@ function MentorInfoCard({ title, description, info, social, action }) {
 
     return (
         <>
-            {/* <SuiBox display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SuiTypography>
-      </SuiBox> */}
             <SuiBox>
                 <SuiTypography
                     variant="button"
@@ -74,15 +59,6 @@ function MentorInfoCard({ title, description, info, social, action }) {
                     Introduce:
                 </SuiTypography>
                 <SuiBox mb={2} lineHeight={0}>
-                    {/* <SuiTypography
-                        variant="button"
-                        color="text"
-                        fontWeight="regular"
-                        rows={10}
-                        multiline
-                    >
-                        {description}
-                    </SuiTypography> */}
                     <SuiInput sx={{style: "border:none"}}
                                 disable
                                 rows={5}
@@ -98,14 +74,9 @@ function MentorInfoCard({ title, description, info, social, action }) {
 
 // Typechecking props for the ProfileInfoCard
 MentorInfoCard.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     description: PropTypes.string.isRequired,
     info: PropTypes.objectOf(PropTypes.string).isRequired,
-    // social: PropTypes.arrayOf(PropTypes.object),
-    // action: PropTypes.shape({
-    //   route: PropTypes.string.isRequired,
-    //   tooltip: PropTypes.string.isRequired,
-    // })
 }
 
 export default MentorInfoCard
