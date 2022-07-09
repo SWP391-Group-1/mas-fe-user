@@ -33,11 +33,6 @@ export default function AppointmentDetail() {
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
-            // SlotApi.getSlotDetailById(res.data.content.slotId).then(
-            //     (responses) => {
-            //         setSlotDetails(responses.data.content)
-            //     }
-            // )
         })
     }
 
@@ -54,7 +49,7 @@ export default function AppointmentDetail() {
                 </SuiTypography>
             )
         } else {
-            if (appointmentDetails?.isApprove == true) {
+            if (appointmentDetails?.isApprove === true) {
                 return (
                     <SuiTypography
                         component="label"
@@ -171,7 +166,6 @@ export default function AppointmentDetail() {
                                     Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-
                             {appointmentDetails?.slot?.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
@@ -189,20 +183,6 @@ export default function AppointmentDetail() {
                                     </Paper>
                                 )
                             )}
-
-                            {/* {slotDetail?.slotSubjects?.map((item, index) => (
-                                <Paper elevation={3}>
-                                    <SuiBox p={2}>
-                                        <SubjectInfoCard
-                                            description={item.description}
-                                            info={{
-                                                Code: item.subject?.code,
-                                                Name: item.subject?.title,
-                                            }}
-                                        />
-                                    </SuiBox>
-                                </Paper>
-                            ))} */}
                         </Grid>
                     </Grid>
                     <Grid container spacing={3}>
@@ -255,7 +235,6 @@ export default function AppointmentDetail() {
                     </Grid>
                 </Card>
             </SuiBox>
-
             {appointmentDetails?.isApprove != null && (
                 <QuestionDataGrid appointmentID={appointmentID} />
             )}

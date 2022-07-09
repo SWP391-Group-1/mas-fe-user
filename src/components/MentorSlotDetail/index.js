@@ -1,19 +1,11 @@
-import {
-    Button,
-    Card,
-    Grid,
-    List,
-    ListItem,
-    ListItemText,
-    Paper,
-} from '@mui/material'
+import { Button, Card, Grid, List, ListItem, Paper } from '@mui/material'
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { mentorApi } from 'apis/mentorApis'
 import MentorInfoCard from 'examples/Cards/InfoCards/MentorInfoCard'
 import SuiInput from 'components/SuiInput'
@@ -27,6 +19,7 @@ import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 
 export default function MentorSlotDetail() {
     const location = useLocation()
+    const slotID = location.state?.slotID || null
     const [slotDetails, setSlotDetails] = useState()
     const [appointments, setAppointments] = useState([])
     let questions = []
@@ -34,13 +27,13 @@ export default function MentorSlotDetail() {
     const [question, setQuestion] = useState([])
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
-    let navigate = useNavigate()
 
     useEffect(() => {
         fetchData()
     }, [])
 
     const handleClickVariant = (title, varientType) => {
+        // variant could be success, error, warning, info, or default
         enqueueSnackbar(title, {
             variant: varientType,
         })
@@ -61,12 +54,9 @@ export default function MentorSlotDetail() {
     }
 
     const fetchData = () => {
-        mentorApi
-            .getMentorSlotById('c4c1da92-291c-4f89-8488-098bfe6eb155')
-            .then((res) => {
-                setSlotDetails(res.data.content)
-            
-            })
+        mentorApi.getMentorSlotById(slotID).then((res) => {
+            setSlotDetails(res.data.content)
+        })
         appointmentApi
             .loadAppointmentInASlot('c4c1da92-291c-4f89-8488-098bfe6eb155')
             .then((res) => {
@@ -82,11 +72,10 @@ export default function MentorSlotDetail() {
         Promise.all(request).then((res) => {
             res?.map((item) => {
                 item?.data?.content.map((i) => {
-                    //console.log(i)
-                    //questions = [...questions, i]
-                    setTempQuestions(...tempQuestions, i)
+                    questions = [...questions, i]
                 })
             })
+            setTempQuestions(questions)
         })
     }
 
@@ -117,7 +106,7 @@ export default function MentorSlotDetail() {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-                if (params.answer === null || params.answer.length === 0) {
+                if (params.row?.answer == null) {
                     return 'Not answer yet'
                 } else {
                     return 'Answered'
@@ -203,7 +192,20 @@ export default function MentorSlotDetail() {
                                     </SuiTypography>
                                 </SuiBox>
 
-                                <Card sx={{ borderRadius: '7px', height: 276 }} >
+                                <Card
+                                    sx={{
+                                        borderRadius: '7px',
+                                        height: 276,
+                                        backdropFilter: `saturate(200%) blur(30px)`,
+                                        backgroundColor: ({
+                                            functions: { rgba },
+                                            palette: { white },
+                                        }) => rgba(white.main, 0.8),
+                                        boxShadow: ({
+                                            boxShadows: { navbarBoxShadow },
+                                        }) => navbarBoxShadow,
+                                    }}
+                                >
                                     <List
                                         sx={{
                                             maxHeight: 276,
@@ -215,7 +217,11 @@ export default function MentorSlotDetail() {
                                             return (
                                                 <ListItem>
                                                     <SuiBox p={2}>
-                                                        <SuiTypography variant="button" fontWeight="regular" color="text">
+                                                        <SuiTypography
+                                                            variant="button"
+                                                            fontWeight="regular"
+                                                            color="text"
+                                                        >
                                                             {index + 1}.{' '}
                                                             {
                                                                 item?.creator
@@ -232,7 +238,7 @@ export default function MentorSlotDetail() {
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={3} >
+                    <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
                             <SuiBox>
                                 <SuiTypography
@@ -273,7 +279,7 @@ export default function MentorSlotDetail() {
                                     mt: 4,
                                     py: 2,
                                     px: 2,
-                                    borderRadius: 2
+                                    borderRadius: 2,
                                 }}
                             >
                                 <SuiBox mb={1} mt={2}>
@@ -318,11 +324,9 @@ export default function MentorSlotDetail() {
                                         inputProps={{ maxLength: 20 }}
                                     />
                                 </SuiBox>
-
                             </Card>
                         </Grid>
                     </Grid>
-                    {tempQuestions}
                 </Card>
             </SuiBox>
             <div style={{ height: 350, width: '100%' }}>

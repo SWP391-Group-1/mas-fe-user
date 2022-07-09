@@ -38,14 +38,7 @@ const loadSendAppointmentFilter = (allStatus, approveStatus, passStatus) => {
 const loadReceivedAppointment = () => {
     loadToken()
     return defaultInstance.get(
-        '/users/receive/appointments?IsNew=true&IsAll=false'
-    )
-}
-
-const loadUserAppointment = () => {
-    loadToken()
-    return defaultInstance.get(
-        '/users/own/appointments?IsActive=true&IsApprove=true'
+        '/users/receive/appointments'
     )
 }
 
@@ -94,5 +87,4 @@ export const appointmentApi = {
     loadAppointmentInASlot,
     ratingAfterAppointment,
     loadMentorAppointment,
-    loadUserAppointment,
 }

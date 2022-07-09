@@ -49,6 +49,7 @@ function Overview() {
         }))
     }, [mentorSubjects])
 
+    // TODO: change title of this one to data in API
     const freeSlotTitle = 'Available slot'
     const sampleDescription =
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
@@ -61,7 +62,8 @@ function Overview() {
         if (Array.isArray(slots))
             setEvents((prevEvents) => [
                 ...slots.map((slot) => ({
-                    title: freeSlotTitle,
+                    // TODO: change title of this one to data in API
+                    title: freeSlotTitle + ': ',
                     start: slot.startTime,
                     end: slot.finishTime,
                     id: slot.id,
@@ -92,47 +94,50 @@ function Overview() {
     }
 
     const handleClickOpenEvent = ({ event, el }) => {
-        modal.openModal({
-            title: event.titlte,
-            content: 'Start: ' + event.start,
-            contentSecond: 'End: ' + event.end,
-            buttons: [
-                {
-                    text: 'Remove',
-                    onClick: () => {
-                        modal.openModal({
-                            title: 'Slot remove',
-                            content: 'Do you want to remove this slot',
-                            buttons: [
-                                {
-                                    text: 'Confirm',
-                                    onClick: () => {
-                                        modal.closeModal()
-                                        SlotApi.deleteAvailableSlot(
-                                            event.id
-                                        ).then((res) => {
-                                            fetchData()
-                                        })
-                                    },
-                                },
-                                {
-                                    text: 'Close',
-                                    onClick: () => {
-                                        modal.closeModal()
-                                    },
-                                },
-                            ],
-                        })
-                    },
-                },
-                {
-                    text: 'Close',
-                    onClick: () => {
-                        modal.closeModal()
-                    },
-                },
-            ],
+        navigate('/mentorslot', {
+            state: { slotID: event._def.publicId },
         })
+        // modal.openModal({
+        //     title: event.titlte,
+        //     content: 'Start: ' + event.start,
+        //     contentSecond: 'End: ' + event.end,
+        //     buttons: [
+        //         {
+        //             text: 'Remove',
+        //             onClick: () => {
+        //                 modal.openModal({
+        //                     title: 'Slot remove',
+        //                     content: 'Do you want to remove this slot',
+        //                     buttons: [
+        //                         {
+        //                             text: 'Confirm',
+        //                             onClick: () => {
+        //                                 modal.closeModal()
+        //                                 SlotApi.deleteAvailableSlot(
+        //                                     event.id
+        //                                 ).then((res) => {
+        //                                     fetchData()
+        //                                 })
+        //                             },
+        //                         },
+        //                         {
+        //                             text: 'Close',
+        //                             onClick: () => {
+        //                                 modal.closeModal()
+        //                             },
+        //                         },
+        //                     ],
+        //                 })
+        //             },
+        //         },
+        //         {
+        //             text: 'Close',
+        //             onClick: () => {
+        //                 modal.closeModal()
+        //             },
+        //         },
+        //     ],
+        // })
     }
 
     const handleAddChipMentorSubject = () => {
@@ -197,12 +202,12 @@ function Overview() {
             SlotApi.getAllSlots(
                 userProfile?.id,
                 weekStart.toISOString(),
-                // weekEnd.toISOString(),
-                '2022-7-20',
+                weekEnd.toISOString(),
                 true,
                 true
             ).then((res) => {
                 setDataEvents(res.data.content)
+                console.log('imsohuy', res.data.content)
             })
             mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
                 setMentorSubjects(res.data.content)
@@ -260,7 +265,6 @@ function Overview() {
         () => console.log(mentorSubjects, chipMentorSubjects),
         [chipMentorSubjects]
     )
-
 
     useEffect(() => {
         fetchData()

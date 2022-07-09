@@ -27,12 +27,12 @@ const MajorDataGrid = () => {
         if (isCreateMode) {
             majorApi.createMajor(major)?.then((res) => {
                 fetchData()
-                alert('The major has been created!') // TODO
+                alert('The major has been created!') // TODO: use alertPopup or something
             })
         } else {
             majorApi.updateMajor(major.id, major)?.then((res) => {
                 fetchData()
-                alert('The major has been updated!') // TODO
+                alert('The major has been updated!') // TODO: use alertPopup or something
             })
         }
         setIsOpenEditModal(false)

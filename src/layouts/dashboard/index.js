@@ -28,10 +28,16 @@ function Dashboard() {
     const handleClickOpenEvent = (event) => {
         console.log('eventclick', event)
         console.log('eventclick', event.event._def.publicId)
-        navigate('/appointment/appointmentdetails', {
-            state: { appointmentId: event.event._def.publicId },
-        })
-        console.log('FIRST:', event.event._def.publicId)
+        if (event.event._def.title.includes('Mentor available slot')) {
+            navigate('/mentorslot', {
+                state: { slotID: event.event._def.publicId },
+            })
+        } else {
+            navigate('/appointment/appointmentdetails', {
+                state: { appointmentId: event.event._def.publicId },
+            })
+        }
+        console.log('event click id:', event.event._def.publicId)
     }
 
     const handleDateClick = (event) => {
@@ -57,6 +63,7 @@ function Dashboard() {
         if (Array.isArray(slots))
             setMentorSlots((prevEvents) => [
                 ...slots.map((slot) => ({
+                    // TODO: change title of this one to data in API
                     title: 'Mentor available slot',
                     start: slot.startTime,
                     end: slot.finishTime,
@@ -69,33 +76,27 @@ function Dashboard() {
     const fetchData = (data) => {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
+            localStorage.setItem('userId', res.data.content.id)
+
+            console.log('zz', localStorage.getItem('userId'))
         })
     }
 
     useEffect(() => {
-        if (userProfile?.isMentor) {
-            SlotApi.getAllSlots(
-                userProfile?.id,
-                weekStart.toISOString(),
-                weekEnd.toISOString(),
-                true,
-                true
-            ).then((res) => {
-                setDataMentorSlots(res.data.content)
-            })
-            appointmentApi.loadMentorAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-                console.log('Dashboard mentor', res.data.content)
-            })
-        } else {
-            appointmentApi.loadMentorAppointment().then((res) => {
-                setDataMentorSlots(res.data.content)
-            })
-            appointmentApi.loadUserAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-                console.log('Dashboard user', res.data.content)
-            })
-        }
+        SlotApi.getAllSlots(
+            localStorage.getItem('userId') != null
+                ? localStorage.getItem('userId')
+                : '',
+            weekStart.toISOString(),
+            weekEnd.toISOString(),
+            true,
+            true
+        ).then((res) => {
+            setDataMentorSlots(res.data.content)
+        })
+        appointmentApi.loadReceivedAppointment().then((res) => {
+            setDataAppointments(res.data.content)
+        })
     }, [userProfile])
 
     useEffect(() => {
