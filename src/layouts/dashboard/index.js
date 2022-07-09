@@ -33,9 +33,15 @@ function Dashboard() {
                 state: { slotID: event.event._def.publicId },
             })
         } else {
-            navigate('/appointment/appointmentdetails', {
-                state: { appointmentId: event.event._def.publicId },
-            })
+            if (userProfile?.isMentor){
+                navigate('/request/appointmentrequestdetails', {
+                    state: { appointmentId: event.event._def.publicId },
+                }) 
+            } else {
+                navigate('/appointment/appointmentdetails', {
+                    state: { appointmentId: event.event._def.publicId },
+                })
+            }
         }
         console.log('event click id:', event.event._def.publicId)
     }
@@ -64,7 +70,9 @@ function Dashboard() {
             setMentorSlots((prevEvents) => [
                 ...slots.map((slot) => ({
                     // TODO: change title of this one to data in API
-                    title: 'Mentor available slot',
+                    title:
+                        'Mentor available slot: ' +
+                        slot.slotSubjects[0].subject.code,
                     start: slot.startTime,
                     end: slot.finishTime,
                     id: slot.id,
@@ -94,9 +102,15 @@ function Dashboard() {
         ).then((res) => {
             setDataMentorSlots(res.data.content)
         })
-        appointmentApi.loadReceivedAppointment().then((res) => {
-            setDataAppointments(res.data.content)
-        })
+        if (userProfile?.isMentor) {
+            appointmentApi.loadReceivedAppointment().then((res) => {
+                setDataAppointments(res.data.content)
+            })
+        } else {
+            appointmentApi.loadSendAppointment().then((res) => {
+                setDataAppointments(res.data.content)
+            })
+        }
     }, [userProfile])
 
     useEffect(() => {

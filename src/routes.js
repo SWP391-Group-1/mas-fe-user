@@ -1,21 +1,21 @@
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
-import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
-import CustomerSupport from "examples/Icons/CustomerSupport";
-import Cube from "examples/Icons/Cube";
-import Account from "layouts/account"; 
-import SpaceShip from "examples/Icons/SpaceShip"
-import MentorDetail from "layouts/mentorDetail";
-import SlotDetailModal from "components/SlotDetailModal";
-import CreateAppointmentModal from "components/CreateAppointmentModal";
-import AppointmentDataGrid from "examples/MASDataGrid/appointment";
-import AppointmentDetail from "components/AppointmentDetail";
-import AppointmentRequestDataGrid from "examples/MASDataGrid/appointmentRequest";
-import AppointmentRequestDetail from "components/AppointmentRequestDetail";
-import MentorSlotDetail from "components/MentorSlotDetail";
+import Dashboard from 'layouts/dashboard'
+import Tables from 'layouts/tables'
+import Profile from 'layouts/profile'
+import SignIn from 'layouts/authentication/sign-in'
+import Shop from 'examples/Icons/Shop'
+import Office from 'examples/Icons/Office'
+import CustomerSupport from 'examples/Icons/CustomerSupport'
+import Cube from 'examples/Icons/Cube'
+import Account from 'layouts/account'
+import SpaceShip from 'examples/Icons/SpaceShip'
+import MentorDetail from 'layouts/mentorDetail'
+import SlotDetailModal from 'components/SlotDetailModal'
+import CreateAppointmentModal from 'components/CreateAppointmentModal'
+import AppointmentDataGrid from 'examples/MASDataGrid/appointment'
+import AppointmentDetail from 'components/AppointmentDetail'
+import AppointmentRequestDataGrid from 'examples/MASDataGrid/appointmentRequest'
+import AppointmentRequestDetail from 'components/AppointmentRequestDetail'
+import MentorSlotDetail from 'components/MentorSlotDetail'
 
 const routes = [
     { type: 'title', title: 'Dashboard  Pages', key: 'dashboard-pages' },
@@ -46,7 +46,7 @@ const routes = [
         component: <Account />,
         noCollapse: true,
     },
-    
+
     {
         type: 'collapse',
         name: 'Appointment',
@@ -57,7 +57,6 @@ const routes = [
         noCollapse: true,
     },
 
-    
     { type: 'title', title: 'Mentor Pages', key: 'mentor-pages' },
     {
         type: 'collapse',
@@ -68,7 +67,7 @@ const routes = [
         component: <AppointmentRequestDataGrid />,
         noCollapse: true,
     },
-    
+
     { type: 'title', title: 'Account Pages', key: 'account-pages' },
     {
         type: 'collapse',
@@ -87,7 +86,7 @@ const routes = [
         icon: <Cube size="12px" />,
         component: <Tables />,
         noCollapse: true,
-    },    
+    },
 ]
 
 const extraRoutes = [
@@ -96,7 +95,7 @@ const extraRoutes = [
         name: 'MentorDetail',
         key: 'details',
         route: '/mentor/details',
-        component: <MentorDetail />,  
+        component: <MentorDetail />,
     },
 
     {
@@ -104,7 +103,7 @@ const extraRoutes = [
         name: 'Slot Detail',
         key: 'slot details',
         route: '/mentor/details/slotdetails',
-        component: <SlotDetailModal />,  
+        component: <SlotDetailModal />,
     },
 
     {
@@ -112,7 +111,7 @@ const extraRoutes = [
         name: 'Create Appointment',
         key: 'createappointment',
         route: '/mentor/details/slotdetails/createappointment',
-        component: <CreateAppointmentModal />,  
+        component: <CreateAppointmentModal />,
     },
 
     {
@@ -120,7 +119,7 @@ const extraRoutes = [
         name: 'Appointment Detail',
         key: 'appointmentdetails',
         route: '/appointment/appointmentdetails',
-        component: <AppointmentDetail />,  
+        component: <AppointmentDetail />,
     },
 
     {
@@ -128,7 +127,7 @@ const extraRoutes = [
         name: 'Appointment Request Detail',
         key: 'appointmentrequestdetails',
         route: '/request/appointmentrequestdetails',
-        component: <AppointmentRequestDetail />,  
+        component: <AppointmentRequestDetail />,
     },
 
     {
@@ -137,8 +136,8 @@ const extraRoutes = [
         key: 'sign-in',
         route: '/authentication/user/sign-in',
         component: <SignIn />,
-    }
+    },
 ]
-export default routes;
+export default routes
 
-export {extraRoutes}
+export { extraRoutes }

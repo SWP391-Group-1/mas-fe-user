@@ -28,6 +28,7 @@ import { Button, Chip, MenuItem, Select } from '@mui/material'
 import { useModal } from '../../hooks/useModal.js'
 import EventDialog from './components/EventDialog/index.js'
 import { useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 function Overview() {
     const { user } = UserAuth()
@@ -40,6 +41,14 @@ function Overview() {
     const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
     const [eventToEdit, setEventToEdit] = useState(null)
     const modal = useModal()
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handleClickVariant = (title, varientType) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(title, {
+            variant: varientType,
+        })
+    }
 
     const chipMentorSubjects = React.useMemo(() => {
         return mentorSubjects?.map((mentorSubject) => ({
@@ -54,16 +63,24 @@ function Overview() {
     const sampleDescription =
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
     var today = new Date()
-    var day = today.getDay() - 1
-    var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
-    var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    // var day = today.getDay() - 1
+
+    // this get first date of month
+    // first date of week : new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
+    var weekStart = new Date(today.getFullYear(), today.getMonth(), 1)
+
+    // last date of month
+    // last date of week : new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
             setEvents((prevEvents) => [
                 ...slots.map((slot) => ({
-                    // TODO: change title of this one to data in API
-                    title: freeSlotTitle + ': ',
+                    title:
+                        freeSlotTitle +
+                        ': ' +
+                        slot.slotSubjects[0].subject.code,
                     start: slot.startTime,
                     end: slot.finishTime,
                     id: slot.id,
@@ -97,47 +114,6 @@ function Overview() {
         navigate('/mentorslot', {
             state: { slotID: event._def.publicId },
         })
-        // modal.openModal({
-        //     title: event.titlte,
-        //     content: 'Start: ' + event.start,
-        //     contentSecond: 'End: ' + event.end,
-        //     buttons: [
-        //         {
-        //             text: 'Remove',
-        //             onClick: () => {
-        //                 modal.openModal({
-        //                     title: 'Slot remove',
-        //                     content: 'Do you want to remove this slot',
-        //                     buttons: [
-        //                         {
-        //                             text: 'Confirm',
-        //                             onClick: () => {
-        //                                 modal.closeModal()
-        //                                 SlotApi.deleteAvailableSlot(
-        //                                     event.id
-        //                                 ).then((res) => {
-        //                                     fetchData()
-        //                                 })
-        //                             },
-        //                         },
-        //                         {
-        //                             text: 'Close',
-        //                             onClick: () => {
-        //                                 modal.closeModal()
-        //                             },
-        //                         },
-        //                     ],
-        //                 })
-        //             },
-        //         },
-        //         {
-        //             text: 'Close',
-        //             onClick: () => {
-        //                 modal.closeModal()
-        //             },
-        //         },
-        //     ],
-        // })
     }
 
     const handleAddChipMentorSubject = () => {
@@ -148,6 +124,10 @@ function Overview() {
                     briefInfo: selectMentorSubject.description,
                 })
                 .then((res) => {
+                    handleClickVariant(
+                        'Add mentor subject successfully!',
+                        'success'
+                    )
                     fetchData()
                 })
     }
@@ -207,7 +187,6 @@ function Overview() {
                 true
             ).then((res) => {
                 setDataEvents(res.data.content)
-                console.log('imsohuy', res.data.content)
             })
             mentorSubjectApi.getMentorSubjects(userProfile?.id).then((res) => {
                 setMentorSubjects(res.data.content)
@@ -267,6 +246,9 @@ function Overview() {
     )
 
     useEffect(() => {
+        console.log('First day of month', weekStart)
+        console.log('Last day of month', weekEnd)
+
         fetchData()
     }, [])
 
@@ -382,6 +364,7 @@ function Overview() {
                 initialEvent={eventToEdit}
                 onOk={handleEditEventOkClick}
                 onCancel={handleEditEventCancelClick}
+                mentorSubjects={mentorSubjects}
             />
         </DashboardLayout>
     )
