@@ -23,6 +23,7 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 import '@fullcalendar/timegrid/main.css'
 import { Button, Chip, MenuItem, Select } from '@mui/material'
 import { useModal } from '../../hooks/useModal.js'
@@ -72,6 +73,7 @@ function Overview() {
     // last date of month
     // last date of week : new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
     var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+    console.log('Week ' + weekStart + ' - ' + weekEnd)
 
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
@@ -81,11 +83,12 @@ function Overview() {
                         freeSlotTitle +
                         ': ' +
                         slot.slotSubjects[0].subject.code,
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    start: slot.startTime+'Z',
+                    end: slot.finishTime+'Z',
                     id: slot.id,
                 })),
             ])
+            console.log()
     }
 
     const handleClickAdd = () => {
@@ -338,8 +341,14 @@ function Overview() {
                                         dayGridPlugin,
                                         timeGridPlugin,
                                         interactionPlugin,
+                                        momentTimezonePlugin,
                                     ]}
+                                    timeZone="Asia/Bangkok"
+                                    timeZoneParam="Asia/Bangkok"
                                     events={events}
+                                    slotDuration={{
+                                        minute: 30,
+                                    }}
                                     dateClick={handleDateClick}
                                     eventClick={handleClickOpenEvent}
                                     headerToolbar={{

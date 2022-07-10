@@ -18,14 +18,14 @@ export default function MentorSlot({ slot }) {
             <SuiBox mb={2} onClick= {() => {navigate('/mentor/details/slotdetails', {state: {slotID: slotDetail?.id}})}}>
                 <SuiBox>
                     <SuiTypography variant="button" fontWeight="bold">
-                        {moment(slotDetail?.startTime).format('dddd')},{' '}
-                        {moment(slotDetail?.startTime).format('LL')}
+                        {moment(slotDetail?.startTime+'Z').format('dddd')},{' '}
+                        {moment(slotDetail?.startTime+'Z').format('LL')}
                     </SuiTypography>
                 </SuiBox>
                 <SuiBox>
                     <SuiTypography variant="button" fontWeight="regular">
-                        {moment(slotDetail?.startTime).format('HH:mm')} - {' '}
-                        {moment(slotDetail?.finishTime).format('HH:mm')}
+                        {moment(slotDetail?.startTime+'Z').format('HH:mm')} - {' '}
+                        {moment(slotDetail?.finishTime+'Z').format('HH:mm')}
                     </SuiTypography>
                 </SuiBox>
             </SuiBox>

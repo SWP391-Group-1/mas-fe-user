@@ -6,6 +6,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 
 import { useNavigate } from 'react-router-dom'
 import SuiBox from 'components/SuiBox'
@@ -28,29 +29,21 @@ function Dashboard() {
     const handleClickOpenEvent = (event) => {
         console.log('eventclick', event)
         console.log('eventclick', event.event._def.publicId)
-<<<<<<< HEAD
-        navigate('/appointment/appointmentdetails', {
-            state: { appointmentId: event.event._def.publicId },
-        })
-        console.log('FIRST:', event.event._def.publicId)
-=======
         if (event.event._def.title.includes('Mentor available slot')) {
             navigate('/mentorslot', {
                 state: { slotID: event.event._def.publicId },
             })
         } else {
-            if (userProfile?.isMentor){
+            if (userProfile?.isMentor) {
                 navigate('/request/appointmentrequestdetails', {
                     state: { appointmentId: event.event._def.publicId },
-                }) 
+                })
             } else {
                 navigate('/appointment/appointmentdetails', {
                     state: { appointmentId: event.event._def.publicId },
                 })
             }
         }
-        console.log('event click id:', event.event._def.publicId)
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
     }
 
     const handleDateClick = (event) => {
@@ -64,8 +57,8 @@ function Dashboard() {
                     title: slot.isApprove
                         ? 'Appoinment : Approved'
                         : ' Appointment : Unapproved',
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
                     color: slot.isApprove ? 'green' : 'red',
                 })),
@@ -76,12 +69,11 @@ function Dashboard() {
         if (Array.isArray(slots))
             setMentorSlots((prevEvents) => [
                 ...slots.map((slot) => ({
-                    // TODO: change title of this one to data in API
                     title:
                         'Mentor available slot: ' +
                         slot.slotSubjects[0].subject.code,
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
                     color: 'purple',
                 })),
@@ -92,10 +84,12 @@ function Dashboard() {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
             localStorage.setItem('userId', res.data.content.id)
-
-            console.log('zz', localStorage.getItem('userId'))
         })
+        console.log('1 fetch profile')
     }
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     useEffect(() => {
         SlotApi.getAllSlots(
@@ -109,38 +103,19 @@ function Dashboard() {
         ).then((res) => {
             setDataMentorSlots(res.data.content)
         })
-        if (userProfile?.isMentor) {
-            appointmentApi.loadReceivedAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-<<<<<<< HEAD
-                console.log('Dashboard mentor', res.data.content)
-=======
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
-            })
-        } else {
-            appointmentApi.loadSendAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-<<<<<<< HEAD
-                console.log('Dashboard user', res.data.content)
-=======
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
-            })
-        }
+        appointmentApi.loadSendAppointmentWithFilter('true').then((res) => {
+            setDataAppointments(res.data.content)
+        })
+        console.log('2 fetch data event')
     }, [userProfile])
 
     useEffect(() => {
-        fetchData()
-    }, [])
-
-    useEffect(() => {
         setJoinEvents([...mentorSlots, ...appointments])
-        console.log('-------------------------------')
-        console.log('appointments:', appointments)
-        console.log('mentorSlots:', mentorSlots)
-        console.log('JoinEvents:', joinEvents)
-        console.log('userProfile', userProfile)
-        console.log('-------------------------------')
-    }, [appointments])
+        console.log(mentorSlots)
+        console.log(appointments)
+        console.log(joinEvents)
+        console.log('3 joins event data to calendar')
+    }, [appointments, userProfile, mentorSlots])
 
     if (localStorage.getItem('access-token-google') == null) {
         if (localStorage.getItem('access-token') == null) {
@@ -154,7 +129,14 @@ function Dashboard() {
             <SuiBox mt={1} mb={1}>
                 <FullCalendar
                     defaultView="dayGridMonth"
-                    plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                    plugins={[
+                        dayGridPlugin,
+                        interactionPlugin,
+                        timeGridPlugin,
+                        momentTimezonePlugin,
+                    ]}
+                    timeZone="Asia/Bangkok"
+                    timeZoneParam="Asia/Bangkok"
                     events={joinEvents}
                     eventClick={handleClickOpenEvent}
                     dateClick={handleDateClick}

@@ -135,8 +135,8 @@ export default function AppointmentDataGrid() {
             headerName: 'Start Time',
             width: 300,
             valueGetter: (params) => {
-                console.log(params.row.startTime)
-                return moment(params.row.slot.startTime).format('LLLL')
+                console.log(params.row.startTime + 'Z')
+                return moment(params.row.slot.startTime + 'Z').format('LLLL')
             },
         },
         {
@@ -144,8 +144,8 @@ export default function AppointmentDataGrid() {
             headerName: 'End Time',
             width: 300,
             valueGetter: (params) => {
-                console.log(params.row.finishTime)
-                return moment(params.row.slot.finishTime).format('LLLL')
+                console.log(params.row.finishTime + 'Z')
+                return moment(params.row.slot.finishTime + 'Z').format('LLLL')
             },
         },
         {

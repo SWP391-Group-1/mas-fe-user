@@ -161,15 +161,15 @@ export default function SlotDetailModal() {
                                     disabled
                                     id="codeTextField"
                                     type="text"
-                                    value={moment(slotDetail?.startTime).format(
-                                        'LLLL'
-                                    )}
+                                    value={moment(
+                                        slotDetail?.startTime + 'Z'
+                                    ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
                             </SuiBox>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <SuiBox  mb={1} mt={2}>
+                            <SuiBox mb={1} mt={2}>
                                 <SuiTypography
                                     component="label"
                                     variant="button"
@@ -186,7 +186,7 @@ export default function SlotDetailModal() {
                                     id="codeTextField"
                                     type="text"
                                     value={moment(
-                                        slotDetail?.finishTime
+                                        slotDetail?.finishTime + 'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />

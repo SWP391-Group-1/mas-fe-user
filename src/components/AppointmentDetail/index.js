@@ -203,7 +203,8 @@ export default function AppointmentDetail() {
                                     id="codeTextField"
                                     type="text"
                                     value={moment(
-                                        appointmentDetails?.slot?.startTime
+                                        appointmentDetails?.slot?.startTime +
+                                            'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
@@ -226,7 +227,8 @@ export default function AppointmentDetail() {
                                     id="codeTextField"
                                     type="text"
                                     value={moment(
-                                        appointmentDetails?.slot?.finishTime
+                                        appointmentDetails?.slot?.finishTime +
+                                            'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />

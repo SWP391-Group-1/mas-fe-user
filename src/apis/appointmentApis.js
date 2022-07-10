@@ -19,66 +19,40 @@ const loadSendAppointmentNotApprovedYet = () => {
     )
 }
 
-<<<<<<< HEAD
-const loadSendAppointmentNotApprovedYet = () => {
-    //load nhung thang chua duyet
-=======
 const loadSendAppointmentWithFilter = (status) => {
     // load nhung thang da xu ly - true/false
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
     loadToken()
     return defaultInstance.get(
         `/users/send/appointments?IsNew=true&IsAll=false&isApprove=${status}`
     )
 }
 
-<<<<<<< HEAD
-const loadSendAppointmentWithFilter = (status) => {
-    // load nhung thang da xu ly - true/false
-    loadToken()
-    return defaultInstance.get(
-        `/users/own/appointments?IsNew=true&IsAll=false&isApprove=${status}`
-    )
-}
-
-const loadSendAppointmentFilter = (allStatus, approveStatus, passStatus) => {
-    // load nhung thang da xu ly - true/false
-    loadToken()
-    return defaultInstance.get(
-        `/users/own/appointments?IsNew=true&IsAll=${allStatus}&isApprove=${approveStatus}&IsPassed=${passStatus}`
-=======
 const loadSendAppointmentFilter = (allStatus, approveStatus, passStatus) => {
     // load nhung thang da xu ly - true/false
     loadToken()
     return defaultInstance.get(
         `/users/send/appointments?IsNew=true&IsAll=${allStatus}&isApprove=${approveStatus}&IsPassed=${passStatus}`
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
     )
 }
 
 const loadReceivedAppointment = () => {
     loadToken()
-<<<<<<< HEAD
     return defaultInstance.get(
-        '/users/mentor/appointments?IsNew=true&IsAll=false'
+        '/users/receive/appointments?IsNew=true&IsAll=false'
     )
 }
 
 const loadUserAppointment = () => {
     loadToken()
     return defaultInstance.get(
-        '/users/receive/appointments?IsActive=true&IsApprove=true'
-=======
-    return defaultInstance.get(
-        '/users/receive/appointments'
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
+        '/users/own/appointments?IsActive=true&IsApprove=true'
     )
 }
 
 const loadMentorAppointment = () => {
     loadToken()
     return defaultInstance.get(
-        '/users/send/appointments?IsActive=true&IsApprove=true'
+        '/users/mentor/appointments?IsActive=true&IsApprove=true'
     )
 }
 
@@ -97,13 +71,9 @@ const processAppointment = (appointmentId, data) => {
     return defaultInstance.put(`/appointments/process/${appointmentId}`, data)
 }
 
-const loadAppointmentInASlot = (appointmentId) => {
+const loadAppointmentInASlot = (slotId) => {
     loadToken()
-<<<<<<< HEAD
-    return defaultInstance.get(`/users/mentor/appointments/${appointmentId}`)
-=======
     return defaultInstance.get(`/users/receive/appointments?SlotId=${slotId}`)
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
 }
 
 const ratingAfterAppointment = (id, data) => {
@@ -124,8 +94,5 @@ export const appointmentApi = {
     loadAppointmentInASlot,
     ratingAfterAppointment,
     loadMentorAppointment,
-<<<<<<< HEAD
     loadUserAppointment,
-=======
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
 }

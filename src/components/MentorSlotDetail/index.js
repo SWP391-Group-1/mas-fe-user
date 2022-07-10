@@ -19,10 +19,7 @@ import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 
 export default function MentorSlotDetail() {
     const location = useLocation()
-<<<<<<< HEAD
-=======
     const slotID = location.state?.slotID || null
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
     const [slotDetails, setSlotDetails] = useState()
     const [appointments, setAppointments] = useState([])
     let questions = []
@@ -60,7 +57,7 @@ export default function MentorSlotDetail() {
             setSlotDetails(res.data.content)
         })
         appointmentApi
-            .loadAppointmentInASlot('c4c1da92-291c-4f89-8488-098bfe6eb155')
+            .loadAppointmentInASlot(slotID)
             .then((res) => {
                 setAppointments(res.data.content)
                 loadQuestion(res.data.content)
@@ -108,11 +105,7 @@ export default function MentorSlotDetail() {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-<<<<<<< HEAD
-                if (params.answer === null || params.answer.length === 0) {
-=======
                 if (params.row?.answer == null) {
->>>>>>> 7b4b58223bac2d427b9bb86824bbde0729b8886f
                     return 'Not answer yet'
                 } else {
                     return 'Answered'

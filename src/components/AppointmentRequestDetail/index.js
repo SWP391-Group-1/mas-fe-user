@@ -1,5 +1,6 @@
 import { Card, Grid, Paper } from '@mui/material'
 import { appointmentApi } from 'apis/appointmentApis'
+import { emailApi } from 'apis/emailApis'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -39,8 +40,13 @@ export default function AppointmentRequestDetail() {
             .loadReceivedAppointmentDetails(appointmentID)
             .then((res) => {
                 setAppointmentRequestDetails(res.data.content)
-                console.log(res.data.content)
+                console.log('Appoinment Request', res.data.content)
             })
+    }
+    const handleSendEmail = (toEmail, subject, body) => {
+        emailApi
+            .sendEmail(toEmail, subject, body)
+            .then((res) => console.log(res.data.content))
     }
 
     const handleAcceptOrDenyRequest = (status) => {
@@ -56,10 +62,26 @@ export default function AppointmentRequestDetail() {
                         'Accept request successfully!',
                         'success'
                     )
+                    handleSendEmail(
+                        appointmentRequestDetails.creator.email,
+                        'Appointment request approved',
+                        'Your appointment request is accepted! Thank you'
+                    )
+                    handleSendEmail(
+                        'huynhse140380@fpt.edu.vn',
+                        'Appointment request approved',
+                        'Your appointment request is accepted! Thank you'
+                    )
                 } else {
                     handleClickVariant('You have denied the request!', 'info')
+                    handleSendEmail(
+                        appointmentRequestDetails.creator.email,
+                        'Appointment request denied',
+                        'Your appointment request is denied!'
+                    )
                 }
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 console.log(err.response.data.error.message)
                 handleClickVariant(err.response.data.error.message, 'error')
             })
@@ -197,7 +219,7 @@ export default function AppointmentRequestDetail() {
                                         <SuiBox p={2}>
                                             <SubjectInfoCard
                                                 description={
-                                                    appointmentRequestDetails ?.briefProblem
+                                                    appointmentRequestDetails?.briefProblem
                                                 }
                                                 info={{
                                                     Code: item.subject?.code,
@@ -230,7 +252,7 @@ export default function AppointmentRequestDetail() {
                                     type="text"
                                     value={moment(
                                         appointmentRequestDetails?.slot
-                                            ?.startTime
+                                            ?.startTime + 'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
@@ -254,7 +276,7 @@ export default function AppointmentRequestDetail() {
                                     type="text"
                                     value={moment(
                                         appointmentRequestDetails?.slot
-                                            ?.finishTime
+                                            ?.finishTime + 'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />

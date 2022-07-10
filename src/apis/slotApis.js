@@ -19,8 +19,8 @@ const addAvailableSlot = (slot) => {
     loadToken()
     console.log('api', slot)
     return defaultInstance.post(`/slots`, {
-        startTime: slot.startTime,
-        finishTime: slot.finishTime,
+        startTime: slot.startTime + 'Z',
+        finishTime: slot.finishTime + 'Z',
         slotSubjects: [
             {
                 subjectId: slot.subjectId,

@@ -146,9 +146,9 @@ export default function CreateAppointmentModal() {
                                 <SuiInput
                                     disabled
                                     type="text"
-                                    value={moment(slotDetail?.startTime).format(
-                                        'LLLL'
-                                    )}
+                                    value={moment(
+                                        slotDetail?.startTime + 'Z'
+                                    ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
                             </SuiBox>
@@ -222,12 +222,7 @@ export default function CreateAppointmentModal() {
                         </Grid>
                     </Grid>
 
-                    <SuiBox
-                        
-                        mb={2}
-                        display="flex"
-                        justifyContent="flex-end"
-                    >
+                    <SuiBox mb={2} display="flex" justifyContent="flex-end">
                         <SuiButton
                             color="dark"
                             onClick={() => {
