@@ -56,12 +56,10 @@ export default function MentorSlotDetail() {
         mentorApi.getMentorSlotById(slotID).then((res) => {
             setSlotDetails(res.data.content)
         })
-        appointmentApi
-            .loadAppointmentInASlot(slotID)
-            .then((res) => {
-                setAppointments(res.data.content)
-                loadQuestion(res.data.content)
-            })
+        appointmentApi.loadAppointmentInASlot(slotID).then((res) => {
+            setAppointments(res.data.content)
+            loadQuestion(res.data.content)
+        })
     }
 
     const loadQuestion = (appointmentList) => {
