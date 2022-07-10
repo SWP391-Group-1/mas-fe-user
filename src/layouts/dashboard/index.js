@@ -92,17 +92,17 @@ function Dashboard() {
     }, [])
 
     useEffect(() => {
-        SlotApi.getAllSlots(
-            localStorage.getItem('userId') != null
-                ? localStorage.getItem('userId')
-                : '',
-            weekStart.toISOString(),
-            weekEnd.toISOString(),
-            true,
-            true
-        ).then((res) => {
-            setDataMentorSlots(res.data.content)
-        })
+        if (userProfile?.isMentor) {
+            SlotApi.getAllSlots(
+                userProfile?.id,
+                weekStart.toISOString(),
+                weekEnd.toISOString(),
+                true,
+                true
+            ).then((res) => {
+                setDataMentorSlots(res.data.content)
+            })
+        }
         appointmentApi.loadSendAppointmentWithFilter('true').then((res) => {
             setDataAppointments(res.data.content)
         })
@@ -114,6 +114,7 @@ function Dashboard() {
         console.log(mentorSlots)
         console.log(appointments)
         console.log(joinEvents)
+        console.log(userProfile)
         console.log('3 joins event data to calendar')
     }, [appointments, userProfile, mentorSlots])
 
