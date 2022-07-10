@@ -68,7 +68,7 @@ export default function AnswerQuestionModal({
                             'Answer question successfully!',
                             'success'
                         )
-                        onSubmit?.() // TODO: validate content
+                        onSubmit?.() 
                     })
                     .catch((error) => {
                         console.log(error)

@@ -78,15 +78,15 @@ const routes = [
         component: <Profile />,
         noCollapse: true,
     },
-    {
-        type: 'collapse',
-        name: 'Register',
-        key: 'register',
-        route: '/tables',
-        icon: <Cube size="12px" />,
-        component: <Tables />,
-        noCollapse: true,
-    },
+    // {
+    //     type: 'collapse',
+    //     name: 'Register',
+    //     key: 'register',
+    //     route: '/tables',
+    //     icon: <Cube size="12px" />,
+    //     component: <Tables />,
+    //     noCollapse: true,
+    // },
 ]
 
 const extraRoutes = [

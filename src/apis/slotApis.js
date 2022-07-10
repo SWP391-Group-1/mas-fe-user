@@ -8,6 +8,7 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
             To: toDate,
             IsAsc: isAsc,
             IsActive: isActive,
+            PageSize: 1000,
         },
     })
 }
@@ -19,8 +20,8 @@ const addAvailableSlot = (slot) => {
     loadToken()
     console.log('api', slot)
     return defaultInstance.post(`/slots`, {
-        startTime: slot.startTime + 'Z',
-        finishTime: slot.finishTime + 'Z',
+        startTime: slot.startTime,
+        finishTime: slot.finishTime,
         slotSubjects: [
             {
                 subjectId: slot.subjectId,

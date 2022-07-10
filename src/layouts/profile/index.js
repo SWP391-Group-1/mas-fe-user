@@ -30,10 +30,14 @@ import { useModal } from '../../hooks/useModal.js'
 import EventDialog from './components/EventDialog/index.js'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import RatingCommentItem from 'components/RatingCommentItem'
+import { ratingApi } from 'apis/ratingApis'
+import SuiTypography from 'components/SuiTypography/index.js'
 
 function Overview() {
     const { user } = UserAuth()
     const navigate = useNavigate()
+    const mentorId = localStorage.getItem('userId') || null
     const [userProfile, setUserProfile] = useState({})
     const [selectMentorSubject, setSelectMentorSubject] = useState(null)
     const [mentorSubjects, setMentorSubjects] = useState([])
@@ -41,6 +45,7 @@ function Overview() {
     const [events, setEvents] = useState([])
     const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
     const [eventToEdit, setEventToEdit] = useState(null)
+    const [ratingLists, setRatingLists] = useState([])
     const modal = useModal()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -59,7 +64,6 @@ function Overview() {
         }))
     }, [mentorSubjects])
 
-    // TODO: change title of this one to data in API
     const freeSlotTitle = 'Available slot'
     const sampleDescription =
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
@@ -73,7 +77,6 @@ function Overview() {
     // last date of month
     // last date of week : new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
     var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-    console.log('Week ' + weekStart + ' - ' + weekEnd)
 
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
@@ -83,12 +86,11 @@ function Overview() {
                         freeSlotTitle +
                         ': ' +
                         slot.slotSubjects[0].subject.code,
-                    start: slot.startTime+'Z',
-                    end: slot.finishTime+'Z',
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
                 })),
             ])
-            console.log()
     }
 
     const handleClickAdd = () => {
@@ -100,6 +102,28 @@ function Overview() {
                     text: 'Confirm',
                     onClick: () => {
                         handleAddChipMentorSubject()
+                        modal.closeModal()
+                    },
+                },
+                {
+                    text: 'Close',
+                    onClick: () => {
+                        modal.closeModal()
+                    },
+                },
+            ],
+        })
+    }
+
+    const handleClickRemove = (removeId) => {
+        modal.openModal({
+            title: 'Mentor subject remove',
+            content: 'Do you want to remove this subject for mentor',
+            buttons: [
+                {
+                    text: 'Confirm',
+                    onClick: () => {
+                        handleDelete(removeId)
                         modal.closeModal()
                     },
                 },
@@ -127,16 +151,14 @@ function Overview() {
                     briefInfo: selectMentorSubject.description,
                 })
                 .then((res) => {
-                    handleClickVariant(
-                        'Add mentor subject successfully!',
-                        'success'
-                    )
+                    handleClickVariant('Add subject successfully!', 'success')
                     fetchData()
                 })
     }
 
     const handleDelete = (chipToDelete) => {
         mentorSubjectApi.deleteMentorSubject(chipToDelete).then((res) => {
+            handleClickVariant('Remove subject successfully!', 'success')
             fetchData()
         })
     }
@@ -145,9 +167,11 @@ function Overview() {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
         })
-
         subjectApi.getAllSubject().then((res) => {
             setSubjects(res.data.content)
+        })
+        ratingApi.loadAllRatingOfAMentor(mentorId).then((res) => {
+            setRatingLists(res.data.content)
         })
     }
 
@@ -156,9 +180,16 @@ function Overview() {
     }
 
     function handleEditEventOkClick(event) {
-        SlotApi.addAvailableSlot(event).then((res) => {
-            fetchData()
-        })
+        SlotApi.addAvailableSlot(event)
+            .then((res) => {
+                console.log('HUYDEPTRAI', res)
+                handleClickVariant('Add slot successfully!', 'success')
+                fetchData()
+                navigate('/profile')
+            })
+            .catch((error) => {
+                handleClickVariant(error.response.data.title, 'error')
+            })
         setIsEditingEventOpen(false)
     }
 
@@ -210,7 +241,9 @@ function Overview() {
                             key={chipMentorSubject.key + index}
                             label={chipMentorSubject.label}
                             onDelete={() =>
-                                handleDelete(chipMentorSubject.mentorSubject.id)
+                                handleClickRemove(
+                                    chipMentorSubject.mentorSubject.id
+                                )
                             }
                         />
                     )
@@ -362,6 +395,24 @@ function Overview() {
                                 <Box sx={{ minWidth: 100 }}>
                                     <Card variant="outlined">{card}</Card>
                                 </Box>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Card>
+                                    <SuiTypography pl={1}>
+                                        Rating Comment Section
+                                    </SuiTypography>
+                                    <SuiBox>
+                                        <SuiBox p={2}>
+                                            {ratingLists?.map((item) => {
+                                                return (
+                                                    <RatingCommentItem
+                                                        rating={item}
+                                                    />
+                                                )
+                                            })}
+                                        </SuiBox>
+                                    </SuiBox>
+                                </Card>
                             </Grid>
                         </>
                     )}
