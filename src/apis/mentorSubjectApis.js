@@ -11,7 +11,13 @@ const getMentorSubjects = (mentorId) => {
 }
 const registerMentorSubjects = (mentorSubject) => {
     loadToken()
-    return defaultInstance.post(`/mentor-subjects/`, mentorSubject)
+    
+        console.log('Add chip mentor:', mentorSubject)
+    return defaultInstance.post(`/mentor-subjects/`, {
+        subjectId: mentorSubject.subjectId,
+        // TODO: fix this to mentorSubject.briefInfo
+        briefInfo: "briefInfo",
+    })
 }
 
 const deleteMentorSubject = (id) => {

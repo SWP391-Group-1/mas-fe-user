@@ -59,6 +59,9 @@ export default function AppointmentRequestDetail() {
                 } else {
                     handleClickVariant('You have denied the request!', 'info')
                 }
+            }).catch((err) => {
+                console.log(err.response.data.error.message)
+                handleClickVariant(err.response.data.error.message, 'error')
             })
     }
 
@@ -188,13 +191,14 @@ export default function AppointmentRequestDetail() {
                                     Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-
-                            {appointmentRequestDetails?.appointmentSubjects?.map(
+                            {appointmentRequestDetails?.slot?.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>
                                             <SubjectInfoCard
-                                                description={item.briefProblem}
+                                                description={
+                                                    appointmentRequestDetails ?.briefProblem
+                                                }
                                                 info={{
                                                     Code: item.subject?.code,
                                                     Name: item.subject?.title,

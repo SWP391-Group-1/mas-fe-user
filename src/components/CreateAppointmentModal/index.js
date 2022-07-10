@@ -1,4 +1,4 @@
-import { Card, IconButton, Menu, MenuItem } from '@mui/material'
+import { Card, Grid, IconButton, Menu, MenuItem, Paper } from '@mui/material'
 import { mentorApi } from 'apis/mentorApis'
 import SuiBox from 'components/SuiBox'
 import SuiInput from 'components/SuiInput'
@@ -14,16 +14,17 @@ import QuestionModal from 'components/QuestionModal'
 import { appointmentApi } from 'apis/appointmentApis'
 import { useSnackbar } from 'notistack'
 import { useNavigate } from 'react-router-dom'
+import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
 
 export default function CreateAppointmentModal() {
     const location = useLocation()
     const slotId = location.state?.slotID || null
     const [slotDetail, setSlotDetail] = useState()
-    const [anchorEl, setAnchorEl] = useState(null)
-    const [subjects, setSubjects] = useState([])
-    const [subject, setSubject] = useState({
-        subject: { code: 'Select subject' },
-    })
+    // const [anchorEl, setAnchorEl] = useState(null)
+    // const [subjects, setSubjects] = useState([])
+    // const [subject, setSubject] = useState({
+    //     subject: { code: 'Select subject' },
+    // })
     const [problem, setProblem] = useState('')
     let navigate = useNavigate()
     const { enqueueSnackbar } = useSnackbar()
@@ -41,7 +42,7 @@ export default function CreateAppointmentModal() {
     //     questionContent: 'string',
     // })
 
-    const open = Boolean(anchorEl)
+    //const open = Boolean(anchorEl)
     useEffect(() => {
         fetchData()
     }, [])
@@ -50,61 +51,38 @@ export default function CreateAppointmentModal() {
         console.log(slotId)
         mentorApi.getMentorSlotById(slotId).then((res) => {
             setSlotDetail(res.data.content)
-            getMentorSubject(res.data.content.mentor.id)
         })
-    }
-
-    const getMentorSubject = (data) => {
-        mentorApi.getMentorSubjects(data).then((res) => {
-            setSubjects(res.data.content)
-        })
-    }
-
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
-
-    const onChoose = (item) => {
-        setSubject(item.subject)
-        setAnchorEl(null)
     }
 
     const handleSendAppointment = () => {
         console.log(slotId)
-        console.log(subject.id)
+        //console.log(subject.id)
         console.log(problem)
         if (
             slotId == null ||
             slotId == '' ||
-            subject.id == null ||
-            subject.id == '' ||
-            subject.code == 'Select Subject' ||
             problem == null ||
-            problem == 'F'
+            problem == ''
         ) {
-            handleClickVariant('Subject and problem are required!', 'error')
+            handleClickVariant('Brief problem are required!', 'error')
+        } else {
+            appointmentApi
+                .createAppointment({
+                    slotId: slotId,
+                    briefProblem: problem
+                })
+                .then((res) => {
+                    handleClickVariant(
+                        'Create appointment successfully!!!',
+                        'success'
+                    )
+                    navigate('/appointment')
+                })
+                .catch((err) => {
+                    console.log(err.response.data.error.message)
+                    handleClickVariant(err.response.data.error.message, 'error')
+                })
         }
-        appointmentApi
-            .createAppointment({
-                slotId: slotId,
-                appointmentSubjects: [
-                    {
-                        subjectId: subject.id,
-                        briefProblem: problem,
-                    },
-                ],
-            })
-            .then((res) => {
-                handleClickVariant(
-                    'Create appointment successfully!!!!',
-                    'success'
-                )
-                navigate('/appointment')
-            })
-            .catch((err) => {
-                console.log(err.response.data.error.message)
-                handleClickVariant(err.response.data.error.message, 'error')
-            })
     }
 
     return (
@@ -126,165 +104,126 @@ export default function CreateAppointmentModal() {
                         px: 2,
                     }}
                 >
-                    {/* <SuiBox display="flex" justifyContent="flex-end">
-                        <SuiButton color="dark" onClick>
-                            Add Question
-                        </SuiButton>
-                    </SuiBox> */}
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    width="10%"
+                                    alignItems="center"
+                                >
+                                    Fullname
+                                </SuiTypography>
+                            </SuiBox>
 
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Fullname
-                        </SuiTypography>
-                    </SuiBox>
+                            <SuiBox mb={2}>
+                                <SuiInput
+                                    disabled
+                                    type="text"
+                                    value={slotDetail?.mentor.name}
+                                    inputProps={{ maxLength: 100 }}
+                                />
+                            </SuiBox>
+                        </Grid>
+                    </Grid>
 
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable
-                            type="text"
-                            value={slotDetail?.mentor.name}
-                            inputProps={{ maxLength: 100 }}
-                        />
-                    </SuiBox>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    width="10%"
+                                    alignItems="center"
+                                >
+                                    Start Time
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiBox>
+                                <SuiInput
+                                    disabled
+                                    type="text"
+                                    value={moment(slotDetail?.startTime).format(
+                                        'LLLL'
+                                    )}
+                                    inputProps={{ maxLength: 20 }}
+                                />
+                            </SuiBox>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    width="10%"
+                                    alignItems="center"
+                                >
+                                    End Time
+                                </SuiTypography>
+                            </SuiBox>
+                            <SuiBox mb={0.5}>
+                                <SuiInput
+                                    disabled
+                                    type="text"
+                                    value={moment(
+                                        slotDetail?.finishTime
+                                    ).format('LLLL')}
+                                    inputProps={{ maxLength: 20 }}
+                                />
+                            </SuiBox>
+                            <SuiBox mb={2}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    Brief Problem
+                                </SuiTypography>
+                                <SuiInput
+                                    autoFocus
+                                    id="problemTextField"
+                                    type="text"
+                                    rows={5}
+                                    multiline
+                                    onChange={(e) => {
+                                        setProblem(e.target.value)
+                                    }}
+                                    name="problem"
+                                />
+                            </SuiBox>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>
+                                <SuiTypography
+                                    component="label"
+                                    variant="button"
+                                    fontWeight="bold"
+                                    alignItems="center"
+                                >
+                                    Slot Subject
+                                </SuiTypography>
+                            </SuiBox>
+                            {slotDetail?.slotSubjects?.map((item, index) => (
+                                <Paper elevation={3}>
+                                    <SuiBox p={2}>
+                                        <SubjectInfoCard
+                                            description={item.description}
+                                            info={{
+                                                Code: item.subject?.code,
+                                                Name: item.subject?.title,
+                                            }}
+                                        />
+                                    </SuiBox>
+                                </Paper>
+                            ))}
+                        </Grid>
+                    </Grid>
 
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Start Time
-                        </SuiTypography>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable
-                            id="codeTextField"
-                            type="text"
-                            value={moment(slotDetail?.startTime).format('LLLL')}
-                            inputProps={{ maxLength: 20 }}
-                        />
-                    </SuiBox>
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            End Time
-                        </SuiTypography>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiInput
-                            disable
-                            id="codeTextField"
-                            type="text"
-                            value={moment(slotDetail?.finishTime).format(
-                                'LLLL'
-                            )}
-                            inputProps={{ maxLength: 20 }}
-                        />
-                    </SuiBox>
-                    <SuiBox sx={{ display: 'flex' }} mb={1}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Subject
-                        </SuiTypography>
-                    </SuiBox>
                     <SuiBox
-                        mb={2}
-                        sx={{
-                            display: 'flex',
-                            width: '20%',
-                        }}
-                    >
-                        <SuiInput
-                            disable
-                            placeholder="Subject"
-                            icon={{
-                                component: 'arrow_drop_down',
-                                direction: 'right',
-                            }}
-                            value={subject.code}
-                            onClick={(e) => setAnchorEl(e.currentTarget)}
-                        />
-
-                        <IconButton
-                            color="dark"
-                            component="span"
-                            onClick={() => {
-                                setSubject({ code: 'Select Subject' })
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-
-                        <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                                style: {
-                                    maxHeight: 50 * 4.5,
-                                    width: '12%',
-                                },
-                            }}
-                            MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                            }}
-                        >
-                            {subjects?.map((item) => {
-                                return (
-                                    <MenuItem
-                                        value={10}
-                                        key={item.id}
-                                        onClick={() => onChoose(item)}
-                                    >
-                                        {item.subject.code}
-                                    </MenuItem>
-                                )
-                            })}
-                        </Menu>
-                    </SuiBox>
-                    <SuiBox sx={{ width: '40%' }} mb={2}>
-                        <SuiTypography
-                            component="label"
-                            variant="button"
-                            fontWeight="bold"
-                            width="10%"
-                            alignItems="center"
-                        >
-                            Brief Problem
-                        </SuiTypography>
-                        <SuiInput
-                            id="problemTextField"
-                            type="text"
-                            rows={5}
-                            multiline
-                            onChange={(e) => {
-                                setProblem(e.target.value)
-                            }}
-                            name="problem"
-                        />
-                    </SuiBox>
-                    <SuiBox
-                        sx={{ width: '40%' }}
+                        
                         mb={2}
                         display="flex"
                         justifyContent="flex-end"

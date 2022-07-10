@@ -1,31 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { usePatch } from 'hooks/usePatch'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormLabel, TextField } from '@mui/material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormLabel,
+    MenuItem,
+    Select,
+    TextField,
+} from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
-export default function EventDialog({ initialEvent, isOpen, onOk, onCancel }) {
-    const [editingEvent, setEditingEvent, patchEditingEvent] = usePatch();
+export default function EventDialog({
+    initialEvent,
+    isOpen,
+    onOk,
+    onCancel,
+    mentorSubjects,
+}) {
+    const [editingEvent, setEditingEvent, patchEditingEvent] = usePatch()
 
     React.useEffect(() => {
-        if (isOpen)
-            setEditingEvent(initialEvent);
-    }, [initialEvent, isOpen, setEditingEvent]);
+        if (isOpen) setEditingEvent(initialEvent)
+    }, [initialEvent, isOpen, setEditingEvent])
 
     function handleOkClick() {
-        onOk?.(editingEvent);
+        onOk?.(editingEvent)
     }
 
     function handleCancelClick() {
-        onCancel?.();
+        onCancel?.()
     }
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Dialog open={isOpen}>
                 <DialogTitle id="alert-dialog-title">
-                    {'Create an event'}
+                    {'Create an available slot'}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContent>Start time</DialogContent>
@@ -44,6 +60,26 @@ export default function EventDialog({ initialEvent, isOpen, onOk, onCancel }) {
                             patchEditingEvent({ finishTime: newValue })
                         }
                     />
+                    <DialogContent>Subject</DialogContent>
+                    <Select
+                        onChange={(e) => {
+                            patchEditingEvent({
+                                subjectId: e.target.value.id,
+                                description: e.target.value.description,
+                            })
+                        }}
+                    >
+                        {mentorSubjects.map((subject) => {
+                            return (
+                                <MenuItem
+                                    key={subject.id}
+                                    value={subject.subject}
+                                >
+                                    {subject.subject.code}
+                                </MenuItem>
+                            )
+                        })}
+                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancelClick}>Cancel</Button>
