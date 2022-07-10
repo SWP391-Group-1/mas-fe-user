@@ -73,10 +73,4 @@ function MentorInfoCard({ title, description, info, social, action }) {
 }
 
 // Typechecking props for the ProfileInfoCard
-MentorInfoCard.propTypes = {
-    title: PropTypes.string,
-    description: PropTypes.string.isRequired,
-    info: PropTypes.objectOf(PropTypes.string).isRequired,
-}
-
 export default MentorInfoCard
