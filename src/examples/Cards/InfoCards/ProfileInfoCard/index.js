@@ -50,6 +50,7 @@ function ProfileInfoCard({
         UserApi.updatePersonalInformation(profile)?.then((res) => {})
         onUpdate?.(profile)
         setIsOpenEditModal(false)
+        
     }
 
     const handleCancelUpdateProfile = (profile) => {

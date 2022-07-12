@@ -60,6 +60,7 @@ export default function EventDialog({
                     />
                     <DialogContent>Subject</DialogContent>
                     <Select
+                        value={editingEvent?.subjectCode}
                         onChange={(e) => {
                             patchEditingEvent({
                                 subjectId: e.target.value.id,
