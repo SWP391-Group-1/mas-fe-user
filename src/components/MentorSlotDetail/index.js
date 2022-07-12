@@ -295,7 +295,7 @@ export default function MentorSlotDetail() {
                                         id="codeTextField"
                                         type="text"
                                         value={moment(
-                                            slotDetails?.startTime
+                                            slotDetails?.startTime + 'Z'
                                         ).format('LLLL')}
                                         inputProps={{ maxLength: 20 }}
                                     />
@@ -316,7 +316,7 @@ export default function MentorSlotDetail() {
                                         id="codeTextField"
                                         type="text"
                                         value={moment(
-                                            slotDetails?.finishTime
+                                            slotDetails?.finishTime + 'Z'
                                         ).format('LLLL')}
                                         inputProps={{ maxLength: 20 }}
                                     />

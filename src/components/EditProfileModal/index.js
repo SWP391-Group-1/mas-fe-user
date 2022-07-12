@@ -51,7 +51,7 @@ export default function EditProfileModal({
                         id="codeTextField"
                         type="text"
                         value={newProfile?.name}
-                        inputProps={{ maxLength: 5 }}
+                        inputProps={{ maxLength: 20 }}
                         onChange={(e) =>
                             patchProfile({
                                 name: e?.target?.value ?? '',
@@ -70,10 +70,10 @@ export default function EditProfileModal({
                     </SuiBox>
                     <SuiInput
                         id="titleTextField"
-                        label="Title"
                         type="text"
+                        multiline rows={5}
                         value={newProfile?.introduce}
-                        inputProps={{ maxLength: 100 }}
+                        inputProps={{ maxLength: 500 }}
                         onChange={(e) =>
                             patchProfile({ introduce: e?.target?.value ?? '' })
                         }

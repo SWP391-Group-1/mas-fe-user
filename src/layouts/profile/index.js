@@ -144,7 +144,7 @@ function Overview() {
     }
 
     const isFound = mentorSubjects.some((subject) => {
-        if (subject.subject.code === selectMentorSubject.code) {
+        if (subject?.subject.code === selectMentorSubject?.code) {
             return true
         }
         return false
@@ -155,15 +155,15 @@ function Overview() {
         if (isFound) {
             handleClickVariant('Mentor already have this subject!', 'error')
         } else {
-            // mentorSubjectApi
-            //     .registerMentorSubjects({
-            //         subjectId: selectMentorSubject.id,
-            //         briefInfo: selectMentorSubject.description,
-            //     })
-            //     .then((res) => {
-            handleClickVariant('Add subject successfully!', 'success')
-            //         fetchData()
-            //     })
+            mentorSubjectApi
+                .registerMentorSubjects({
+                    subjectId: selectMentorSubject.id,
+                    briefInfo: selectMentorSubject.description,
+                })
+                .then((res) => {
+                    handleClickVariant('Add subject successfully!', 'success')
+                    fetchData()
+                })
         }
     }
 
