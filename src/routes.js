@@ -29,8 +29,6 @@ const routes = [
         noCollapse: true,
     },
     {
-        type: 'collapse',
-        name: 'MentorSlot',
         key: 'mentorslot',
         route: '/mentorslot',
         icon: <Shop size="12px" />,
