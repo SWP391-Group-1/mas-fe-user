@@ -71,6 +71,11 @@ const processAppointment = (appointmentId, data) => {
     return defaultInstance.put(`/appointments/process/${appointmentId}`, data)
 }
 
+const checkPass = () => {
+    loadToken()
+    return defaultInstance.put(`/appointments`)
+}
+
 const loadAppointmentInASlot = (slotId) => {
     loadToken()
     return defaultInstance.get(`/users/receive/appointments?SlotId=${slotId}`)
@@ -95,4 +100,5 @@ export const appointmentApi = {
     ratingAfterAppointment,
     loadMentorAppointment,
     loadUserAppointment,
+    checkPass,
 }

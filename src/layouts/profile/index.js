@@ -234,6 +234,9 @@ function Overview() {
                 <Typography variant="h5" component="div" sx={{ m: 1 }}>
                     Current mentor subject
                 </Typography>
+                <Typography variant="h6" component="div" sx={{ m: 1 }}>
+                    Add mentor subject
+                </Typography>
                 {chipMentorSubjects.map((chipMentorSubject, index) => {
                     return (
                         <Chip

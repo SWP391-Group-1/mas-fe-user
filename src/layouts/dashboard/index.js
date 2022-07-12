@@ -96,6 +96,7 @@ function Dashboard() {
     }, [])
 
     useEffect(() => {
+        appointmentApi.checkPass()
         if (userProfile?.isMentor) {
             SlotApi.getAllSlots(
                 userProfile?.id,
