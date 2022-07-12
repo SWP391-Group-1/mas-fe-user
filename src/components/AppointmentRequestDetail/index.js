@@ -288,28 +288,29 @@ export default function AppointmentRequestDetail() {
                             </SuiBox>
                         </Grid>
                     </Grid>
-
-                    <SuiBox
-                        sx={{ display: 'flex', justifyContent: 'flex-end' }}
-                    >
-                        <SuiButton
-                            sx={{ mr: '10px' }}
-                            color="success"
-                            onClick={() => {
-                                handleAcceptOrDenyRequest(true)
-                            }}
+                    {appointmentRequestDetails.isApproved != null && (
+                        <SuiBox
+                            sx={{ display: 'flex', justifyContent: 'flex-end' }}
                         >
-                            Accept
-                        </SuiButton>
-                        <SuiButton
-                            color="dark"
-                            onClick={() => {
-                                handleAcceptOrDenyRequest(false)
-                            }}
-                        >
-                            Deny
-                        </SuiButton>
-                    </SuiBox>
+                            <SuiButton
+                                sx={{ mr: '10px' }}
+                                color="success"
+                                onClick={() => {
+                                    handleAcceptOrDenyRequest(true)
+                                }}
+                            >
+                                Accept
+                            </SuiButton>
+                            <SuiButton
+                                color="dark"
+                                onClick={() => {
+                                    handleAcceptOrDenyRequest(false)
+                                }}
+                            >
+                                Deny
+                            </SuiButton>
+                        </SuiBox>
+                    )}
                 </Card>
             </SuiBox>
         </DashboardLayout>

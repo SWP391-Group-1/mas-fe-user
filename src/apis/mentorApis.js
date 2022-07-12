@@ -18,7 +18,7 @@ const getMentorById = (mentorId) => {
 
 const getMentorSubjects = (id) => {
     loadToken()
-    return defaultInstance.get(`/mentor-subjects/${id}`)
+    return defaultInstance.get(`/mentor-subjects/${id}?IsActive=true`)
 }
 const getMentorSlots = (id) => { 
 

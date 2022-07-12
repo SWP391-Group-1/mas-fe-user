@@ -12,8 +12,13 @@ const loadRatingOfAMentorWithFilterVote = (mentorId, vote) => {
     return defaultInstance.get(`/users/${mentorId}/ratings?Vote=${vote}`)
 }
 
+const loadRatingOfAnAppointment = (appointmentId) => {
+    loadToken()
+    return defaultInstance.get(`/ratings/get-by-appointmentid/${appointmentId}`)
+}
 
 export const ratingApi = {
     loadAllRatingOfAMentor,
     loadRatingOfAMentorWithFilterVote,
+    loadRatingOfAnAppointment
 }

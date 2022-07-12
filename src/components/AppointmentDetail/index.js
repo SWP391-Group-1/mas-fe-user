@@ -20,6 +20,7 @@ export default function AppointmentDetail() {
     const appointmentID = location.state?.appointmentId || null
     const [appointmentDetails, setAppointmentDetails] = useState([])
     const [slotDetails, setSlotDetails] = useState(null)
+    const [rating, setRating] = useState(null)
     let navigate = useNavigate()
     useEffect(() => {
         if (appointmentID == null) {
@@ -34,6 +35,7 @@ export default function AppointmentDetail() {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
         })
+        
     }
 
     const renderStatus = () => {
@@ -94,7 +96,21 @@ export default function AppointmentDetail() {
                         px: 2,
                     }}
                 >
-                    <SuiBox mb={1}>{renderStatus()}</SuiBox>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox mb={1}>{renderStatus()}</SuiBox>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <SuiBox
+                                display="flex"
+                                justifyContent="flex-end"
+                                mb={1}
+                            >
+                                <SuiButton color="dark">Rate</SuiButton>
+                            </SuiBox>
+                        </Grid>
+                    </Grid>
+
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
                             <SuiBox mb={1}>
