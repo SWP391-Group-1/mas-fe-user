@@ -15,6 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 export default function EventDialog({
+    title,
     initialEvent,
     isOpen,
     onOk,
@@ -38,9 +39,7 @@ export default function EventDialog({
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Dialog open={isOpen}>
-                <DialogTitle id="alert-dialog-title">
-                    {'Create an available slot'}
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                 <DialogContent>
                     <DialogContent>Start time</DialogContent>
                     <DateTimePicker
@@ -60,11 +59,12 @@ export default function EventDialog({
                     />
                     <DialogContent>Subject</DialogContent>
                     <Select
-                        value={editingEvent?.subjectCode}
-                        onChange={(e) => {
+                        value={editingEvent?.subjectId}
+                        onChange={(newValue) => {
+                            console.log(newValue)
                             patchEditingEvent({
-                                subjectId: e.target.value.id,
-                                description: e.target.value.description,
+                                subjectId: newValue.target.value.id,
+                                description: 'description',
                             })
                         }}
                     >

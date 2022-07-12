@@ -29,7 +29,7 @@ function Dashboard() {
     const handleClickOpenEvent = (event) => {
         console.log('eventclick', event)
         console.log('eventclick', event.event._def.publicId)
-        if (event.event._def.title.includes('Mentor available slot')) {
+        if (event.event._def.title.includes('Mentor slot')) {
             navigate('/mentorslot', {
                 state: { slotID: event.event._def.publicId },
             })
@@ -73,9 +73,7 @@ function Dashboard() {
         if (Array.isArray(slots))
             setMentorSlots((prevEvents) => [
                 ...slots.map((slot) => ({
-                    title:
-                        'Mentor available slot: ' +
-                        slot.slotSubjects[0].subject.code,
+                    title: 'Mentor slot: ' + slot.slotSubjects[0].subject.code,
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
@@ -141,6 +139,11 @@ function Dashboard() {
                         timeGridPlugin,
                         momentTimezonePlugin,
                     ]}
+                    eventTimeFormat={{
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                    }}
                     timeZone="Asia/Bangkok"
                     timeZoneParam="Asia/Bangkok"
                     events={joinEvents}

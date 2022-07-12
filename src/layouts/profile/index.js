@@ -89,6 +89,7 @@ function Overview() {
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
+                    color: slot.isPassed ? 'gray' : 'green',
                 })),
             ])
     }
@@ -139,7 +140,10 @@ function Overview() {
 
     const handleClickOpenEvent = ({ event, el }) => {
         navigate('/mentorslot', {
-            state: { slotID: event._def.publicId },
+            state: {
+                slotID: event._def.publicId,
+                mentorSubjects: mentorSubjects,
+            },
         })
     }
 
@@ -193,7 +197,6 @@ function Overview() {
     function handleEditEventOkClick(event) {
         SlotApi.addAvailableSlot(event)
             .then((res) => {
-                console.log('HUYDEPTRAI', res)
                 handleClickVariant('Add slot successfully!', 'success')
                 fetchData()
                 navigate('/profile')
@@ -219,7 +222,6 @@ function Overview() {
 
     function handleOnUpdate() {
         fetchData()
-        navigate('/profile')
     }
 
     React.useEffect(() => {
@@ -296,9 +298,6 @@ function Overview() {
     )
 
     useEffect(() => {
-        console.log('First day of month', weekStart)
-        console.log('Last day of month', weekEnd)
-
         fetchData()
     }, [])
 
@@ -308,7 +307,7 @@ function Overview() {
                 <Header
                     profileAvatar={userProfile.avatar}
                     profileName={userProfile.name}
-                    isMentor={userProfile.mentor}
+                    isMentor={userProfile.isMentor}
                 />
             ) : (
                 <Header
@@ -434,6 +433,7 @@ function Overview() {
             </SuiBox>
             <Footer />
             <EventDialog
+                title={'Create available slot'}
                 isOpen={isEditingEventOpen}
                 initialEvent={eventToEdit}
                 onOk={handleEditEventOkClick}

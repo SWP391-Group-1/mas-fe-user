@@ -3,26 +3,18 @@ import SuiTypography from 'components/SuiTypography'
 import React, { useState } from 'react'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import { Divider } from '@mui/material'
+import { Button, Divider } from '@mui/material'
 export default function MentorSlot({ slot }) {
     const [slotDetail, setSlotDetail] = useState()
     let navigate = useNavigate()
 
     React.useEffect(() => {
         setSlotDetail(slot)
-        console.log('ConCU', slot)
     }, [slot])
 
     return (
         <>
-            <SuiBox
-                mb={2}
-                onClick={() => {
-                    navigate('/mentor/details/slotdetails', {
-                        state: { slotID: slotDetail?.id },
-                    })
-                }}
-            >
+            <SuiBox mb={2}>
                 <SuiBox>
                     <SuiTypography variant="button" fontWeight="bold">
                         {'Slot for subject: '}
@@ -44,6 +36,23 @@ export default function MentorSlot({ slot }) {
                         {moment(slotDetail?.finishTime + 'Z').format('HH:mm')}
                     </SuiTypography>
                 </SuiBox>
+                <Button
+                    style={{
+                        backgroundColor: 'gray',
+                        color: 'black',
+                        marginTop: 5,
+                    }}
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => {
+                        navigate('/mentor/details/slotdetails', {
+                            state: { slotID: slotDetail?.id },
+                        })
+                    }}
+                >
+                    View
+                </Button>
             </SuiBox>
             <Divider />
         </>

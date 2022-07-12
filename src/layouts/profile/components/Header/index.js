@@ -107,7 +107,7 @@ function Header({ profileName, profileAvatar, isMentor }) {
                                 color="text"
                                 fontWeight="medium"
                             >
-                                {isMentor ? 'User' : 'Mentor'}
+                                {isMentor === true ? 'Mentor' : 'Student'}
                             </SuiTypography>
                         </SuiBox>
                     </Grid>

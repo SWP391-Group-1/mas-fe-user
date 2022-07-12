@@ -18,8 +18,10 @@ import SuiTypography from 'components/SuiTypography'
 import colors from 'assets/theme/base/colors'
 import typography from 'assets/theme/base/typography'
 import EditProfileModal from 'components/EditProfileModal'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { UserApi } from 'apis/userApis'
+import { useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 function ProfileInfoCard({
     title,
@@ -38,6 +40,8 @@ function ProfileInfoCard({
     const { size } = typography
     const [editingProfile, setEditingProfile] = useState(null)
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
+    const navigate = useNavigate()
+    const { enqueueSnackbar } = useSnackbar()
 
     const profile = {
         name: fullname,
@@ -46,11 +50,19 @@ function ProfileInfoCard({
         avatar: avatarUrl,
     }
 
+    const handleClickVariant = (title, varientType) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(title, {
+            variant: varientType,
+        })
+    }
+
     const handleUpdateProfile = (profile) => {
-        UserApi.updatePersonalInformation(profile)?.then((res) => {})
+        UserApi.updatePersonalInformation(profile)?.then((res) => {
+            handleClickVariant('Update profile successfully!', 'success')
+        })
         onUpdate?.(profile)
         setIsOpenEditModal(false)
-        
     }
 
     const handleCancelUpdateProfile = (profile) => {

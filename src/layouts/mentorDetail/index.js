@@ -1,4 +1,4 @@
-import { Card, Grid } from '@mui/material'
+import { Card, Grid, Paper } from '@mui/material'
 import { mentorApi } from 'apis/mentorApis'
 import { SlotApi } from 'apis/slotApis'
 import MentorSlot from 'components/MentorSlot'
@@ -127,15 +127,24 @@ export default function MentorDetail() {
                                     <SuiTypography pl={1}>
                                         Mentor Slots
                                     </SuiTypography>
-                                    <SuiBox>
-                                        <SuiBox p={2}>
-                                            {mentorSlots?.map((item) => {
-                                                return (
-                                                    <MentorSlot slot={item} />
-                                                )
-                                            })}
+                                    <Paper
+                                        style={{
+                                            maxHeight: 500,
+                                            overflow: 'auto',
+                                        }}
+                                    >
+                                        <SuiBox>
+                                            <SuiBox p={2}>
+                                                {mentorSlots?.map((item) => {
+                                                    return (
+                                                        <MentorSlot
+                                                            slot={item}
+                                                        />
+                                                    )
+                                                })}
+                                            </SuiBox>
                                         </SuiBox>
-                                    </SuiBox>
+                                    </Paper>
                                 </Card>
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -147,7 +156,9 @@ export default function MentorDetail() {
                                         <SuiBox p={2}>
                                             {ratingLists?.map((item) => {
                                                 return (
-                                                    <RatingCommentItem rating={item} />
+                                                    <RatingCommentItem
+                                                        rating={item}
+                                                    />
                                                 )
                                             })}
                                         </SuiBox>

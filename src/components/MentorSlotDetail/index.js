@@ -7,22 +7,30 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useLocation } from 'react-router-dom'
 import { mentorApi } from 'apis/mentorApis'
+import { SlotApi } from 'apis/slotApis'
 import MentorInfoCard from 'examples/Cards/InfoCards/MentorInfoCard'
 import SuiInput from 'components/SuiInput'
 import { appointmentApi } from 'apis/appointmentApis'
 import { questionApi } from 'apis/questionApis'
-import QuestionDataGrid from 'examples/MASDataGrid/question'
 import { useSnackbar } from 'notistack'
 import { DataGrid } from '@mui/x-data-grid'
 import AnswerQuestionModal from 'components/AnswerQuestionModal'
 import SubjectInfoCard from 'examples/Cards/InfoCards/SubjectInfoCard'
+import EventDialog from 'layouts/profile/components/EventDialog'
+import { useModal } from '../../hooks/useModal.js'
+import { useNavigate } from 'react-router-dom'
 
 export default function MentorSlotDetail() {
     const location = useLocation()
+    let questions = []
+    const modal = useModal()
+    const navigate = useNavigate()
     const slotID = location.state?.slotID || null
+    const mentorSubjects = location.state?.mentorSubjects || null
     const [slotDetails, setSlotDetails] = useState()
     const [appointments, setAppointments] = useState([])
-    let questions = []
+    const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
+    const [eventToEdit, setEventToEdit] = useState(null)
     const [tempQuestions, setTempQuestions] = useState([])
     const [question, setQuestion] = useState([])
     const [isOpenEditModal, setIsOpenEditModal] = useState(false)
@@ -31,6 +39,22 @@ export default function MentorSlotDetail() {
     useEffect(() => {
         fetchData()
     }, [])
+
+    function handleEditEventCancelClick() {
+        setIsEditingEventOpen(false)
+    }
+
+    function handleEditEventOkClick(event) {
+        // SlotApi.addAvailableSlot(event)
+        //     .then((res) => {
+        //         handleClickVariant('Update slot successfully!', 'success')
+        //         fetchData()
+        //     })
+        //     .catch((error) => {
+        //         handleClickVariant(error.response.data.title, 'error')
+        //     })
+        setIsEditingEventOpen(false)
+    }
 
     const handleClickVariant = (title, varientType) => {
         enqueueSnackbar(title, {
@@ -50,6 +74,51 @@ export default function MentorSlotDetail() {
 
     const handleCancelOpenEditModal = (major) => {
         setIsOpenEditModal(false)
+    }
+
+    const handleUpdateSlot = (start, end, subjectId) => {
+        setEventToEdit({
+            startTime: start,
+            finishTime: end,
+            subjectId: subjectId,
+        })
+        setIsEditingEventOpen(true)
+    }
+
+    const handleDeleteSlot = (slotId) => {
+        modal.openModal({
+            title: 'Mentor subject add',
+            content: 'Do you want to add this subject for mentor',
+            buttons: [
+                {
+                    text: 'Confirm',
+                    onClick: () => {
+                        SlotApi.deleteAvailableSlot(slotId)
+                            .then((res) => {
+                                handleClickVariant(
+                                    'Delete slot successfully!',
+                                    'success'
+                                )
+                                fetchData()
+                            })
+                            .catch((error) => {
+                                handleClickVariant(
+                                    error.response.data.error.message,
+                                    'error'
+                                )
+                            })
+                        modal.closeModal()
+                        navigate('/profile')
+                    },
+                },
+                {
+                    text: 'Close',
+                    onClick: () => {
+                        modal.closeModal()
+                    },
+                },
+            ],
+        })
     }
 
     const fetchData = () => {
@@ -325,6 +394,40 @@ export default function MentorSlotDetail() {
                         </Grid>
                     </Grid>
                 </Card>
+                {/* <Button
+                        mt={1}
+                        style={{
+                            backgroundColor: 'green',
+                            color: 'white',
+                        }}
+                        variant="contained"
+                        color="error"
+                        size="small"
+                        onClick={() =>
+                            handleUpdateSlot(
+                                slotDetails?.startTime + 'Z',
+                                slotDetails?.finishTime + 'Z',
+                                slotDetails?.slotSubjects[0].subject.code
+                            )
+                        }
+                    >
+                        {' '}
+                        Update
+                    </Button>{' '} */}
+                <Button
+                    mt={1}
+                    style={{
+                        backgroundColor: 'red',
+                        color: 'white',
+                    }}
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => handleDeleteSlot(slotDetails?.id)}
+                >
+                    {' '}
+                    Delete
+                </Button>
             </SuiBox>
             <div style={{ height: 350, width: '100%' }}>
                 <DataGrid
@@ -342,6 +445,14 @@ export default function MentorSlotDetail() {
                     onCancel={handleCancelOpenEditModal}
                 />
             </div>
+            <EventDialog
+                title={'Update available slot'}
+                isOpen={isEditingEventOpen}
+                initialEvent={eventToEdit}
+                onOk={handleEditEventOkClick}
+                onCancel={handleEditEventCancelClick}
+                mentorSubjects={mentorSubjects}
+            />
         </DashboardLayout>
     )
 }

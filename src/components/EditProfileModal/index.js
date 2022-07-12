@@ -9,7 +9,6 @@ import SuiInput from 'components/SuiInput/index.js'
 import SuiBox from 'components/SuiBox/index.js'
 import SuiTypography from 'components/SuiTypography/index.js'
 import { Box } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
 
 export default function EditProfileModal({
     profile,
@@ -18,8 +17,6 @@ export default function EditProfileModal({
     onCancel,
 }) {
     const [newProfile, setNewProfile, patchProfile] = usePatch()
-    const isCreateMode = React.useMemo(() => !profile, [profile])
-    const navigate = useNavigate()
 
     React.useEffect(() => {
         setNewProfile(profile)
@@ -27,7 +24,6 @@ export default function EditProfileModal({
 
     const handleUpdateClick = () => {
         onSubmit?.(newProfile)
-        navigate('/profile')
     }
 
     const handleCancelClick = () => {
