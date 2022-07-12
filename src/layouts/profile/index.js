@@ -143,17 +143,28 @@ function Overview() {
         })
     }
 
+    const isFound = mentorSubjects.some((subject) => {
+        if (subject.subject.code === selectMentorSubject.code) {
+            return true
+        }
+        return false
+    })
+
     const handleAddChipMentorSubject = () => {
-        if (selectMentorSubject)
-            mentorSubjectApi
-                .registerMentorSubjects({
-                    subjectId: selectMentorSubject.id,
-                    briefInfo: selectMentorSubject.description,
-                })
-                .then((res) => {
-                    handleClickVariant('Add subject successfully!', 'success')
-                    fetchData()
-                })
+        console.log(mentorSubjects)
+        if (isFound) {
+            handleClickVariant('Mentor already have this subject!', 'error')
+        } else {
+            // mentorSubjectApi
+            //     .registerMentorSubjects({
+            //         subjectId: selectMentorSubject.id,
+            //         briefInfo: selectMentorSubject.description,
+            //     })
+            //     .then((res) => {
+            handleClickVariant('Add subject successfully!', 'success')
+            //         fetchData()
+            //     })
+        }
     }
 
     const handleDelete = (chipToDelete) => {
