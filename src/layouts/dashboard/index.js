@@ -60,7 +60,11 @@ function Dashboard() {
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
-                    color: slot.isApprove ? 'green' : 'red',
+                    color: slot.isApprove
+                        ? slot.isPassed
+                            ? 'gray'
+                            : 'green'
+                        : 'red',
                 })),
             ])
     }
@@ -75,7 +79,7 @@ function Dashboard() {
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
-                    color: 'purple',
+                    color: slot.isPassed ? 'gray' : 'purple',
                 })),
             ])
     }
@@ -103,7 +107,7 @@ function Dashboard() {
                 setDataMentorSlots(res.data.content)
             })
         }
-        appointmentApi.loadSendAppointmentWithFilter('true').then((res) => {
+        appointmentApi.loadSendAppointment().then((res) => {
             setDataAppointments(res.data.content)
         })
         console.log('2 fetch data event')

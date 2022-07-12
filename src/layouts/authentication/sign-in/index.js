@@ -38,7 +38,6 @@ function SignIn() {
     const handleGoogleSignIn = async () => {
         try {
             await googleSignIn()
-            // console.log(user)
             successLoginGoogle()
         } catch (err) {
             console.log(err)
@@ -60,7 +59,6 @@ function SignIn() {
                 setErrorMessage(err.response.data.errors[0])
                 setErrorEmail(err.response.data.errors['Email'][0])
                 setErrorPassword(err.response.data.errors['Password'][0])
-                // console.error('Sign in failed.', err.response.data.errors[0])
             })
     }
 
@@ -87,9 +85,13 @@ function SignIn() {
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.errors[0])
-                setErrorEmail(err.response.data.errors['Email'][0])
-                setErrorPassword(err.response.data.errors['Password'][0])
-                console.error('Sign in failed.', err.response.data.errors[0])
+                if (err.response.data.errors['Email'] != null)
+                    setErrorEmail(err.response.data.errors['Email'][0])
+                if (err.response.data.errors['Password'] != null)
+                    setErrorPassword(err.response.data.errors['Password'][0])
+                console.log(errorMessage)
+                console.log(errorEmail)
+                console.log(errorMessage)
             })
     }
 

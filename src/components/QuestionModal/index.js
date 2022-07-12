@@ -64,7 +64,7 @@ export default function QuestionModal({
                             'Create question successfully!',
                             'success'
                         )
-                        onSubmit?.() // TODO: làm gì ở đây 
+                        onSubmit?.() // TODO
                     })
                     .catch((error) => {
                         console.log(error)

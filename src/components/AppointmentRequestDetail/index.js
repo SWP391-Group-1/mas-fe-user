@@ -79,6 +79,11 @@ export default function AppointmentRequestDetail() {
                         'Appointment request denied',
                         'Your appointment request is denied!'
                     )
+                    handleSendEmail(
+                        'huynhse140380@fpt.edu.vn',
+                        'Appointment request denied',
+                        'Your appointment request is denied! Please check back your appointment!'
+                    )
                 }
             })
             .catch((err) => {

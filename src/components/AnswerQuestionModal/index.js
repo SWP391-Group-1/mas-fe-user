@@ -42,11 +42,14 @@ export default function AnswerQuestionModal({
 
     const handleCancelClick = () => {
         setIsError(false)
+        setAnswer('')
         onCancel?.()
     }
 
     const fetchData = () => {
         questionApi.getQuestionById(question.id).then((res) => {
+            setQuestionDetail(res.data.content)
+            setAnswer(res.data.content.answer)
             appointmentApi
                 .loadReceivedAppointmentDetails(res.data.content.appointmentId)
                 .then((r) => {
@@ -61,17 +64,22 @@ export default function AnswerQuestionModal({
             handleClickVariant('Answer is required!', 'error')
         } else {
             if (!isError) {
+                console.log(question.id)
+                console.log(answer)
                 questionApi
-                    .answerQuestion(question.id, answer)
+                    .answerQuestion(question.id, { answer: answer })
                     ?.then((res) => {
                         handleClickVariant(
                             'Answer question successfully!',
                             'success'
                         )
-                        onSubmit?.() 
+                        onSubmit?.() // TODO
                     })
-                    .catch((error) => {
-                        console.log(error)
+                    .catch((err) => {
+                        handleClickVariant(
+                            err.response.data?.error?.message,
+                            'error'
+                        )
                     })
                 setIsError(false)
             } else {
@@ -116,7 +124,11 @@ export default function AnswerQuestionModal({
                             </SuiTypography>
                             <SuiBox>
                                 <SuiInput
-                                    disabled={appointment?.isPassed == true ? false : true}
+                                    disabled={
+                                        appointment?.isPassed == false
+                                            ? false
+                                            : true
+                                    }
                                     autoFocus
                                     rows={5}
                                     multiline
