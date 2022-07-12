@@ -37,8 +37,9 @@ function SignIn() {
 
     const handleGoogleSignIn = async () => {
         try {
-            await googleSignIn()
-            successLoginGoogle()
+            const userInfo = await googleSignIn()
+            console.log('CONCUBU', userInfo)
+            // successLoginGoogle()
         } catch (err) {
             console.log(err)
         }
@@ -89,9 +90,6 @@ function SignIn() {
                     setErrorEmail(err.response.data.errors['Email'][0])
                 if (err.response.data.errors['Password'] != null)
                     setErrorPassword(err.response.data.errors['Password'][0])
-                console.log(errorMessage)
-                console.log(errorEmail)
-                console.log(errorMessage)
             })
     }
 
