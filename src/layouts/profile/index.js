@@ -23,15 +23,21 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 import '@fullcalendar/timegrid/main.css'
 import { Button, Chip, MenuItem, Select } from '@mui/material'
 import { useModal } from '../../hooks/useModal.js'
 import EventDialog from './components/EventDialog/index.js'
 import { useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
+import RatingCommentItem from 'components/RatingCommentItem'
+import { ratingApi } from 'apis/ratingApis'
+import SuiTypography from 'components/SuiTypography/index.js'
 
 function Overview() {
     const { user } = UserAuth()
     const navigate = useNavigate()
+    const mentorId = localStorage.getItem('userId') || null
     const [userProfile, setUserProfile] = useState({})
     const [selectMentorSubject, setSelectMentorSubject] = useState(null)
     const [mentorSubjects, setMentorSubjects] = useState([])
@@ -39,7 +45,16 @@ function Overview() {
     const [events, setEvents] = useState([])
     const [isEditingEventOpen, setIsEditingEventOpen] = useState(false)
     const [eventToEdit, setEventToEdit] = useState(null)
+    const [ratingLists, setRatingLists] = useState([])
     const modal = useModal()
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handleClickVariant = (title, varientType) => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(title, {
+            variant: varientType,
+        })
+    }
 
     const chipMentorSubjects = React.useMemo(() => {
         return mentorSubjects?.map((mentorSubject) => ({
@@ -53,17 +68,26 @@ function Overview() {
     const sampleDescription =
         'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
     var today = new Date()
-    var day = today.getDay() - 1
-    var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
-    var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    // var day = today.getDay() - 1
+
+    // this get first date of month
+    // first date of week : new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
+    var weekStart = new Date(today.getFullYear(), today.getMonth(), 1)
+
+    // last date of month
+    // last date of week : new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
     const setDataEvents = (slots) => {
         if (Array.isArray(slots))
             setEvents((prevEvents) => [
                 ...slots.map((slot) => ({
-                    title: freeSlotTitle,
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    title:
+                        freeSlotTitle +
+                        ': ' +
+                        slot.slotSubjects[0].subject.code,
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
                 })),
             ])
@@ -91,38 +115,16 @@ function Overview() {
         })
     }
 
-    const handleClickOpenEvent = ({ event, el }) => {
+    const handleClickRemove = (removeId) => {
         modal.openModal({
-            title: event.titlte,
-            content: 'Start: ' + event.start,
-            contentSecond: 'End: ' + event.end,
+            title: 'Mentor subject remove',
+            content: 'Do you want to remove this subject for mentor',
             buttons: [
                 {
-                    text: 'Remove',
+                    text: 'Confirm',
                     onClick: () => {
-                        modal.openModal({
-                            title: 'Slot remove',
-                            content: 'Do you want to remove this slot',
-                            buttons: [
-                                {
-                                    text: 'Confirm',
-                                    onClick: () => {
-                                        modal.closeModal()
-                                        SlotApi.deleteAvailableSlot(
-                                            event.id
-                                        ).then((res) => {
-                                            fetchData()
-                                        })
-                                    },
-                                },
-                                {
-                                    text: 'Close',
-                                    onClick: () => {
-                                        modal.closeModal()
-                                    },
-                                },
-                            ],
-                        })
+                        handleDelete(removeId)
+                        modal.closeModal()
                     },
                 },
                 {
@@ -135,6 +137,12 @@ function Overview() {
         })
     }
 
+    const handleClickOpenEvent = ({ event, el }) => {
+        navigate('/mentorslot', {
+            state: { slotID: event._def.publicId },
+        })
+    }
+
     const handleAddChipMentorSubject = () => {
         if (selectMentorSubject)
             mentorSubjectApi
@@ -143,12 +151,14 @@ function Overview() {
                     briefInfo: selectMentorSubject.description,
                 })
                 .then((res) => {
+                    handleClickVariant('Add subject successfully!', 'success')
                     fetchData()
                 })
     }
 
     const handleDelete = (chipToDelete) => {
         mentorSubjectApi.deleteMentorSubject(chipToDelete).then((res) => {
+            handleClickVariant('Remove subject successfully!', 'success')
             fetchData()
         })
     }
@@ -157,9 +167,11 @@ function Overview() {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
         })
-
         subjectApi.getAllSubject().then((res) => {
             setSubjects(res.data.content)
+        })
+        ratingApi.loadAllRatingOfAMentor(mentorId).then((res) => {
+            setRatingLists(res.data.content)
         })
     }
 
@@ -168,9 +180,16 @@ function Overview() {
     }
 
     function handleEditEventOkClick(event) {
-        SlotApi.addAvailableSlot(event).then((res) => {
-            fetchData()
-        })
+        SlotApi.addAvailableSlot(event)
+            .then((res) => {
+                console.log('HUYDEPTRAI', res)
+                handleClickVariant('Add slot successfully!', 'success')
+                fetchData()
+                navigate('/profile')
+            })
+            .catch((error) => {
+                handleClickVariant(error.response.data.title, 'error')
+            })
         setIsEditingEventOpen(false)
     }
 
@@ -197,8 +216,7 @@ function Overview() {
             SlotApi.getAllSlots(
                 userProfile?.id,
                 weekStart.toISOString(),
-                // weekEnd.toISOString(),
-                '2022-7-20',
+                weekEnd.toISOString(),
                 true,
                 true
             ).then((res) => {
@@ -216,6 +234,9 @@ function Overview() {
                 <Typography variant="h5" component="div" sx={{ m: 1 }}>
                     Current mentor subject
                 </Typography>
+                <Typography variant="h6" component="div" sx={{ m: 1 }}>
+                    Add mentor subject
+                </Typography>
                 {chipMentorSubjects.map((chipMentorSubject, index) => {
                     return (
                         <Chip
@@ -223,7 +244,9 @@ function Overview() {
                             key={chipMentorSubject.key + index}
                             label={chipMentorSubject.label}
                             onDelete={() =>
-                                handleDelete(chipMentorSubject.mentorSubject.id)
+                                handleClickRemove(
+                                    chipMentorSubject.mentorSubject.id
+                                )
                             }
                         />
                     )
@@ -261,8 +284,10 @@ function Overview() {
         [chipMentorSubjects]
     )
 
-
     useEffect(() => {
+        console.log('First day of month', weekStart)
+        console.log('Last day of month', weekEnd)
+
         fetchData()
     }, [])
 
@@ -352,8 +377,14 @@ function Overview() {
                                         dayGridPlugin,
                                         timeGridPlugin,
                                         interactionPlugin,
+                                        momentTimezonePlugin,
                                     ]}
+                                    timeZone="Asia/Bangkok"
+                                    timeZoneParam="Asia/Bangkok"
                                     events={events}
+                                    slotDuration={{
+                                        minute: 30,
+                                    }}
                                     dateClick={handleDateClick}
                                     eventClick={handleClickOpenEvent}
                                     headerToolbar={{
@@ -368,6 +399,24 @@ function Overview() {
                                     <Card variant="outlined">{card}</Card>
                                 </Box>
                             </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Card>
+                                    <SuiTypography pl={1}>
+                                        Rating Comment Section
+                                    </SuiTypography>
+                                    <SuiBox>
+                                        <SuiBox p={2}>
+                                            {ratingLists?.map((item) => {
+                                                return (
+                                                    <RatingCommentItem
+                                                        rating={item}
+                                                    />
+                                                )
+                                            })}
+                                        </SuiBox>
+                                    </SuiBox>
+                                </Card>
+                            </Grid>
                         </>
                     )}
                 </Grid>
@@ -378,6 +427,7 @@ function Overview() {
                 initialEvent={eventToEdit}
                 onOk={handleEditEventOkClick}
                 onCancel={handleEditEventCancelClick}
+                mentorSubjects={mentorSubjects}
             />
         </DashboardLayout>
     )

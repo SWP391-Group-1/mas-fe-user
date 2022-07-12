@@ -42,7 +42,6 @@ import {
 import team2 from 'assets/images/team-2.jpg'
 import logoSpotify from 'assets/images/small-logos/logo-spotify.svg'
 import SuiTypography from 'components/SuiTypography'
-import SuiAvatar from 'components/SuiAvatar'
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [userInfo, setUserInfo] = useState({})
@@ -170,7 +169,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                 </Icon>
                             </IconButton>
                             <SuiTypography variant="button" mr={5}>
-                                {userInfo.name}
+                                {userInfo.name} {' | '}
+                                {userInfo.isMentor ? 'Mentor' : 'Student'}
                             </SuiTypography>
                             <IconButton
                                 size="small"

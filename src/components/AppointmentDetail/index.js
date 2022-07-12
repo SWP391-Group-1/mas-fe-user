@@ -1,5 +1,6 @@
 import { Card, Grid, Paper } from '@mui/material'
 import { appointmentApi } from 'apis/appointmentApis'
+import { SlotApi } from 'apis/slotApis'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -18,17 +19,17 @@ export default function AppointmentDetail() {
     const location = useLocation()
     const appointmentID = location.state?.appointmentId || null
     const [appointmentDetails, setAppointmentDetails] = useState([])
+    const [slotDetails, setSlotDetails] = useState(null)
     let navigate = useNavigate()
     useEffect(() => {
-        if(appointmentID == null) {
+        if (appointmentID == null) {
             navigate('/dashboard')
         } else {
             fetchData()
-        }    
+        }
     }, [])
 
     const fetchData = () => {
-        
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
             console.log(res.data.content)
@@ -48,7 +49,7 @@ export default function AppointmentDetail() {
                 </SuiTypography>
             )
         } else {
-            if (appointmentDetails?.isApprove == true) {
+            if (appointmentDetails?.isApprove === true) {
                 return (
                     <SuiTypography
                         component="label"
@@ -75,7 +76,6 @@ export default function AppointmentDetail() {
     }
 
     return (
-        
         <DashboardLayout>
             <DashboardNavbar />
             <SuiBox mt={7} mb={3}>
@@ -138,7 +138,6 @@ export default function AppointmentDetail() {
                                                 appointmentDetails?.mentor
                                                     ?.introduce
                                             }
-                                            // description="aaaaa"
                                             info={{
                                                 Email: appointmentDetails
                                                     ?.mentor?.email,
@@ -167,13 +166,14 @@ export default function AppointmentDetail() {
                                     Chosen Subject
                                 </SuiTypography>
                             </SuiBox>
-
-                            {appointmentDetails?.appointmentSubjects?.map(
+                            {appointmentDetails?.slot?.slotSubjects?.map(
                                 (item, index) => (
                                     <Paper elevation={3}>
                                         <SuiBox p={2}>
                                             <SubjectInfoCard
-                                                description={item.briefProblem}
+                                                description={
+                                                    appointmentDetails?.briefProblem
+                                                }
                                                 info={{
                                                     Code: item.subject?.code,
                                                     Name: item.subject?.title,
@@ -203,7 +203,8 @@ export default function AppointmentDetail() {
                                     id="codeTextField"
                                     type="text"
                                     value={moment(
-                                        appointmentDetails?.slot?.startTime
+                                        appointmentDetails?.slot?.startTime +
+                                            'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
@@ -226,7 +227,8 @@ export default function AppointmentDetail() {
                                     id="codeTextField"
                                     type="text"
                                     value={moment(
-                                        appointmentDetails?.slot?.finishTime
+                                        appointmentDetails?.slot?.finishTime +
+                                            'Z'
                                     ).format('LLLL')}
                                     inputProps={{ maxLength: 20 }}
                                 />
@@ -235,7 +237,6 @@ export default function AppointmentDetail() {
                     </Grid>
                 </Card>
             </SuiBox>
-
             {appointmentDetails?.isApprove != null && (
                 <QuestionDataGrid appointmentID={appointmentID} />
             )}

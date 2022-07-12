@@ -8,14 +8,28 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
             To: toDate,
             IsAsc: isAsc,
             IsActive: isActive,
+            PageSize: 1000,
         },
     })
 }
 
+const getSlotDetailById = (slotId) => {
+    return defaultInstance.get(`/slots/${slotId}`)
+}
 const addAvailableSlot = (slot) => {
     loadToken()
-    console.log('api', slot)    
-    return defaultInstance.post(`/slots/`, slot)
+    console.log('api', slot)
+    return defaultInstance.post(`/slots`, {
+        startTime: slot.startTime,
+        finishTime: slot.finishTime,
+        slotSubjects: [
+            {
+                subjectId: slot.subjectId,
+                // TODO: change fix data to slot.description
+                description: 'description',
+            },
+        ],
+    })
 }
 
 const deleteAvailableSlot = (id) => {
@@ -27,4 +41,5 @@ export const SlotApi = {
     getAllSlots,
     deleteAvailableSlot,
     addAvailableSlot,
+    getSlotDetailById,
 }

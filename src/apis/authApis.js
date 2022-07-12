@@ -24,5 +24,4 @@ export const authApis = {
     logout,
     getOwnProfile,
     loginGoogle,
-    logout,
 }

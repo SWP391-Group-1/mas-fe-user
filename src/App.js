@@ -191,7 +191,7 @@ export default function App() {
                     <>
                         <Sidenav
                             color={sidenavColor}
-                            brandName="FPT MAS"
+                            brandName="FPT MAS USER"
                             routes={routes}
                             onMouseEnter={handleOnMouseEnter}
                             onMouseLeave={handleOnMouseLeave}

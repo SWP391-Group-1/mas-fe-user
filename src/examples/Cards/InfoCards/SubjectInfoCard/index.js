@@ -1,22 +1,11 @@
-// react-routers components
-import { Link } from 'react-router-dom'
-
 // prop-types is library for typechecking of props
 import PropTypes from 'prop-types'
-
-// @mui material components
-import Card from '@mui/material/Card'
-import Divider from '@mui/material/Divider'
-import Tooltip from '@mui/material/Tooltip'
-import Icon from '@mui/material/Icon'
 
 //  components
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
 
 //  base styles
-import colors from 'assets/theme/base/colors'
-import typography from 'assets/theme/base/typography'
 import SuiInput from 'components/SuiInput'
 
 function SubjectInfoCard({ description, info }) {
@@ -65,7 +54,7 @@ function SubjectInfoCard({ description, info }) {
                     fontWeight="bold"
                     textTransform="capitalize"
                 >
-                    Brief Problem:
+                    Description:
                 </SuiTypography>
                 <SuiBox mb={2} lineHeight={0}>
                     <SuiInput
@@ -84,7 +73,7 @@ function SubjectInfoCard({ description, info }) {
 
 // Typechecking props for the ProfileInfoCard
 SubjectInfoCard.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     description: PropTypes.string.isRequired,
     info: PropTypes.objectOf(PropTypes.string).isRequired,
     // social: PropTypes.arrayOf(PropTypes.object),

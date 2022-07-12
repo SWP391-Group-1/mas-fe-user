@@ -52,7 +52,7 @@ export default function AppointmentRequestDataGrid() {
             headerName: 'Start Time',
             width: 300,
             valueGetter: (params) => {
-                return moment(params.row.slot.startTime).format('LLLL')
+                return moment(params.row.slot.startTime + 'Z').format('LLLL')
             },
         },
         {
@@ -60,7 +60,7 @@ export default function AppointmentRequestDataGrid() {
             headerName: 'End Time',
             width: 300,
             valueGetter: (params) => {
-                return moment(params.row.slot.finishTime).format('LLLL')
+                return moment(params.row.slot.finishTime + 'Z').format('LLLL')
             },
         },
         {

@@ -6,6 +6,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 
 import { useNavigate } from 'react-router-dom'
 import SuiBox from 'components/SuiBox'
@@ -16,9 +17,8 @@ import { appointmentApi } from 'apis/appointmentApis'
 
 function Dashboard() {
     var today = new Date()
-    var day = today.getDay() - 1
-    var weekStart = new Date(today.getTime() - 60 * 60 * 24 * day * 1000)
-    var weekEnd = new Date(weekStart.getTime() + 60 * 60 * 24 * 6 * 1000)
+    var weekStart = new Date(today.getFullYear(), today.getMonth(), 1)
+    var weekEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
     const navigate = useNavigate()
     const [userProfile, setUserProfile] = useState({})
@@ -29,9 +29,21 @@ function Dashboard() {
     const handleClickOpenEvent = (event) => {
         console.log('eventclick', event)
         console.log('eventclick', event.event._def.publicId)
-        navigate('/appointment/appointmentdetails', {
-            state: { appointmentId: event.event._def.publicId },
-        })
+        if (event.event._def.title.includes('Mentor available slot')) {
+            navigate('/mentorslot', {
+                state: { slotID: event.event._def.publicId },
+            })
+        } else {
+            if (userProfile?.isMentor) {
+                navigate('/request/appointmentrequestdetails', {
+                    state: { appointmentId: event.event._def.publicId },
+                })
+            } else {
+                navigate('/appointment/appointmentdetails', {
+                    state: { appointmentId: event.event._def.publicId },
+                })
+            }
+        }
     }
 
     const handleDateClick = (event) => {
@@ -45,10 +57,14 @@ function Dashboard() {
                     title: slot.isApprove
                         ? 'Appoinment : Approved'
                         : ' Appointment : Unapproved',
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
-                    color: slot.isApprove ? 'green' : 'red',
+                    color: slot.isApprove
+                        ? slot.isPassed
+                            ? 'gray'
+                            : 'green'
+                        : 'red',
                 })),
             ])
     }
@@ -57,11 +73,13 @@ function Dashboard() {
         if (Array.isArray(slots))
             setMentorSlots((prevEvents) => [
                 ...slots.map((slot) => ({
-                    title: 'Mentor available slot',
-                    start: slot.startTime,
-                    end: slot.finishTime,
+                    title:
+                        'Mentor available slot: ' +
+                        slot.slotSubjects[0].subject.code,
+                    start: slot.startTime + 'Z',
+                    end: slot.finishTime + 'Z',
                     id: slot.id,
-                    color: 'purple',
+                    color: slot.isPassed ? 'gray' : 'purple',
                 })),
             ])
     }
@@ -69,10 +87,16 @@ function Dashboard() {
     const fetchData = (data) => {
         UserApi.getPersonalInformation(data).then((res) => {
             setUserProfile(res.data.content)
+            localStorage.setItem('userId', res.data.content.id)
         })
+        console.log('1 fetch profile')
     }
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     useEffect(() => {
+        appointmentApi.checkPass()
         if (userProfile?.isMentor) {
             SlotApi.getAllSlots(
                 userProfile?.id,
@@ -83,32 +107,21 @@ function Dashboard() {
             ).then((res) => {
                 setDataMentorSlots(res.data.content)
             })
-            appointmentApi.loadMentorAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-                console.log('Dashboard', res.data.content)
-            })
-        } else {
-            appointmentApi.loadMentorAppointment().then((res) => {
-                setDataMentorSlots(res.data.content)
-            })
-            appointmentApi.loadUserAppointment().then((res) => {
-                setDataAppointments(res.data.content)
-                console.log('Dashboard', res.data.content)
-            })
         }
+        appointmentApi.loadSendAppointment().then((res) => {
+            setDataAppointments(res.data.content)
+        })
+        console.log('2 fetch data event')
     }, [userProfile])
 
     useEffect(() => {
-        fetchData()
-    }, [])
-
-    useEffect(() => {
         setJoinEvents([...mentorSlots, ...appointments])
-        console.log('appointments:', appointments)
-        console.log('mentorSlots:', mentorSlots)
-        console.log('JoinEvents:', joinEvents)
-        console.log('userProfile', userProfile)
-    }, [appointments])
+        console.log(mentorSlots)
+        console.log(appointments)
+        console.log(joinEvents)
+        console.log(userProfile)
+        console.log('3 joins event data to calendar')
+    }, [appointments, userProfile, mentorSlots])
 
     if (localStorage.getItem('access-token-google') == null) {
         if (localStorage.getItem('access-token') == null) {
@@ -122,7 +135,14 @@ function Dashboard() {
             <SuiBox mt={1} mb={1}>
                 <FullCalendar
                     defaultView="dayGridMonth"
-                    plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                    plugins={[
+                        dayGridPlugin,
+                        interactionPlugin,
+                        timeGridPlugin,
+                        momentTimezonePlugin,
+                    ]}
+                    timeZone="Asia/Bangkok"
+                    timeZoneParam="Asia/Bangkok"
                     events={joinEvents}
                     eventClick={handleClickOpenEvent}
                     dateClick={handleDateClick}

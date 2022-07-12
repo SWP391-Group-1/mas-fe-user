@@ -68,15 +68,6 @@ export default function QuestionDataGrid({ appointmentID }) {
     }
 
     const columns = [
-        // {
-        //     field: 'no',
-        //     headerName: 'No.',
-        //     width: 250,
-        //     valueGetter: (params) => {
-        //         var i = questions.indexOf(params)
-        //         return i
-        //     },
-        // },
         {
             field: 'questionContent',
             headerName: 'Question content',
@@ -87,7 +78,11 @@ export default function QuestionDataGrid({ appointmentID }) {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-                if (params.answer == null || params.answer.length == 0) {
+                console.log('CONCU', params)
+                if (
+                    params.row.answer == null ||
+                    params.row.answer.length == 0
+                ) {
                     return 'Not answer yet'
                 } else {
                     return 'Answered'
