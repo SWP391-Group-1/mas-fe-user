@@ -308,6 +308,7 @@ export default function AppointmentDataGrid() {
 
                 <div style={{ height: 750, width: '100%' }}>
                     <DataGrid
+                    
                         rowHeight={80}
                         rows={sendAppointment}
                         columns={columns}

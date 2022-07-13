@@ -57,7 +57,7 @@ function MentorInfoCard({ title, description, info, social, action }) {
                 <SuiBox mb={2} lineHeight={0}>
                     <SuiInput
                         sx={{ style: 'border:none' }}
-                        disable
+                        disabled
                         rows={5}
                         multiline
                         value={description}
