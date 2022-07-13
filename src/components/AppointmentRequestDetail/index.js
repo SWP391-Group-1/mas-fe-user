@@ -288,7 +288,7 @@ export default function AppointmentRequestDetail() {
                             </SuiBox>
                         </Grid>
                     </Grid>
-                    {appointmentRequestDetails.isApproved != null && (
+                    {appointmentRequestDetails.isApproved == null && (
                         <SuiBox
                             sx={{ display: 'flex', justifyContent: 'flex-end' }}
                         >
