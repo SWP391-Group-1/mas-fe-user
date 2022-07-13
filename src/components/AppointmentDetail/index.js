@@ -1,6 +1,7 @@
 import { Card, Grid, Paper } from '@mui/material'
 import { appointmentApi } from 'apis/appointmentApis'
 import { SlotApi } from 'apis/slotApis'
+import RatingCommentModal from 'components/RatingCommentModal'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -21,6 +22,7 @@ export default function AppointmentDetail() {
     const [appointmentDetails, setAppointmentDetails] = useState([])
     const [slotDetails, setSlotDetails] = useState(null)
     const [rating, setRating] = useState(null)
+    const [isOpenRatingModal, setIsOpenRatingModal] = useState(false)
     let navigate = useNavigate()
     useEffect(() => {
         if (appointmentID == null) {
@@ -33,9 +35,15 @@ export default function AppointmentDetail() {
     const fetchData = () => {
         appointmentApi.loadSendAppointmentDetails(appointmentID).then((res) => {
             setAppointmentDetails(res.data.content)
-            console.log(res.data.content)
         })
-        
+    }
+
+    const handleSaveRating = () => {
+        setIsOpenRatingModal(false)
+        fetchData()
+    }
+    const handleCancelRating = () => {
+        setIsOpenRatingModal(false)
     }
 
     const renderStatus = () => {
@@ -101,13 +109,23 @@ export default function AppointmentDetail() {
                             <SuiBox mb={1}>{renderStatus()}</SuiBox>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <SuiBox
-                                display="flex"
-                                justifyContent="flex-end"
-                                mb={1}
-                            >
-                                <SuiButton color="dark">Rate</SuiButton>
-                            </SuiBox>
+                             
+                            {appointmentDetails?.isApprove == true && (
+                                <SuiBox
+                                    display="flex"
+                                    justifyContent="flex-end"
+                                    mb={1}
+                                >
+                                    <SuiButton
+                                        color="dark"
+                                        onClick={() => {
+                                            setIsOpenRatingModal(true)
+                                        }}
+                                    >
+                                        Rate
+                                    </SuiButton>
+                                </SuiBox>
+                            )}
                         </Grid>
                     </Grid>
 
@@ -253,9 +271,16 @@ export default function AppointmentDetail() {
                     </Grid>
                 </Card>
             </SuiBox>
-            {appointmentDetails?.isApprove != null && (
+            {appointmentDetails?.isApprove == true && (
                 <QuestionDataGrid appointmentID={appointmentID} />
             )}
+
+            <RatingCommentModal
+                appointment={appointmentDetails}
+                isOpen={isOpenRatingModal}
+                onSubmit={handleSaveRating}
+                onCancel={handleCancelRating}
+            />
         </DashboardLayout>
     )
 }

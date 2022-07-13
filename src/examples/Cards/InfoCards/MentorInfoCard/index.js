@@ -84,7 +84,7 @@ function MentorInfoCard({ title, description, info, social, action }) {
                         {description}
                     </SuiTypography> */}
                     <SuiInput sx={{style: "border:none"}}
-                                disable
+                                disabled
                                 rows={5}
                                 multiline
                                 value={description}

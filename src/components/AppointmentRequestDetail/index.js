@@ -40,8 +40,15 @@ export default function AppointmentRequestDetail() {
             .loadReceivedAppointmentDetails(appointmentID)
             .then((res) => {
                 setAppointmentRequestDetails(res.data.content)
-                console.log('Appoinment Request', res.data.content)
+                console.log('Appoinment Request detail', res.data.content.isApprove)
+            }).catch((err) => {
+                handleClickVariant(
+                    err.data.content,
+                    'error'
+                )
             })
+
+           
     }
     const handleSendEmail = (toEmail, subject, body) => {
         emailApi
@@ -288,7 +295,8 @@ export default function AppointmentRequestDetail() {
                             </SuiBox>
                         </Grid>
                     </Grid>
-                    {appointmentRequestDetails.isApproved == null && (
+
+                    {appointmentRequestDetails?.isApprove == null && (
                         <SuiBox
                             sx={{ display: 'flex', justifyContent: 'flex-end' }}
                         >

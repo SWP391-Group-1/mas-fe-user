@@ -78,7 +78,6 @@ export default function QuestionDataGrid({ appointmentID }) {
             headerName: 'Answer Status',
             width: 300,
             valueGetter: (params) => {
-                console.log('CONCU', params)
                 if (
                     params.row.answer == null ||
                     params.row.answer.length == 0

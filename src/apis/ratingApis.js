@@ -17,8 +17,14 @@ const loadRatingOfAnAppointment = (appointmentId) => {
     return defaultInstance.get(`/ratings/get-by-appointmentid/${appointmentId}`)
 }
 
+const createNewRating = (appointmentId, data) => {
+    loadToken()
+    return defaultInstance.get(`/ratings/${appointmentId}`, data)
+}
+
 export const ratingApi = {
     loadAllRatingOfAMentor,
     loadRatingOfAMentorWithFilterVote,
-    loadRatingOfAnAppointment
+    loadRatingOfAnAppointment,
+    createNewRating
 }
