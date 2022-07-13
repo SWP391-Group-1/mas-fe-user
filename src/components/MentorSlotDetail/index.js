@@ -87,8 +87,8 @@ export default function MentorSlotDetail() {
 
     const handleDeleteSlot = (slotId) => {
         modal.openModal({
-            title: 'Mentor subject add',
-            content: 'Do you want to add this subject for mentor',
+            title: 'Delete mentor slot',
+            content: 'Do you want to delete this mentor slot?',
             buttons: [
                 {
                     text: 'Confirm',
@@ -100,6 +100,7 @@ export default function MentorSlotDetail() {
                                     'success'
                                 )
                                 fetchData()
+                                navigate('/profile')
                             })
                             .catch((error) => {
                                 handleClickVariant(
@@ -108,7 +109,6 @@ export default function MentorSlotDetail() {
                                 )
                             })
                         modal.closeModal()
-                        navigate('/profile')
                     },
                 },
                 {
