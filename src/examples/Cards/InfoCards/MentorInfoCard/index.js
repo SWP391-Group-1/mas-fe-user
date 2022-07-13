@@ -1,29 +1,15 @@
-// react-routers components
-import { Link } from 'react-router-dom'
-
 // prop-types is library for typechecking of props
 import PropTypes from 'prop-types'
-
-// @mui material components
-import Card from '@mui/material/Card'
-import Divider from '@mui/material/Divider'
-import Tooltip from '@mui/material/Tooltip'
-import Icon from '@mui/material/Icon'
 
 //  components
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
-
-//  base styles
-import colors from 'assets/theme/base/colors'
-import typography from 'assets/theme/base/typography'
 import SuiInput from 'components/SuiInput'
 
 function MentorInfoCard({ title, description, info, social, action }) {
     const labels = []
     const values = []
-    const { socialMediaColors } = colors
-    const { size } = typography
+    console.log("IMSOHUY CHECK",description)
 
     // Convert this form `objectKey` of the object key in to this `object key`
     Object.keys(info).forEach((el) => {
@@ -60,11 +46,6 @@ function MentorInfoCard({ title, description, info, social, action }) {
 
     return (
         <>
-            {/* <SuiBox display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SuiTypography>
-      </SuiBox> */}
             <SuiBox>
                 <SuiTypography
                     variant="button"
@@ -74,21 +55,13 @@ function MentorInfoCard({ title, description, info, social, action }) {
                     Introduce:
                 </SuiTypography>
                 <SuiBox mb={2} lineHeight={0}>
-                    {/* <SuiTypography
-                        variant="button"
-                        color="text"
-                        fontWeight="regular"
-                        rows={10}
+                    <SuiInput
+                        sx={{ style: 'border:none' }}
+                        disable
+                        rows={5}
                         multiline
-                    >
-                        {description}
-                    </SuiTypography> */}
-                    <SuiInput sx={{style: "border:none"}}
-                                disabled
-                                rows={5}
-                                multiline
-                                value={description}
-                            />
+                        value={description}
+                    />
                 </SuiBox>
                 <SuiBox>{renderItems}</SuiBox>
             </SuiBox>
@@ -101,11 +74,6 @@ MentorInfoCard.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     info: PropTypes.objectOf(PropTypes.string).isRequired,
-    // social: PropTypes.arrayOf(PropTypes.object),
-    // action: PropTypes.shape({
-    //   route: PropTypes.string.isRequired,
-    //   tooltip: PropTypes.string.isRequired,
-    // })
 }
 
 export default MentorInfoCard

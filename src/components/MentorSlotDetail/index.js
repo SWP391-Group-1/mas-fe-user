@@ -227,7 +227,6 @@ export default function MentorSlotDetail() {
                                             description={
                                                 slotDetails?.mentor?.introduce
                                             }
-                                            // description="aaaaa"
                                             info={{
                                                 Email: slotDetails?.mentor
                                                     ?.email,

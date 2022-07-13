@@ -58,27 +58,6 @@ export default function EventDialog({
                         }
                     />
                     <DialogContent>Subject</DialogContent>
-                    <Select
-                        value={editingEvent?.subjectId}
-                        onChange={(newValue) => {
-                            console.log(newValue)
-                            patchEditingEvent({
-                                subjectId: newValue.target.value.id,
-                                description: 'description',
-                            })
-                        }}
-                    >
-                        {mentorSubjects.map((subject) => {
-                            return (
-                                <MenuItem
-                                    key={subject.id}
-                                    value={subject.subject}
-                                >
-                                    {subject.subject.code}
-                                </MenuItem>
-                            )
-                        })}
-                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancelClick}>Cancel</Button>
