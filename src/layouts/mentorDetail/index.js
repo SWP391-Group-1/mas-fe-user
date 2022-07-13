@@ -29,7 +29,6 @@ export default function MentorDetail() {
 
     const fetchData = () => {
         var fromDate = moment().format('YYYY-MM-DD HH:mm:ss')
-        console.log(mentorId)
         mentorApi.getMentorById(mentorId).then((res) => {
             setMentor(res.data.content)
         })
@@ -42,7 +41,7 @@ export default function MentorDetail() {
                     subjectArray = subjectArray + sub.subject.code + ' - '
                 }
                 i++
-            }                  
+            }
             setMentorSubjects(subjectArray)
         })
         SlotApi.getAllSlots(mentorId, fromDate, '', true, true).then((res) => {

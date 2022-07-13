@@ -23,14 +23,12 @@ const SubjectDataGrid = () => {
     const open = Boolean(anchorEl)
 
     const handleSubmitSubject = (subject, isCreateMode) => {
-        // TODO: Validate data
         if (isCreateMode) {
             subjectApi.createSubject(subject)?.then((res) => {
                 fetchData(search, major.id)
                 alert('The subject has been created!') // TODO: use alertPopup or something
             })
         } else {
-            console.log(subject)
             subjectApi.updateSubject(subject.id, subject)?.then((res) => {
                 fetchData(search, major.id)
                 alert('The subject has been updated!') // TODO: use alertPopup or something

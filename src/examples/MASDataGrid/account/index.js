@@ -20,7 +20,6 @@ const MentorDataGrid = () => {
     let navigate = useNavigate()
 
     const fetchData = () => {
-        console.log("abc");
         mentorApi.getAllMentors(search, subject?.id).then((res) => {
             
             setMentors(res.data.content)

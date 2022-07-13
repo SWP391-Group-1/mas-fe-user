@@ -38,8 +38,7 @@ function SignIn() {
     const handleGoogleSignIn = async () => {
         try {
             const userInfo = await googleSignIn()
-            console.log('CONCUBU', userInfo)
-            // successLoginGoogle()
+            successLoginGoogle()
         } catch (err) {
             console.log(err)
         }

@@ -10,7 +10,6 @@ import { Button, Grid, IconButton, Menu, MenuItem } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 
-
 export default function AppointmentDataGrid() {
     const [sendAppointment, setSendAppointment] = useState([])
     const [status, setStatus] = useState({
@@ -135,7 +134,6 @@ export default function AppointmentDataGrid() {
             headerName: 'Start Time',
             width: 300,
             valueGetter: (params) => {
-                console.log(params.row.startTime + 'Z')
                 return moment(params.row.slot.startTime + 'Z').format('LLLL')
             },
         },
@@ -144,7 +142,6 @@ export default function AppointmentDataGrid() {
             headerName: 'End Time',
             width: 300,
             valueGetter: (params) => {
-                console.log(params.row.finishTime + 'Z')
                 return moment(params.row.slot.finishTime + 'Z').format('LLLL')
             },
         },
@@ -153,7 +150,6 @@ export default function AppointmentDataGrid() {
             headerName: 'Create Date',
             width: 300,
             valueGetter: (params) => {
-                console.log(params.row.createdDate)
                 return moment(params.row.createDate).format('LLLL')
             },
         },
@@ -198,10 +194,10 @@ export default function AppointmentDataGrid() {
                 <DashboardNavbar />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={2}>
-                        <SuiBox                      
+                        <SuiBox
                             mb={2}
                             sx={{
-                                width:"100%",
+                                width: '100%',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
@@ -210,7 +206,6 @@ export default function AppointmentDataGrid() {
                                 Status:
                             </SuiTypography>
                             <SuiInput
-                                
                                 disable
                                 icon={{
                                     component: 'arrow_drop_down',
@@ -248,62 +243,58 @@ export default function AppointmentDataGrid() {
                                 })}
                             </Menu>
                         </SuiBox>
-                        </Grid>
-                        <Grid item xs={12} md={2}>
-                            <SuiBox
-                                mb={2}
-                                sx={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width:"100%"
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <SuiBox
+                            mb={2}
+                            sx={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                            }}
+                        >
+                            <SuiTypography variant="h6" mr={2}>
+                                History status:
+                            </SuiTypography>
+                            <SuiInput
+                                disable
+                                icon={{
+                                    component: 'arrow_drop_down',
+                                    direction: 'right',
+                                }}
+                                value={historyStatus.title}
+                                onClick={(e) => setAnchorEl2(e.currentTarget)}
+                            />
+
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl2}
+                                open={open2}
+                                onClose={handleClose2}
+                                PaperProps={{
+                                    style: {
+                                        maxHeight: 50 * 4.5,
+                                        width: '12%',
+                                    },
+                                }}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
                                 }}
                             >
-                                <SuiTypography variant="h6" mr={2}>
-                                    History status:
-                                </SuiTypography>
-                                <SuiInput
-                                
-                                    disable
-                                    icon={{
-                                        component: 'arrow_drop_down',
-                                        direction: 'right',
-                                    }}
-                                    value={historyStatus.title}
-                                    onClick={(e) =>
-                                        setAnchorEl2(e.currentTarget)
-                                    }
-                                />
-
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorEl2}
-                                    open={open2}
-                                    onClose={handleClose2}
-                                    PaperProps={{
-                                        style: {
-                                            maxHeight: 50 * 4.5,
-                                            width: '12%',
-                                        },
-                                    }}
-                                    MenuListProps={{
-                                        'aria-labelledby': 'basic-button',
-                                    }}
-                                >
-                                    {historyStatuses?.map((item) => {
-                                        return (
-                                            <MenuItem
-                                                value={10}
-                                                key={item.title}
-                                                onClick={() => onChoose2(item)}
-                                            >
-                                                {item.title}
-                                            </MenuItem>
-                                        )
-                                    })}
-                                </Menu>
-                            </SuiBox>
-                        </Grid>
-                    
+                                {historyStatuses?.map((item) => {
+                                    return (
+                                        <MenuItem
+                                            value={10}
+                                            key={item.title}
+                                            onClick={() => onChoose2(item)}
+                                        >
+                                            {item.title}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Menu>
+                        </SuiBox>
+                    </Grid>
                 </Grid>
 
                 <div style={{ height: 750, width: '100%' }}>

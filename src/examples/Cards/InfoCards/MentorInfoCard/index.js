@@ -9,7 +9,6 @@ import SuiInput from 'components/SuiInput'
 function MentorInfoCard({ title, description, info, social, action }) {
     const labels = []
     const values = []
-    console.log("IMSOHUY CHECK",description)
 
     // Convert this form `objectKey` of the object key in to this `object key`
     Object.keys(info).forEach((el) => {
@@ -57,7 +56,7 @@ function MentorInfoCard({ title, description, info, social, action }) {
                 <SuiBox mb={2} lineHeight={0}>
                     <SuiInput
                         sx={{ style: 'border:none' }}
-                        disable
+                        disabled
                         rows={5}
                         multiline
                         value={description}

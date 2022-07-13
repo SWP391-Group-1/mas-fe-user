@@ -40,7 +40,7 @@ export default function AppointmentRequestDetail() {
             .loadReceivedAppointmentDetails(appointmentID)
             .then((res) => {
                 setAppointmentRequestDetails(res.data.content)
-                console.log('Appoinment Request detail', res.data.content.isApprove)
+                // console.log('Appoinment Request detail', res.data.content.isApprove)
             }).catch((err) => {
                 handleClickVariant(
                     err.data.content,
@@ -94,7 +94,6 @@ export default function AppointmentRequestDetail() {
                 }
             })
             .catch((err) => {
-                console.log(err.response.data.error.message)
                 handleClickVariant(err.response.data.error.message, 'error')
             })
     }
