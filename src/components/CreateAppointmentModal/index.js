@@ -48,28 +48,24 @@ export default function CreateAppointmentModal() {
     }, [])
 
     const fetchData = () => {
-        console.log(slotId)
         mentorApi.getMentorSlotById(slotId).then((res) => {
             setSlotDetail(res.data.content)
         })
     }
 
     const handleSendAppointment = () => {
-        console.log(slotId)
-        //console.log(subject.id)
-        console.log(problem)
         if (
             slotId == null ||
-            slotId == '' ||
+            slotId === '' ||
             problem == null ||
-            problem == ''
+            problem === '' || problem?.trim() === ''
         ) {
             handleClickVariant('Brief problem are required!', 'error')
         } else {
             appointmentApi
                 .createAppointment({
                     slotId: slotId,
-                    briefProblem: problem
+                    briefProblem: problem,
                 })
                 .then((res) => {
                     handleClickVariant(
@@ -79,7 +75,6 @@ export default function CreateAppointmentModal() {
                     navigate('/appointment')
                 })
                 .catch((err) => {
-                    console.log(err.response.data.error.message)
                     handleClickVariant(err.response.data.error.message, 'error')
                 })
         }

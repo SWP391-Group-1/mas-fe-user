@@ -54,7 +54,6 @@ const MajorDataGrid = () => {
 
 
     const handleDelete = (id) => {
-        console.log(id)
         majorApi
             .deleteMajor(id)
             .then((res) => {

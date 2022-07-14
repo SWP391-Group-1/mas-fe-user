@@ -27,17 +27,24 @@ function Dashboard() {
     const [joinEvents, setJoinEvents] = useState([])
 
     const handleClickOpenEvent = (event) => {
-        console.log('eventclick', event)
-        console.log('eventclick', event.event._def.publicId)
         if (event.event._def.title.includes('Mentor slot')) {
             navigate('/mentorslot', {
                 state: { slotID: event.event._def.publicId },
             })
         } else {
             if (userProfile?.isMentor) {
-                navigate('/request/appointmentrequestdetails', {
-                    state: { appointmentId: event.event._def.publicId },
-                })
+                if (
+                    userProfile?.id !==
+                    event?.event?._def?.extendedProps?.mentorId
+                ) {
+                    navigate('/appointment/appointmentdetails', {
+                        state: { appointmentId: event.event._def.publicId },
+                    })
+                } else {
+                    navigate('/request/appointmentrequestdetails', {
+                        state: { appointmentId: event.event._def.publicId },
+                    })
+                }
             } else {
                 navigate('/appointment/appointmentdetails', {
                     state: { appointmentId: event.event._def.publicId },
@@ -47,7 +54,7 @@ function Dashboard() {
     }
 
     const handleDateClick = (event) => {
-        console.log('dateclick', event)
+        // console.log('dateclick', event)
     }
 
     const setDataAppointments = (slots) => {
@@ -60,6 +67,7 @@ function Dashboard() {
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
+                    mentorId: slot.mentorId,
                     color: slot.isApprove
                         ? slot.isPassed
                             ? 'gray'
@@ -77,6 +85,7 @@ function Dashboard() {
                     start: slot.startTime + 'Z',
                     end: slot.finishTime + 'Z',
                     id: slot.id,
+                    mentorId: slot.mentorId,
                     color: slot.isPassed ? 'gray' : 'purple',
                 })),
             ])
@@ -87,7 +96,6 @@ function Dashboard() {
             setUserProfile(res.data.content)
             localStorage.setItem('userId', res.data.content.id)
         })
-        console.log('1 fetch profile')
     }
     useEffect(() => {
         fetchData()
@@ -109,16 +117,10 @@ function Dashboard() {
         appointmentApi.loadSendAppointment().then((res) => {
             setDataAppointments(res.data.content)
         })
-        console.log('2 fetch data event')
     }, [userProfile])
 
     useEffect(() => {
         setJoinEvents([...mentorSlots, ...appointments])
-        console.log(mentorSlots)
-        console.log(appointments)
-        console.log(joinEvents)
-        console.log(userProfile)
-        console.log('3 joins event data to calendar')
     }, [appointments, userProfile, mentorSlots])
 
     if (localStorage.getItem('access-token-google') == null) {

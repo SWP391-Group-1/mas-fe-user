@@ -44,7 +44,6 @@ export default function EditSubjectModal({
     const fetchData = () => {
         majorApi.getAllMajor().then((res) => {
             setMajors(res.data.content)
-            console.log(res.data.content)
             if (res.data.content != null) {
                 setMajor(res.data.content[0])
             }

@@ -1,11 +1,4 @@
-import {
-    Box,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    Rating,
-} from '@mui/material'
+import { Box, Dialog, DialogContent, DialogTitle, Rating } from '@mui/material'
 import { ratingApi } from 'apis/ratingApis'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
@@ -23,7 +16,6 @@ export default function RatingCommentModal({
     useEffect(() => {
         if (isOpen) {
             fetchData()
-            console.log(ratingScore, ' scroeeee')
         }
     }, [isOpen])
 
@@ -41,12 +33,13 @@ export default function RatingCommentModal({
     const [isError, setIsError] = useState(false)
 
     const fetchData = () => {
-        console.log(appointment)
         ratingApi
             .loadRatingOfAnAppointment(appointment.id)
             .then((res) => {
+                if (res.isSuccess == false) {
+                    console.log(res)
+                }
                 setRating(res.data.content)
-                console.log(res.data.content, 'abc')
                 setRatingScore(res.data.content.vote)
             })
             .catch((err) => {
@@ -56,7 +49,7 @@ export default function RatingCommentModal({
     }
 
     const handleSaveStatus = () => {
-        if (ratingScore == 0 || comment?.length == 0) {
+        if (ratingScore === 0 || comment?.length === 0) {
             setIsError(true)
         } else {
             setIsError(false)
@@ -178,13 +171,7 @@ export default function RatingCommentModal({
                         </SuiBox>
 
                         <SuiBox mt={2} display="flex" justifyContent="flex-end">
-                            <SuiButton
-                                sx={{ marginRight: 2 }}
-                                color="info"
-                                onClick={() => handleSaveStatus()}
-                            >
-                                Save
-                            </SuiButton>
+                            {console.log('concu', ratingScore)}
                             <SuiButton onClick={() => onCancel?.()}>
                                 Cancel
                             </SuiButton>

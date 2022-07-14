@@ -50,7 +50,6 @@ export default function QuestionModal({
             newQuestion?.questionContent.length == ''
         ) {
             setIsError(true)
-            console.log('aaaaaaaaaaaaaaaa')
             handleClickVariant('Content is required!', 'error')
         } else {
             if (!isError) {
@@ -71,7 +70,7 @@ export default function QuestionModal({
                     })
                 setIsError(false)
             } else {
-                console.log('error đó')
+                console.log('Error at question modal')
             }
         }
     }

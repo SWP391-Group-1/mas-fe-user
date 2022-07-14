@@ -155,7 +155,6 @@ function Overview() {
     })
 
     const handleAddChipMentorSubject = () => {
-        console.log(mentorSubjects)
         if (isFound) {
             handleClickVariant('Mentor already have this subject!', 'error')
         } else {

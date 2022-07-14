@@ -59,13 +59,11 @@ export default function AnswerQuestionModal({
     }
 
     const handleAnswerQuestion = () => {
-        if (answer == null || answer == '') {
+        if (answer === null || answer === '') {
             setIsError(true)
             handleClickVariant('Answer is required!', 'error')
         } else {
             if (!isError) {
-                console.log(question.id)
-                console.log(answer)
                 questionApi
                     .answerQuestion(question.id, { answer: answer })
                     ?.then((res) => {
@@ -73,7 +71,7 @@ export default function AnswerQuestionModal({
                             'Answer question successfully!',
                             'success'
                         )
-                        onSubmit?.() // TODO
+                        onSubmit?.()
                     })
                     .catch((err) => {
                         handleClickVariant(
@@ -83,7 +81,7 @@ export default function AnswerQuestionModal({
                     })
                 setIsError(false)
             } else {
-                console.log('error đó')
+                console.log('error in AnswerQuestionModal') 
             }
         }
     }
