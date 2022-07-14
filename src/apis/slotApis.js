@@ -1,6 +1,6 @@
 import { defaultInstance, loadToken } from './axiosClient'
 
-const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
+const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive, isOn) => {
     return defaultInstance.get('/slots', {
         params: {
             MentorId: mentorId,
@@ -8,6 +8,7 @@ const getAllSlots = (mentorId, fromDate, toDate, isAsc, isActive) => {
             To: toDate,
             IsAsc: isAsc,
             IsActive: isActive,
+            isOn: isOn,
             PageSize: 1000,
         },
     })

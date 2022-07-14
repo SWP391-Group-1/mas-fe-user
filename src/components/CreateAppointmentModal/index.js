@@ -62,6 +62,7 @@ export default function CreateAppointmentModal() {
         ) {
             handleClickVariant('Brief problem are required!', 'error')
         } else {
+            //handleClickVariant(problem, 'success')
             appointmentApi
                 .createAppointment({
                     slotId: slotId,

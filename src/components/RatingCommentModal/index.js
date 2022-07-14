@@ -28,7 +28,8 @@ export default function RatingCommentModal({
         })
     }
     const [rating, setRating] = useState()
-    const [ratingScore, setRatingScore] = useState(0)
+    const [ratingScore, setRatingScore] = useState()
+    const [tempScore, setTempScore] = useState(0)
     const [comment, setComment] = useState('')
     const [isError, setIsError] = useState(false)
 
@@ -36,11 +37,10 @@ export default function RatingCommentModal({
         ratingApi
             .loadRatingOfAnAppointment(appointment.id)
             .then((res) => {
-                if (res.isSuccess == false) {
-                    console.log(res)
-                }
                 setRating(res.data.content)
                 setRatingScore(res.data.content.vote)
+                setTempScore(res.data.content.vote)
+             
             })
             .catch((err) => {
                 setRatingScore(null)
@@ -49,14 +49,14 @@ export default function RatingCommentModal({
     }
 
     const handleSaveStatus = () => {
-        if (ratingScore === 0 || comment?.length === 0) {
+        if (tempScore === 0 || comment?.length === 0 || comment?.trim() == "") {
             setIsError(true)
         } else {
             setIsError(false)
             ratingApi
                 .createNewRating(appointment.id, {
-                    vote: ratingScore,
-                    comment: comment,
+                    vote: tempScore,
+                    comment: comment?.trim(),
                 })
                 .then((res) => {
                     handleClickVariant(
@@ -66,6 +66,11 @@ export default function RatingCommentModal({
                     onSubmit?.()
                 })
         }
+    }
+
+    const handleCancel = () => {
+        setIsError(false)
+        onCancel?.()
     }
 
     return (
@@ -102,23 +107,12 @@ export default function RatingCommentModal({
                             </SuiTypography>
                         </SuiBox>
 
-                        {/* {appointment?.isApprove == true && (
-                            <Rating
-                            disabled={ratingScore == null ? false : true}
-                            name="simple-controlled"
-                            value={ratingScore * 1}
-                            onChange={(event, newValue) => {
-                                setRatingScore(newValue)
-                            }}
-                        />
-                        )} */}
-
                         <Rating
                             disabled={ratingScore == null ? false : true}
                             name="simple-controlled"
-                            value={ratingScore * 1}
+                            value={tempScore * 1}
                             onChange={(event, newValue) => {
-                                setRatingScore(newValue)
+                                setTempScore(newValue)
                             }}
                         />
                         <SuiBox>
@@ -128,7 +122,7 @@ export default function RatingCommentModal({
                                 fontWeight="bold"
                                 color="error"
                             >
-                                {isError == true && ratingScore == 0
+                                {isError == true && (tempScore == 0 || tempScore == null)
                                     ? 'Rating score must be higher or equals to 1!'
                                     : null}
                             </SuiTypography>
@@ -171,8 +165,16 @@ export default function RatingCommentModal({
                         </SuiBox>
 
                         <SuiBox mt={2} display="flex" justifyContent="flex-end">
-                            {console.log('concu', ratingScore)}
-                            <SuiButton onClick={() => onCancel?.()}>
+                            {!ratingScore && (
+                                <SuiButton
+                                    sx={{ marginRight: 2 }}
+                                    color="info"
+                                    onClick={() => handleSaveStatus()}
+                                >
+                                    Save
+                                </SuiButton>
+                            )}
+                            <SuiButton onClick={() => handleCancel()}>
                                 Cancel
                             </SuiButton>
                         </SuiBox>

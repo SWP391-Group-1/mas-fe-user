@@ -44,7 +44,7 @@ export default function MentorDetail() {
             }
             setMentorSubjects(subjectArray)
         })
-        SlotApi.getAllSlots(mentorId, fromDate, '', true, true).then((res) => {
+        SlotApi.getAllSlots(mentorId, fromDate, '', true, true, false).then((res) => {
             setMentorSlots(res.data.content)
         })
         ratingApi.loadAllRatingOfAMentor(mentorId).then((res) => {
