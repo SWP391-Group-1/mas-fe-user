@@ -40,15 +40,11 @@ export default function AppointmentRequestDetail() {
             .loadReceivedAppointmentDetails(appointmentID)
             .then((res) => {
                 setAppointmentRequestDetails(res.data.content)
-                // console.log('Appoinment Request detail', res.data.content.isApprove)
-            }).catch((err) => {
-                handleClickVariant(
-                    err.data.content,
-                    'error'
-                )
+                console.log('Appoinment Request detail', res.data.content)
             })
-
-           
+            .catch((err) => {
+                handleClickVariant(err.data.content, 'error')
+            })
     }
     const handleSendEmail = (toEmail, subject, body) => {
         emailApi
@@ -71,25 +67,61 @@ export default function AppointmentRequestDetail() {
                     )
                     handleSendEmail(
                         appointmentRequestDetails.creator.email,
-                        'Appointment request approved',
-                        'Your appointment request is accepted! Thank you'
+                        'Appointment request has been approved',
+                        `Dear, ${appointmentRequestDetails?.creator?.name}
+
+                        Your appointment request has been accepted!
+                        The appointment will be start at: ${moment(
+                            appointmentRequestDetails?.slot?.startTime + 'Z'
+                        ).format('LLLL')}
+                        Please join the meet url below:
+                        ${appointmentRequestDetails?.slot?.mentor?.meetUrl}
+                        
+                        Thank you and best regards!
+                        MAS Admin`
                     )
                     handleSendEmail(
                         'huynhse140380@fpt.edu.vn',
-                        'Appointment request approved',
-                        'Your appointment request is accepted! Thank you'
+                        'Appointment request has been approved',
+                        `Dear, ${appointmentRequestDetails?.creator?.name}
+
+                        Your appointment request has been accepted!
+                        The appointment will be start at: ${moment(
+                            appointmentRequestDetails?.slot?.startTime + 'Z'
+                        ).format('LLLL')}
+                        Please join the meet url below:
+                        ${appointmentRequestDetails?.slot?.mentor?.meetUrl}
+                        
+                        Thank you and best regards!
+                        MAS Admin`
                     )
                 } else {
                     handleClickVariant('You have denied the request!', 'info')
                     handleSendEmail(
                         appointmentRequestDetails.creator.email,
                         'Appointment request denied',
-                        'Your appointment request is denied!'
+                        `Dear, ${appointmentRequestDetails?.creator?.name}
+
+                        Your appointment request has been denied!
+                        The appointment is planned to be start at: ${moment(
+                            appointmentRequestDetails?.slot?.startTime + 'Z'
+                        ).format('LLLL')}
+                        
+                        Thank you and best regards!
+                        MAS Admin`
                     )
                     handleSendEmail(
                         'huynhse140380@fpt.edu.vn',
                         'Appointment request denied',
-                        'Your appointment request is denied! Please check back your appointment!'
+                        `Dear, ${appointmentRequestDetails?.creator?.name}
+
+                        Your appointment request has been denied!
+                        The appointment is planned to be start at: ${moment(
+                            appointmentRequestDetails?.slot?.startTime + 'Z'
+                        ).format('LLLL')}
+                        
+                        Thank you and best regards!
+                        MAS Admin`
                     )
                 }
             })
