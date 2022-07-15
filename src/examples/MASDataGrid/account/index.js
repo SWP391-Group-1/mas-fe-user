@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import SuiBox from 'components/SuiBox'
 import { subjectApi } from 'apis/subjectApis'
 import { Box } from '@mui/system'
+import SuiButton from 'components/SuiButton'
 
 const MentorDataGrid = () => {
     const [isChange, setIsChange] = useState(null)
@@ -37,9 +38,9 @@ const MentorDataGrid = () => {
     const renderViewButton = (params) => {
         return (
             <strong>
-                <Button
+                <SuiButton
                     variant="contained"
-                    color="error"
+                    color="info"
                     size="small"
                     onClick={() => {
                         navigate('/mentor/details', {
@@ -48,7 +49,7 @@ const MentorDataGrid = () => {
                     }}
                 >
                     View Detail
-                </Button>
+                </SuiButton>
             </strong>
         )
     }

@@ -38,7 +38,7 @@ const loadSendAppointmentFilter = (allStatus, approveStatus, passStatus) => {
 const loadReceivedAppointment = () => {
     loadToken()
     return defaultInstance.get(
-        '/users/receive/appointments?IsNew=true&IsAll=false'
+        '/users/receive/appointments?IsNew=true&IsAll=true'
     )
 }
 

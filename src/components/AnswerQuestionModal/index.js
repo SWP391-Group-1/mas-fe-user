@@ -14,6 +14,7 @@ import {
 import { Box } from '@mui/system'
 import { questionApi } from 'apis/questionApis'
 import { appointmentApi } from 'apis/appointmentApis'
+import SuiButton from 'components/SuiButton'
 
 export default function AnswerQuestionModal({
     question,
@@ -81,7 +82,7 @@ export default function AnswerQuestionModal({
                     })
                 setIsError(false)
             } else {
-                console.log('error in AnswerQuestionModal') 
+                console.log('error in AnswerQuestionModal')
             }
         }
     }
@@ -144,10 +145,17 @@ export default function AnswerQuestionModal({
                     </>
                 </DialogContent>
                 <DialogActions>
+                    <SuiButton color="info" onClick={handleCancelClick}>
+                        Close
+                    </SuiButton>
                     {appointment?.isPassed != true && (
-                        <Button onClick={handleAnswerQuestion}>Save</Button>
+                        <SuiButton
+                            color="success"
+                            onClick={handleAnswerQuestion}
+                        >
+                            Save
+                        </SuiButton>
                     )}
-                    <Button onClick={handleCancelClick}>Close</Button>
                 </DialogActions>
             </Box>
         </Dialog>

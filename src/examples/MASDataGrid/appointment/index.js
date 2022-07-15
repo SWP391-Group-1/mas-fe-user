@@ -9,6 +9,7 @@ import SuiInput from 'components/SuiInput'
 import { Button, Grid, IconButton, Menu, MenuItem } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
+import SuiButton from 'components/SuiButton'
 
 export default function AppointmentDataGrid() {
     const [sendAppointment, setSendAppointment] = useState([])
@@ -99,9 +100,9 @@ export default function AppointmentDataGrid() {
     const renderViewButton = (params) => {
         return (
             <strong>
-                <Button
+                <SuiButton
                     variant="contained"
-                    color="error"
+                    color="info"
                     size="small"
                     onClick={() => {
                         navigate('/appointment/appointmentdetails', {
@@ -111,7 +112,7 @@ export default function AppointmentDataGrid() {
                     // onClick= {()=> {console.log(params.row.id)}}
                 >
                     View Detail
-                </Button>
+                </SuiButton>
             </strong>
         )
     }
@@ -124,7 +125,7 @@ export default function AppointmentDataGrid() {
         {
             field: 'name',
             headerName: 'Mentor Name',
-            width: 250,
+            width: 200,
             valueGetter: (params) => {
                 return params.row.mentor.name
             },
@@ -163,7 +164,7 @@ export default function AppointmentDataGrid() {
                 } else {
                     if (params.row.isApprove == true) {
                         return 'Approved'
-                    } else if (params.row.isApprove == true) {
+                    } else if (params.row.isApprove != true) {
                         return 'Denied'
                     }
                 }

@@ -55,14 +55,14 @@ export default function QuestionDataGrid({ appointmentID }) {
         const question = params.row
         return (
             <strong>
-                <Button
+                <SuiButton
                     variant="contained"
-                    color="error"
+                    color="info"
                     size="small"
                     onClick={() => handleOpenModel(question)}
                 >
                     View
-                </Button>
+                </SuiButton>
             </strong>
         )
     }

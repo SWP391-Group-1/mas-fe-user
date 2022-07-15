@@ -1,6 +1,7 @@
 import { Button } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { appointmentApi } from 'apis/appointmentApis'
+import SuiButton from 'components/SuiButton'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import moment from 'moment'
@@ -19,9 +20,9 @@ export default function AppointmentRequestDataGrid() {
     const renderViewButton = (params) => {
         return (
             <strong>
-                <Button
+                <SuiButton
                     variant="contained"
-                    color="error"
+                    color="info"
                     size="small"
                     onClick={() => {
                         navigate('/request/appointmentrequestdetails', {
@@ -30,7 +31,7 @@ export default function AppointmentRequestDataGrid() {
                     }}
                 >
                     View Detail
-                </Button>
+                </SuiButton>
             </strong>
         )
     }
@@ -42,7 +43,7 @@ export default function AppointmentRequestDataGrid() {
         {
             field: 'name',
             headerName: 'Student Name',
-            width: 250,
+            width: 200,
             valueGetter: (params) => {
                 return params.row.creator.name
             },
@@ -81,7 +82,7 @@ export default function AppointmentRequestDataGrid() {
                 } else {
                     if (params.row.isApprove == true) {
                         return 'Approved'
-                    } else if (params.row.isApprove == true) {
+                    } else if (params.row.isApprove != true) {
                         return 'Denied'
                     }
                 }
