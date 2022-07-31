@@ -19,7 +19,7 @@ const loadRatingOfAnAppointment = (appointmentId) => {
 
 const createNewRating = (appointmentId, data) => {
     loadToken()
-    return defaultInstance.get(`/ratings/${appointmentId}`, data)
+    return defaultInstance.post(`/ratings/${appointmentId}`, data)
 }
 
 export const ratingApi = {
